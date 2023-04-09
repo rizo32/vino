@@ -3,6 +3,7 @@ import Login from "./views/Login.jsx";
 import Signup from "./views/Signup.jsx";
 import Dashboard from "./views/Dashboard.jsx";
 import Users from "./views/Users.jsx";
+import NotFound from "./views/NotFound.jsx";
 import GuestLayout from "./components/GuestLayout.jsx";
 import DefaultLayout from "./components/DefaultLayout.jsx";
 import { Navigate } from "react-router-dom";
@@ -40,7 +41,12 @@ const router = createBrowserRouter([
         element: <Signup />
       },
     ]
-  }
+  },
+
+  {
+    path: '*',
+    element: <NotFound />
+  },
 ])
 
 export default router;
