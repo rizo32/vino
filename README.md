@@ -14,11 +14,11 @@
     ```
 
 1. **Déclenchement serveur React**
-    - Navigation vers la source du projet Laravel
+    - Navigation vers le répertoire 'react'
     ```
     npm run dev
     ```
     - Ouverture du port 3000
     ```
-    http://localhost:3000/login
+    http://localhost:3000/
     ```
