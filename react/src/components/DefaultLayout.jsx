@@ -1,4 +1,3 @@
-import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { useStateContext } from '../contexts/ContextProvider';
 import { Navigate } from 'react-router-dom';
