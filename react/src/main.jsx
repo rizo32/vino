@@ -7,6 +7,7 @@ import { ContextProvider } from './contexts/ContextProvider'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+    {/* ContexteProvider protège les vues nécéssitant une authentification */}
     <ContextProvider>
       <RouterProvider router={router} />
     </ContextProvider>
