@@ -11,7 +11,7 @@ export default function DefaultLayout() {
 
   return (
     <div id="defaultLayout">
-      <aside>
+      <aside className="bg-purple-500">
         <Link to="/dashboard">Dashboard</Link>
         <Link to="/users">Users</Link>
       </aside>

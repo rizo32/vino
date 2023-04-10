@@ -1,10 +1,9 @@
-import { useState } from 'react'
+// On utilise pas App
 
 function App() {
 
   return (
-    <div className="App">
-      
+    <div>
     </div>
   )
 }
