@@ -15,7 +15,7 @@ export default function GuestLayout() {
                 <Link to="/signup">Signup</Link>
             </aside>
             <header>
-                <h1 className="text-9xl">Guest</h1>
+                <h2 className="text-9xl">Guest</h2>
             </header>
             <main>
                 {/* Outlet va aller chercher la vue appropriée dans le router */}
