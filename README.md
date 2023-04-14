@@ -33,7 +33,7 @@ _Un projet collaboratif de fin d'étude en programmation et conception web d'une
 
 ## procédures git initial
 
--   "forker" le dépôt rizo32/vino, assurez-vous de décocher la case "Fork only main branch".
+-   "forker" le dépôt rizo32/vino, assurez-vous de garder la case "Fork only dev branch" cochée.
     -   Ensuite, clonez-le sur votre dépôt local.
 -   Assurez-vous de travailler sur la branche "dev" en utilisant la commande "git checkout dev".
 
@@ -46,3 +46,10 @@ _Un projet collaboratif de fin d'étude en programmation et conception web d'une
 -   puis à la fin de la journée, poussez-les sur votre fork et créez une demande de fusion (pull request) de votre fork vers rizo32/vino.
 
 <!-- </YG> -->
+
+## Procédures pour récupérer le travail dans le repo de Maitre (gab)
+
+Pour la 1er fois du projet faire `git remote add upstream https://github.com/rizo32/vino.git`
+
+Puis a faire tous les jours:
+Dans le terminal faire `git fetch upstream`, puis `git merge upstream/dev`
