@@ -1,7 +1,7 @@
 export default function Dashboard() {
   return (
     <div>
-      Dashboard
+      Tableau de bord
     </div>
   )
 }
