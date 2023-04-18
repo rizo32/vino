@@ -4,20 +4,20 @@ import axios from "axios"
 const baseURL = "http://localhost:8000/api/posts";
 
 export default function Dashboard() {
-  const [posts, setPosts] = useState([]);
+  const [bottles, setBottles] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getPosts();
+    getBottles();
   }, [])
 
-  const getPosts = () => {
+  const getBottles = () => {
     setLoading(true);
     axios.get(baseURL)
     .then(({data}) => {
       setLoading(false);
       console.log(data);
-      setPosts(data.data);
+      setBottles(data.data);
     })
     .catch(err => {
       console.log(err);
@@ -30,12 +30,12 @@ export default function Dashboard() {
       <div>
         <table>
           <tbody>
-      {posts.map(u => (
-              <tr key={u.id}>
-                <td>{u.id}</td>
-                <td>{u.title}</td>
-                <td>{u.body}</td>
-                <td>{u.created_at}</td>
+      {bottles.map(b => (
+              <tr key={b.id}>
+                <td>{b.id}</td>
+                <td>{b.name}</td>
+                <td>{b.code_saq}</td>
+                <td>{b.description}</td>
               </tr>
       ))}
         </tbody>
