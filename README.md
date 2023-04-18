@@ -33,10 +33,15 @@ _Un projet collaboratif de fin d'étude en programmation et conception web d'une
 
 - "Forker" le dépôt rizo32/vino, assurez-vous de garder la case "Fork only dev branch" cochée.
 - Clonez-le sur votre dépôt local.
-- Assurez-vous de travailler sur la branche "dev" (de VOTRE fork!!) en utilisant la commande "git checkout dev".
 - `git remote add upstream https://github.com/rizo32/vino.git` pour créer une liaison 'upstream' avec le repertoire maitre (ie commun)
+- Assurez-vous de travailler sur la branche "dev" (de VOTRE fork!!) en utilisant les commandes
 
-## Fork <- Maitre
+```
+git checkout dev (si vous êtes sur main)
+git remote -v (confirmer que origin = votre fork)
+```
+
+## Fork <- Maitre (projet commun)
 
 - À chaque nouvelle session, ou lorsque quelqu'un d'autre effectue un merge (pull request):
 ```
@@ -53,3 +58,6 @@ pour aller chercher le code, puis pour synchroniser:
 
 - Tout au long de la journée, effectuez plusieurs commits
 - Quelques fois par jour (eg chaque 2 heures), quand le code est stable, faire un git pull et pull request (via github) vers la branche dev du repo maitre
+- Avetissez les autre via discord (thread github) pour qu'ils effectuent leur syncronisation et constate s'il y a des conflits à gérer
+
+Force et robustesse 
