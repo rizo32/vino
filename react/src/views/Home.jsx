@@ -1,3 +1,5 @@
+import axiosClient from "../axios-client"
+
 export default function Home() {
   return (
     <div>
