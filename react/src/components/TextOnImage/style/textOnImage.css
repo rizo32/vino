@@ -1,0 +1,25 @@
+/* on pourra créer plus de variable post hoc */
+.object-top-20 {
+  object-position: 50% 20%;
+}
+.object-top-40 {
+  object-position: 50% 40%;
+}
+.object-top-60 {
+  object-position: 50% 60%;
+}
+.object-top-80 {
+  object-position: 80% 20%;
+}
+
+.contrast-120 {
+  filter: contrast(120%);
+}
+
+.saturation-70 {
+  filter: saturate(70%);
+}
+
+.brightness-90 {
+  filter: brightness(90%);
+}
