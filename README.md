@@ -29,27 +29,27 @@ _Un projet collaboratif de fin d'étude en programmation et conception web d'une
     http://localhost:3000/
     ```
 
-<!-- YG -->
+## Création de votre projet
 
-## procédures git initial
+- "Forker" le dépôt rizo32/vino, assurez-vous de garder la case "Fork only dev branch" cochée.
+- Clonez-le sur votre dépôt local.
+- Assurez-vous de travailler sur la branche "dev" (de VOTRE fork!!) en utilisant la commande "git checkout dev".
+- `git remote add upstream https://github.com/rizo32/vino.git` pour créer une liaison 'upstream' avec le repertoire maitre (ie commun)
 
--   "forker" le dépôt rizo32/vino, assurez-vous de garder la case "Fork only dev branch" cochée.
-    -   Ensuite, clonez-le sur votre dépôt local.
--   Assurez-vous de travailler sur la branche "dev" en utilisant la commande "git checkout dev".
+## Fork <- Maitre
 
-## procédures git quotidienne ( a revoir )
+- À chaque nouvelle session, ou lorsque quelqu'un d'autre effectue un merge (pull request):
+```
+`git fetch upstream`
+```
+pour aller chercher le code, puis pour synchroniser:
+```
+`git merge upstream/dev`
+```
 
--   Vérifiez votre fork GitHub pour valider que vous êtes à jour avec le dépôt principal (rizo32/vino).
-    -   Si ce n'est pas le cas, synchronisez.
--   allez sur votre dépôt local et effectuez un "pull" pour vous assurer que tout est à jour.
--   Tout au long de la journée, effectuez plusieurs commits
--   puis à la fin de la journée, poussez-les sur votre fork et créez une demande de fusion (pull request) de votre fork vers rizo32/vino.
+(sinon, directement sur github faire un pull request fork <- maitre et faire git pull à partir du local)
 
-<!-- </YG> -->
+## Maitre <- Fork
 
-## Procédures pour récupérer le travail dans le repo de Maitre (gab)
-
-Pour la 1er fois du projet faire `git remote add upstream https://github.com/rizo32/vino.git`
-
-Puis a faire tous les jours:
-Dans le terminal faire `git fetch upstream`, puis `git merge upstream/dev`
+- Tout au long de la journée, effectuez plusieurs commits
+- Quelques fois par jour (eg chaque 2 heures), quand le code est stable, faire un git pull et pull request (via github) vers la branche dev du repo maitre
