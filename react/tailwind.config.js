@@ -2,7 +2,14 @@
 export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
     theme: {
-        extend: {},
+        extend: {
+          fontFamily: {
+            sans: ['Lato', 'sans-serif'],
+          },
+          boxShadow: {
+            'shadow-tiny': '0 1px 1px rgba(0, 0, 0, 0.25)',
+          },
+        },
     },
     plugins: [],
 };
