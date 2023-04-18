@@ -1,4 +1,4 @@
-import axiosClient from "../axios-client"
+import axios from "axios"
 
 export default function Login() {
   return (

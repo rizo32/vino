@@ -1,4 +1,4 @@
-import axiosClient from "../axios-client"
+import axios from "axios"
 import ProductCard from "../components/ProductCard/ProductCard"
 
 export default function Catalog() {
