@@ -20,4 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
   return $request->user();
 });
 
-Route::get('/bottles', [BottleController::class, 'index']);
+Route::apiResource('/bottles', BottleController::class);
+// Gab: touché pas la ligne en bas, longue histoire
+// Route::get('/bottles', [BottleController::class, 'index']);
