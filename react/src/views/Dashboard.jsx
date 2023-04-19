@@ -16,11 +16,10 @@ export default function Dashboard() {
     axios.get(baseURL)
     .then(({data}) => {
       setLoading(false);
-      console.log(data);
       setBottles(data.data);
     })
     .catch(err => {
-      console.log(err);
+      console.log(err.response);
     })
   }
 
