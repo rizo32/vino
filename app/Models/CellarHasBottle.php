@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Bottle;
 
-class Cellar_has_bottle extends Model
+class CellarHasBottle extends Model
 {
     use HasFactory;
 
@@ -21,6 +22,12 @@ class Cellar_has_bottle extends Model
         return $query;
     }
     protected $fillable = [
+        'bottle_id',
         'quantity',
     ];
+
+    public function bottles()
+    {
+        return $this->hasMany(Bottle::class);
+    }
 }

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreBottleRequest;
 use App\Models\Bottle;
 use Illuminate\Http\Request;
 use App\Http\Resources\BottleResource;
+
+//elodie
 
 class BottleController extends Controller
 {
@@ -25,9 +28,12 @@ class BottleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreBottleRequest $request)
     {
-        //
+        $data = $request->validated(); //fichier request a faire
+        $bottle = Bottle::create($data);
+
+        return response(new BottleResource($bottle), 201);
     }
 
     /**
@@ -38,7 +44,7 @@ class BottleController extends Controller
      */
     public function show(Bottle $bottle)
     {
-        //
+        return new BottleResource($bottle);
     }
 
     /**
@@ -50,7 +56,8 @@ class BottleController extends Controller
      */
     public function update(Request $request, Bottle $bottle)
     {
-        //
+        $data = $request->validated(); // fichier request a faire
+        $bottle->update($data);
     }
 
     /**
@@ -61,6 +68,8 @@ class BottleController extends Controller
      */
     public function destroy(Bottle $bottle)
     {
-        //
+        $bottle->delete();
+
+        return response("", 204);
     }
 }
