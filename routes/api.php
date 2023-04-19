@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-=======
+
 use App\Http\Controllers\Api\BottleController;
 
 /*
@@ -23,3 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('/bottles', BottleController::class);
 // Gab: touché pas la ligne en bas, longue histoire
 // Route::get('/bottles', [BottleController::class, 'index']);
+
+
+/* <YG */
+Route::apiResource('/admin', AdminController::class);
+/* YG> */

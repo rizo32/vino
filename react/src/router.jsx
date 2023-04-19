@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Login from "./views/Login.jsx";
+import Admin from "./views/Admin.jsx";
 import Signup from "./views/Signup.jsx";
 import Dashboard from "./views/Dashboard.jsx";
 import Cellar from "./views/Cellar/Cellar.jsx";
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
             {
                 path: "/product/:id",
                 element: <ProductView />,
+            },
+            {
+                path: "/admin",
+                element: <Admin />, 
             },
         ],
     },
