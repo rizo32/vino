@@ -22,7 +22,7 @@ class Bottle extends Model
         'image_url',
         'format_id',
         'type_id',
-        'contry_id',
+        // 'contry_id', erreur ?
         'milesime',
         'rating_saq',
     ];
