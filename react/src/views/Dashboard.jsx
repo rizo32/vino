@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 
-const baseURL = "http://localhost:8000/api/posts";
+const baseURL = "http://localhost:8000/api/bottles";
 
 export default function Dashboard() {
   const [bottles, setBottles] = useState([]);
