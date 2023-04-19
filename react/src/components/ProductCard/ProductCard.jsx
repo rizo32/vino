@@ -5,7 +5,7 @@ import ProductCard from "./ProductCard/ProductCard.jsx";
 */
 import bouteille1 from "./img/bouteille1.webp";
 
-export default function ProductCard() {
+export default function ProductCard({ bottle }) {
     return (
         <article
             id="ProductCard"
@@ -15,7 +15,7 @@ export default function ProductCard() {
             <section className="flex-flex_column justify-start gap-3 bg-white">
                 <div className="flex ">
                     <h2 className="font-bold">
-                        Apothic Cabernet Sauvignon 2020
+                        {bottle.name}
                     </h2>
                     <div className="px-6">
                         <svg
@@ -35,9 +35,9 @@ export default function ProductCard() {
                     </div>
                 </div>
                 <div className="flex gap-4">
-                    <p>Vin blanc</p> <span>|</span> <p> 750ml</p>
+                    <p>{bottle.type}</p> <span>|</span> <p>{bottle.format}</p>
                 </div>
-                <p>États-Unis, Californie</p>
+                <p>{bottle.country}</p>
                 <div className="flex gap-4">
                     <p className="flex">
                         <svg
@@ -96,7 +96,8 @@ export default function ProductCard() {
                             />
                         </svg>
                     </p>
-                    <span>|</span> <p> 49 avis</p>
+                    {/* {bottle.numberOfReview????} */}
+                    <span>|</span> <p>? avis</p>
                 </div>
             </section>
         </article>
