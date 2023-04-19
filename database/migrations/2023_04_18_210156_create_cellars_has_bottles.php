@@ -13,13 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
         Schema::create('cellars_has_bottles', function (Blueprint $table) {
-            $table->integer('cellar_id');
-            $table->integer('bottle_id');
+            $table->foreignId('cellar_id')->constrained()->onDelete('cascade');
+            $table->foreignId('bottle_id')->constrained()->onDelete('cascade');
             $table->integer('quantity');
             $table->timestamps();
             $table->primary(['cellar_id','bottle_id']);
         });
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 
     /**
