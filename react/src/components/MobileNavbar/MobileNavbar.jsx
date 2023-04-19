@@ -4,7 +4,7 @@ import logoShort from './img/Cthick.png';
 
 const MobileNavbar = () => {
   return (
-    <nav className="bg-white h-16 shadow-shadow-tiny flex items-center justify-between px-4">
+    <nav className="fixed w-full bg-white h-16 shadow-shadow-tiny flex items-center justify-between px-8 z-50">
       {/* Logo */}
 
       <div className="text-xl font-bold">
@@ -14,7 +14,7 @@ const MobileNavbar = () => {
       </div>
 
       {/* Right-side icons */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center">
         {/* Magnifying glass icon */}
         <button className="text-gray-600 focus:outline-none">
           <svg
@@ -34,7 +34,7 @@ const MobileNavbar = () => {
         </button>
 
         {/* Hamburger menu icon */}
-        <button className="text-gray-600 focus:outline-none">
+        <button className="text-gray-600 focus:outline-none ml-12">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-8"

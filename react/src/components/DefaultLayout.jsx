@@ -15,11 +15,11 @@ export default function DefaultLayout() {
       <header>
         <MobileNavbar />
       </header>
-      <main className="bg-red-50">
+      <main className="bg-red-50 pt-16">
         {/* Outlet va aller chercher la vue appropriée dans le router */}
         <Outlet />
       </main>
-      <aside className="bg-purple-500 h-10 flex justify-around">
+      <aside className="fixed bottom-0 w-full bg-white h-10 flex justify-around">
         <Link to="/cellar">Mon cellier</Link>
         <Link to="/catalog">Catalogue</Link>
       </aside>
