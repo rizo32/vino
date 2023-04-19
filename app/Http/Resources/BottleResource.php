@@ -14,6 +14,8 @@ class BottleResource extends JsonResource
      */
     public function toArray($request)
     {
+        $this->load(['format', 'country', 'type']);
+
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -24,10 +26,10 @@ class BottleResource extends JsonResource
             'url_saq' => $this->url_saq,
             'image_url' => $this->image_url,
             'type' => $this->type->types,
-            'format_name' => $this->format->volume,
+            'format' => $this->format->volume,
             'country_name' => $this->country->name,
             'milesime' => $this->milesime,
             'rating_saq' => $this->rating_saq,
-        ];;
+        ];
     }
 }
