@@ -16,7 +16,7 @@ class BottleController extends Controller
      */
     public function index()
     {
-        return 'admin Panel'
+        return 'admin Panel';
     }
 
 }
