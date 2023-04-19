@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\BottleController;
+use App\Http\Controllers\Api\SaqController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('/bottles', BottleController::class);
 // Gab: touché pas la ligne en bas, longue histoire
 // Route::get('/bottles', [BottleController::class, 'index']);
+
+
+/* <YG */
+Route::apiResource('/admin', AdminController::class);
+Route::get('/saq/getProduits/{nombre}/{page}', [SaqController::class, 'getProduits'])->where(['nombre' => '[0-9]+', 'page' => '[0-9]+']);
+/* YG> */
