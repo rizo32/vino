@@ -22,8 +22,24 @@ class Bottle extends Model
         'image_url',
         'format_id',
         'type_id',
-        // 'contry_id', erreur ?
         'milesime',
         'rating_saq',
     ];
+
+    public function format()
+    {
+        return $this->belongsTo(Format::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
+    }
+
+
 }
