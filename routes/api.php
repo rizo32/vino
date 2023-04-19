@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\BottleController;
+use App\Http\Controllers\Api\SaqController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,4 +28,5 @@ Route::apiResource('/bottles', BottleController::class);
 
 /* <YG */
 Route::apiResource('/admin', AdminController::class);
+Route::get('/saq/getProduits/{nombre}/{page}', [SaqController::class, 'getProduits'])->where(['nombre' => '[0-9]+', 'page' => '[0-9]+']);
 /* YG> */
