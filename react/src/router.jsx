@@ -2,7 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import Login from "./views/Login.jsx";
 import Signup from "./views/Signup.jsx";
 import Dashboard from "./views/Dashboard.jsx";
-import Cellar from "./views/Cellar.jsx";
+import Cellar from "./views/Cellar/Cellar.jsx";
+import ProductView from "./views/ProductView.jsx";
 import Catalog from "./views/Catalog/Catalog.jsx";
 import Home from "./views/Home.jsx";
 import NotFound from "./views/NotFound.jsx";
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
             {
                 path: "/catalog",
                 element: <Catalog />,
+            },
+            {
+                path: "/product/:id",
+                element: <ProductView />,
             },
         ],
     },
