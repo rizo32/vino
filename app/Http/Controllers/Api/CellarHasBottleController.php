@@ -11,15 +11,17 @@ use Illuminate\Http\Request;
 
 class CellarHasBottleController extends Controller
 {
+
+  protected $allowedMethods = ['index', 'show', 'store', 'update', 'destroy'];
   /**
    * Display a listing of the resource.
    *
-   * @return \Illuminate\Http\Response
+   * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
    */
   public function index()
   {
     return CellarHasBottleResource::collection(
-      CellarHasBottleResource::query()->orderBy('id', 'desc')->paginate(10)
+      CellarHasBottle::query()->where('cellar_id', '=', '1')->orderBy('id', 'desc')->paginate(10)
     );
   }
 

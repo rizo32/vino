@@ -20,7 +20,7 @@ export default function ProductCard({ bottle }) {
       id="ProductCard"
       className="flex flex-row items-center justify-center py-6 mb-2 bg-white"
     >
-      <img className="h-40" src={bouteille1} alt="" />
+      <img className="h-40" src={bottle.image_url} alt="" />
       <section className="flex-flex_column justify-start gap-3 bg-white">
         <div className="flex ">
           <h2 className="font-bold">{bottle.name}</h2>
