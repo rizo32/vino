@@ -168,6 +168,13 @@ private function ajouteProduit($bte)
 }
 
 
+public function fetchProduits(Request $request)
+{
+    $nombre = $request->input('nombre', 24);
+    $page = $request->input('page', 1);
+
+    return $this->getProduits($request, $nombre, $page);
+}
 
 
 
