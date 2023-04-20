@@ -18,6 +18,7 @@ class BottleResource extends JsonResource
       // quick fix format != format_id
         // $this->load(['format', 'country', 'type']);
         $this->load(['country', 'type']);
+        //ajouter format
 
         return [
             'id' => $this->id,
@@ -29,8 +30,7 @@ class BottleResource extends JsonResource
             'url_saq' => $this->url_saq,
             'image_url' => $this->image_url,
             'type' => $this->type->types,
-            'format' => $this->format_id,
-            // 'format' => $this->format->volume,
+            'format' => $this->format,//->volume
             'country_name' => $this->country->name,
             'milesime' => $this->milesime,
             'rating_saq' => $this->rating_saq,

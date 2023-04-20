@@ -13,6 +13,7 @@ class CellarHasBottle extends Model
 
     protected $table = 'cellars_has_bottles';
     protected $primaryKey = 'id';
+
     protected $fillable = [
         'cellar_id',
         'bottle_id',
