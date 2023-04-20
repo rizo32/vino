@@ -12,16 +12,8 @@ class CellarHasBottle extends Model
     use HasFactory;
 
     protected $table = 'cellars_has_bottles';
-    // protected function setKeysForSaveQuery(Builder $query)
-    // {
-    //     // NICOLAS
-    //     // Je ne suis pas sûr à 100% que cela fonctionne comme ça (protéger une clé primaire composé de deux clés étrangères)
-    //     //https://blog.maqe.com/solved-eloquent-doesnt-support-composite-primary-keys-62b740120f
-    //     $query
-    //         ->where('cellar_id', '=', $this->getAttribute('cellar_id'))
-    //         ->where('bottle_id', '=', $this->getAttribute('bottle_id'));
-    //     return $query;
-    // }
+    protected $primaryKey = 'id';
+
     protected $fillable = [
         'cellar_id',
         'bottle_id',

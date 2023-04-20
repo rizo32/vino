@@ -26,10 +26,11 @@ class Bottle extends Model
     'rating_saq',
   ];
 
-  public function format()
-  {
-    return $this->belongsTo(Format::class);
-  }
+        // quick fix format != format_id
+  // public function format()
+  // {
+  //   return $this->belongsTo(Format::class);
+  // }
 
   public function country()
   {

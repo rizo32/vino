@@ -14,6 +14,9 @@ class BottleResource extends JsonResource
      */
     public function toArray($request)
     {
+
+      // quick fix format != format_id
+        // $this->load(['format', 'country', 'type']);
         $this->load(['country', 'type']);
         //ajouter format
 

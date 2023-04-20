@@ -31,7 +31,7 @@ return new class extends Migration {
       $table->float('rating_saq')->nullable();
       $table->timestamps();
     });
-
+    
     DB::statement('SET FOREIGN_KEY_CHECKS=1;');
   }
 
