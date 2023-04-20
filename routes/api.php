@@ -17,6 +17,13 @@ use App\Http\Controllers\Api\SaqController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+// e
+Route::get('/csrf-token', function() {
+    return response()->json([
+        'token' => csrf_token()
+    ]);
+});
+// 
 
 Route::middleware('auth:sanctum')->group(function () {
   Route::post('/logout', [AuthController::class, 'logout']);

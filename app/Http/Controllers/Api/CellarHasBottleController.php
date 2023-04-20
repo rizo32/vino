@@ -31,18 +31,18 @@ class CellarHasBottleController extends Controller
    */
   public function store(StoreCellarHasBottleRequest $request)
   {
-    dd($request);
+    //dd($request->response);
     // dd($id);
 
     $request->validate([ // à mettre dans StoreCellarHasBottleRequest
       // 'cellar_id' => 'required|integer',
-      'bottle_id' => 'required|integer',
+      'id' => 'required|integer',
     ]);
 
     $cellarHasBottle = new CellarHasBottle([
       // 'cellar_id' => $request->input('cellar_id'),
       'cellar_id' => 1,
-      'bottle_id' => $request->input('bottle_id'),
+      'bottle_id' => $request->input('id'),
       'quantity' => 1,
     ]);
 
