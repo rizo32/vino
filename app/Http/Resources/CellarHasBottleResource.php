@@ -19,7 +19,7 @@ class CellarHasBottleResource extends JsonResource
         return [
             'cellar_id' => $this->cellar_id,
             'quantity' => $this->quantity,
-            'bottle' => $this->bottle,
+            'bottle' => new BottleResource($this->whenLoaded('bottle')),
         ];
     }
 }

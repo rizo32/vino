@@ -13,7 +13,7 @@ export default function Cellar() {
       axiosClient
           .get("/cellarHasBottles")
           .then(({ data }) => {
-              console.log(data);
+              //console.log(data);
               setBottles(data.data);
               setLoading(false);
           })
