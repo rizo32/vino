@@ -14,12 +14,12 @@ class CellarHasBottleController extends Controller
   /**
    * Display a listing of the resource.
    *
-   * @return \Illuminate\Http\Response
+   * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
    */
   public function index()
   {
     return CellarHasBottleResource::collection(
-      CellarHasBottleResource::query()->orderBy('id', 'desc')->paginate(10)
+      CellarHasBottle::query()->where('cellar_id', '=', '1')->orderBy('id', 'desc')->paginate(10)
     );
   }
 

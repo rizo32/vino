@@ -4,7 +4,6 @@ import TextOnImage from "../../components/TextOnImage/TextOnImage";
 import img from "./img/white-wine.webp";
 import "./style/catalog.css";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import axiosClient from "../../axios-client";
 
 export default function Catalog() {
