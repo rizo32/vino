@@ -10,6 +10,23 @@ use stdClass;
 class SaqController extends Controller
 {
 
+    private function getTypeID($type)
+{
+    // remplacement et traitement des types
+    $types = [
+        ['id' => 1, 'name' => 'Vin rouge'],
+        ['id' => 2, 'name' => 'Vin blanc'],
+        ['id' => 3, 'name' => 'Vin rose'],
+    ];
+
+    foreach ($types as $typeData) {
+        if (strtolower($typeData['name']) === strtolower($type)) {
+            return $typeData['id'];
+        }
+    }
+
+    return 1; // ajout d'un type par défaut
+}
 
 public function getProduits(Request $request, $nombre = 24, $page = 1)
 {
@@ -135,7 +152,7 @@ private function ajouteProduit($bte)
     $retour->succes = false;
     $retour->raison = '';
 
-    $type_id = 1; // Replace this with the appropriate logic to find the type_id based on the $bte->desc->type value.
+    $type_id = $this->getTypeID($bte->desc->type);
 
     $existingBottle = Bottle::where('code_saq', $bte->desc->code_SAQ)->first();
 
@@ -170,8 +187,8 @@ private function ajouteProduit($bte)
 
 public function fetchProduits(Request $request)
 {
-    $nombre = $request->input('nombre', 24);
-    $page = $request->input('page', 1);
+    $nombre = intval($request->input('nombre', 24));
+    $page = intval($request->input('page', 1));
 
     return $this->getProduits($request, $nombre, $page);
 }
