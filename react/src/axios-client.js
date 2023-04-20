@@ -1,35 +1,51 @@
-import axios from "axios";
+import axios from 'axios';
 
 const axiosClient = axios.create({
   baseURL: `${import.meta.env.VITE_API_BASE_URL}/api`,
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
 });
 
-// Add a request interceptor
-axiosClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem("ACCESS_TOKEN");
-  // Attach the token to the Authorization header
-  config.headers.Authorization = `Bearer ${token}`;
-  return config;
-}),
-  axiosClient.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    (error) => {
-      try {
+async function getCsrfToken() {
+  const response = await axios.get('/csrf-token');
+  return response.data.token;
+}
 
-        // Destructure the error and keeps the response
-        const { response } = error;
-        if (response.status === 401) {
-          localStorage.removeItem("ACCESS_TOKEN");
-        }
-      } catch(e) {
-        console.error(e);
+// Add an Axios interceptor to include the CSRF token header
+apiClient.interceptors.request.use(async function(config) {
+  config.headers['X-CSRF-TOKEN'] = await getCsrfToken();
+  return config;
+}, 
+  function (error) {
+  return Promise.reject(error);
+}
+);
+
+// Add a response interceptor
+axiosClient.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    // Handle error responses
+    if (error.response) {
+      if (error.response.status === 401) {
+        // Redirect the user to the login page if they are unauthorized
+        //a modifier puisque ca marche pas comme ca notre redirection login je pense
+        window.location.href = '/login';
       }
-      
-      // On pourrait rediriger vers d'autres erreurs ici
-      throw error;
+      if (error.response.status === 422) {
+        // Handle validation errors
+        // You can customize this to match your validation error response structure
+        const errors = error.response.data.errors;
+        const errorMessages = Object.keys(errors).map((key) => errors[key][0]);
+        return Promise.reject(errorMessages);
+      }
     }
-  );
+    return Promise.reject(error);
+  }
+);
 
 export default axiosClient;
