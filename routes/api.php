@@ -2,7 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BottleController;
+use App\Http\Controllers\Api\CellarHasBottleController;
 use App\Http\Controllers\Api\SaqController;
 
 /*
@@ -16,11 +18,26 @@ use App\Http\Controllers\Api\SaqController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-  return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+  Route::post('/logout', [AuthController::class, 'logout']);
+
+  Route::get('/user', function (Request $request) {
+    return $request->user();
+  });
+
+  Route::apiResource('/users', UserController::class);
 });
 
+Route::post('/signup', [AuthController::class, 'signup']);
+Route::post('/login', [AuthController::class, 'login']);
+
 Route::apiResource('/bottles', BottleController::class);
+
+// Route::get('/bottles', function (Request $request) {
+//   return $request->bottles();
+// });
+
+Route::apiResource('/cellarHasBottles', CellarHasBottleController::class);
 
 /* <YG */
 Route::apiResource('/admin', AdminController::class);
