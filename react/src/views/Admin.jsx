@@ -8,14 +8,30 @@ const Admin = () => {
     const [nombre, setNombre] = useState(24);
     const [page, setPage] = useState(1);
 
+    const parseProductData = (data) => {
+        return data.map((product) => ({
+            ...product,
+            desc: {
+                ...product.desc,
+                type: product.desc.type.trim(),
+                format: product.desc.format.trim(),
+                pays: product.desc.pays.trim(),
+            },
+        }));
+    };
+
     const fetchProducts = async () => {
         const response = await axios.post(`${baseURL}/fetch`, {
             nombre,
             page,
         });
-        setProducts(response.data);
+        const parsedProducts = parseProductData(response.data);
+        setProducts(parsedProducts);
+        
     };
-
+    useEffect(() => {
+        fetchProducts();
+    }, []);
     return (
         <div className="flex flex-col items-center bg-red-50">
             <h1 className="text-2xl font-semibold mb-4">Admin</h1>
