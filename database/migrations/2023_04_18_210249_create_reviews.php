@@ -16,11 +16,11 @@ return new class extends Migration
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         Schema::create('reviews', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('bottle_id')->constrained()->onDelete('cascade');
             $table->text('justification');
             $table->timestamps();
-            $table->primary(['user_id','bottle_id']);
         });
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
