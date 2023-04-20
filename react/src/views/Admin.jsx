@@ -58,7 +58,7 @@ const Admin = () => {
 
                         <section className="flex-flex_column justify-start gap-3 bg-white">
                             <div className="flex ">
-                                <h2 className="font-bold">{product.nom}</h2>
+                                <h1 className="font-bold">{product.nom}</h1>
                                 <div className="px-6">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -152,7 +152,6 @@ const Admin = () => {
                     </article>
                 ))}
             </section>
-
         </div>
     );
 };
