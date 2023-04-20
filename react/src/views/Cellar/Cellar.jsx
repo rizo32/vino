@@ -13,7 +13,7 @@ export default function Cellar() {
       axiosClient
           .get("/cellarHasBottles")
           .then(({ data }) => {
-              //console.log(data);
+              console.log(data);
               setBottles(data.data);
               setLoading(false);
           })
@@ -26,6 +26,16 @@ export default function Cellar() {
   useEffect(() => {
       getBottles();
   }, []);
+
+  const removeFromCellar = (id) => {
+    axiosClient.delete('http://localhost:8000/api/cellarHasBottles/'+id)
+    .then(() => {
+      getBottles();
+    })
+    .catch(err => {
+      console.log(err.response);
+    })
+  }
 
   return (
       <div className="flex flex-col gap-2">
@@ -40,6 +50,7 @@ export default function Cellar() {
                           {/* <Link to={`/product/${bottle.id}`}> */}
                           <ProductCard bottle={el.bottle} />
                           {/* </Link> */}
+                          <span onClick={() => removeFromCellar(el.id)}>delete</span>
                       </li>
                   ))}
               </ul>

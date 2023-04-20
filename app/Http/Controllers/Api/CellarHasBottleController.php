@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 
 class CellarHasBottleController extends Controller
 {
+
+  protected $allowedMethods = ['index', 'show', 'store', 'update', 'destroy'];
   /**
    * Display a listing of the resource.
    *
