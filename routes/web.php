@@ -16,4 +16,3 @@ use App\Http\Controllers\Api\SaqController;
 Route::get('/', function () {
     return view('welcome');
 });
-

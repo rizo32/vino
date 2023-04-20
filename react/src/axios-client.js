@@ -9,12 +9,12 @@ const axiosClient = axios.create({
 });
 
 async function getCsrfToken() {
-  const response = await axios.get('/csrf-token');
+  const response = await axios.get('http://localhost:8000/api/csrf-token');
   return response.data.token;
 }
 
 // Add an Axios interceptor to include the CSRF token header
-apiClient.interceptors.request.use(async function(config) {
+axiosClient.interceptors.request.use(async function(config) {
   config.headers['X-CSRF-TOKEN'] = await getCsrfToken();
   return config;
 }, 

@@ -3,46 +3,25 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import TextOnImage from "../../components/TextOnImage/TextOnImage";
 import img from "./img/white-wine.webp";
 import "./style/catalog.css";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import axiosClient from "../../axios-client";
 
 export default function Catalog() {
     const [bottles, setBottles] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // const getBottles = async () => {
-    //   try {
-    //     const response = await axios.get("http://127.0.0.1:8000/api/bottles");
-    //     console.log(response);
-    //     return response.data;
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // };
-
-    // useEffect(() => {
-    //   const fetchBottles = async () => {
-    //     const data = await getBottles();
-    //     console.log(data);
-    //     setBottles(data.data);
-    //     setLoading(false);
-    //   };
-
-    //   fetchBottles();
-    // }, []);
-
     const getBottles = () => {
         setLoading(true);
         axiosClient
             .get("/bottles")
             .then(({ data }) => {
-                console.log(data);
+                //console.log(data);
                 setBottles(data.data);
                 setLoading(false);
             })
             .catch((error) => {
-                console.error(error);
+                console.error(error.response);
                 setLoading(false);
             });
     };

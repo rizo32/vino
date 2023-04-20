@@ -8,35 +8,11 @@ import axiosClient from "../../axios-client";
 
 export default function ProductCard({ bottle }) {
 
-
-
-  // const addToCellar = (bottle) => {
-  //     const response = await fetch(
-  //       `${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           // 'Authorization': `Bearer ${user.token}`, // Include the token in the request
-  //         },
-  //         body: JSON.stringify(bottle),
-  //       }
-  //     );
-  // }
-
-  const addToCellar = async (bottle) => {
-    try {
-      const response = await axiosClient.post("/cellarHasBottles", bottle);
-  
-      if (!response.status === 200) {
-        throw new Error("Failed to add bottle to cellar.");
-      }
-  
-      // Do something after adding the bottle to the cellar, e.g., show a success message.
-      console.log("Bottle added to cellar:", bottle);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+  const addToCellar = (bottle) => {
+    axiosClient.post('http://localhost:8000/api/cellarHasBottles', bottle)
+    .catch(err => {
+      console.log(err.response);
+    })
   }
 
   return (
