@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Bottle;
+use App\Models\Cellar;
 
 class CellarHasBottle extends Model
 {
     use HasFactory;
 
-    protected $table = 'Cellars_has_bottles';
+    protected $table = 'cellars_has_bottles';
     protected function setKeysForSaveQuery(Builder $query)
     {
         // NICOLAS
@@ -22,12 +23,18 @@ class CellarHasBottle extends Model
         return $query;
     }
     protected $fillable = [
+        'cellar_id',
         'bottle_id',
         'quantity',
     ];
 
-    public function bottles()
+    public function bottle()
     {
-        return $this->hasMany(Bottle::class);
+        return $this->belongsTo(Bottle::class);
+    }
+
+    public function cellar()
+    {
+        return $this->belongsTo(Cellar::class);
     }
 }
