@@ -18,7 +18,8 @@ export default function GuestLayout() {
         {/* Outlet va aller chercher la vue appropriée dans le router */}
         <Outlet />
       </main>
-      <aside className="bg-purple-500">
+      <aside className="fixed bottom-0 w-full bg-white h-10 flex justify-around">
+        <div className="text-violet-500">Hello, Guest</div>
         <Link to="/login">Login</Link>
         <Link to="/signup">Signup</Link>
       </aside>

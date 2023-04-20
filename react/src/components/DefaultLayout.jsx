@@ -1,14 +1,33 @@
 import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import MobileNavbar from "../components/MobileNavbar/MobileNavbar";
+import { useEffect } from "react";
+import axiosClient from "../axios-client";
 
 export default function DefaultLayout() {
-  const { user, token } = useStateContext();
+  const { user, token, setUser, setToken } = useStateContext();
 
   // un utilisateur non connecté n'a pas accès aux vues enfants de DefaultLayout
   if (!token) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" />
   }
+
+  const onLogout = ev => {
+    ev.preventDefault()
+
+    axiosClient.post('/logout')
+      .then(() => {
+        setUser({})
+        setToken(null)
+      })
+  }
+
+  useEffect(() => {
+    axiosClient.get('/user')
+    .then(({data}) => {
+      setUser(data)
+    })
+  }, [])
 
   return (
     <div id="defaultLayout">
@@ -20,6 +39,8 @@ export default function DefaultLayout() {
         <Outlet />
       </main>
       <aside className="fixed bottom-0 w-full bg-white h-10 flex justify-around">
+        <div className="text-violet-500">Hello, {user.first_name}</div>
+        <a href="#" onClick={onLogout} className="btn-logout">Logout</a>
         <Link to="/cellar">Mon cellier</Link>
         <Link to="/catalog">Catalogue</Link>
       </aside>
