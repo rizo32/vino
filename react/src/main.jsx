@@ -8,8 +8,8 @@ import { ContextProvider } from './contexts/ContextProvider'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     {/* ContexteProvider protège les vues nécéssitant une authentification */}
-    <ContextProvider>
+    {/* <ContextProvider> */}
       <RouterProvider router={router} />
-    </ContextProvider>
+    {/* </ContextProvider> */}
   </React.StrictMode>
 )
