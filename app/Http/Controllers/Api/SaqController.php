@@ -157,16 +157,16 @@ private function ajouteProduit($bte)
     $existingBottle = Bottle::where('code_saq', $bte->desc->code_SAQ)->first();
 
     if (!$existingBottle) {
-        $
         $newBottle = new Bottle();
         $newBottle->name = $bte->nom;
         $newBottle->image_path = $bte->img;
         $newBottle->code_saq = $bte->desc->code_SAQ;
         $newBottle->description = $bte->desc->texte;
-        $newBottle->price_saq = $bte->prix;
+        $newBottle->price_saq = round(floatval($bte->prix), 2);
         $newBottle->url_saq = $bte->url;
         $newBottle->image_url = $bte->img;
-        $newBottle->format = $bte->desc->format;
+        $newBottle->format_id = $bte->desc->format;
+        $newBottle->country_id = 1;
         $newBottle->type_id = $type_id;
 
         if ($newBottle->save()) {
