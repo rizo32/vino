@@ -13,7 +13,8 @@ class StoreCellarHasBottleRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+      // à remettre false
+        return true;
     }
 
     /**
