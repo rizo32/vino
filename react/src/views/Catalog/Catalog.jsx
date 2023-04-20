@@ -4,30 +4,51 @@ import TextOnImage from "../../components/TextOnImage/TextOnImage";
 import img from "./img/white-wine.webp";
 import "./style/catalog.css";
 import axios from "axios";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import axiosClient from "../../axios-client";
 
 export default function Catalog() {
   const [bottles, setBottles] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const getBottles = async () => {
-    try {
-      const response = await axios.get("http://127.0.0.1:8000/api/bottles");
-      console.log(response);
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
+  // const getBottles = async () => {
+  //   try {
+  //     const response = await axios.get("http://127.0.0.1:8000/api/bottles");
+  //     console.log(response);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   const fetchBottles = async () => {
+  //     const data = await getBottles();
+  //     console.log(data);
+  //     setBottles(data.data);
+  //     setLoading(false);
+  //   };
+
+  //   fetchBottles();
+  // }, []);
+  
+  const getBottles = () => {
+    setLoading(true);
+    axiosClient
+      .get("/bottles")
+      .then(({ data }) => {
+        console.log(data);
+        setBottles(data.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
-    const fetchBottles = async () => {
-      const data = await getBottles();
-      setBottles(data.data);
-      setLoading(false);
-    };
-
-    fetchBottles();
+    getBottles();
   }, []);
 
   return (
@@ -48,9 +69,9 @@ export default function Catalog() {
           {bottles.map((bottle) => (
             // <li key={bottle.id}>{bottle.name} - {bottle.description}</li>
             <li key={bottle.id}>
-              <Link to={`/product/${bottle.id}`}>
-                <ProductCard bottle={bottle} />
-              </Link>
+              {/* <Link to={`/product/${bottle.id}`}> */}
+              <ProductCard bottle={bottle} />
+              {/* </Link> */}
             </li>
           ))}
         </ul>
