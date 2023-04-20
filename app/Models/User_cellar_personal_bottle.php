@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class User_cellar_personal_bottle extends Model
 {
-  use HasFactory;
+    use HasFactory;
+    
+    protected $table = 'user_cellar_personal_bottle';
+    protected $primaryKey = 'id';
 }
