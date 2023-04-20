@@ -14,12 +14,12 @@ class CellarHasBottleResource extends JsonResource
      */
     public function toArray($request)
     {
-        $this->load('bottles');
+        $this->load('bottle');
 
         return [
             'cellar_id' => $this->id,
             'quantity' => $this->quantity,
-            'bottles' => $this->bottles,
+            'bottle' => $this->bottle,
         ];
     }
 }
