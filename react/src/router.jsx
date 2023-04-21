@@ -15,7 +15,7 @@ import { Navigate } from "react-router-dom";
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <DefaultLayout />,
+        element: <GuestLayout />,
         children: [
             {
                 // redirection si aucune adresse n'est entrée

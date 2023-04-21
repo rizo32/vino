@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 
-const baseURL = "http://localhost:8000/api/bottles";
+const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/bottles`;
 
 export default function Dashboard() {
   const [bottles, setBottles] = useState([]);
