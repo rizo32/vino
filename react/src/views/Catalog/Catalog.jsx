@@ -10,6 +10,7 @@ export default function Catalog() {
     const [bottles, setBottles] = useState([]);
     const [loading, setLoading] = useState(true);
     // Elodie
+    // aller chercher les bouteilles dans la base de données et les mettre dans le state
     const getBottles = () => {
         setLoading(true);
         axiosClient
@@ -25,6 +26,7 @@ export default function Catalog() {
             });
     };
     //  ----
+    // executer fonction
     useEffect(() => {
         getBottles();
     }, []);
