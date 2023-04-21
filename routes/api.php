@@ -17,7 +17,7 @@ use App\Http\Controllers\Api\SaqController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-// e
+// elo
 Route::get('/csrf-token', function() {
     return response()->json([
         'token' => csrf_token()

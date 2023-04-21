@@ -4,6 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+// Elodie
+
 class CellarHasBottleResource extends JsonResource
 {
     /**

@@ -9,7 +9,7 @@ import axiosClient from "../../axios-client";
 export default function Catalog() {
     const [bottles, setBottles] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    // Elodie
     const getBottles = () => {
         setLoading(true);
         axiosClient
@@ -24,7 +24,7 @@ export default function Catalog() {
                 setLoading(false);
             });
     };
-
+    //  ----
     useEffect(() => {
         getBottles();
     }, []);
