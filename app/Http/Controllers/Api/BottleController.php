@@ -19,6 +19,7 @@ class BottleController extends Controller
      */
     public function index()
     {
+        //retourne toutes les bouteilles en format json
         return BottleResource::collection(
           Bottle::query()->orderBy('id', 'desc')->paginate(10)
         );
@@ -32,6 +33,7 @@ class BottleController extends Controller
      */
     public function store(StoreBottleRequest $request)
     {
+        //ajoute bouteille, non-utilisé pour l'instant
         $data = $request->validated(); //fichier request a faire
         $bottle = Bottle::create($data);
 
@@ -46,6 +48,7 @@ class BottleController extends Controller
      */
     public function show(Bottle $bottle)
     {
+        //json des infos de la bouteille
         return new BottleResource($bottle);
     }
 
@@ -58,6 +61,7 @@ class BottleController extends Controller
      */
     public function update(Request $request, Bottle $bottle)
     {
+        //non utilise
         $data = $request->validated(); // fichier request a faire
         $bottle->update($data);
     }
@@ -70,6 +74,7 @@ class BottleController extends Controller
      */
     public function destroy(Bottle $bottle)
     {
+        //non utilise
         $bottle->delete();
 
         return response("", 204);

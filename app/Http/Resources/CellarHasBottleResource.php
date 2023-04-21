@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 // Elodie
+// transforme les données en format json
 
 class CellarHasBottleResource extends JsonResource
 {
@@ -16,12 +17,14 @@ class CellarHasBottleResource extends JsonResource
      */
     public function toArray($request)
     {
+        //charger les tables reliées et avoir les données au lieu d'une clé étrangère
         $this->load('bottle');
 
         return [
             'id' => $this->id,
             'cellar_id' => $this->cellar_id,
             'quantity' => $this->quantity,
+            //charge toutes les tables reliées avec la table bottle et avoir accès au données
             'bottle' => new BottleResource($this->whenLoaded('bottle')),
         ];
     }
