@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+/* importation des modules */
+import { useEffect, useState } from "react"; 
 import axios from "axios";
 
 const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/saq`;
@@ -13,6 +14,7 @@ const Admin = () => {
             ...product,
             desc: {
                 ...product.desc,
+                /* nettoyage des formats  */
                 type: product.desc.type.trim(),
                 format: product.desc.format.trim(),
                 pays: product.desc.pays.trim(),
@@ -20,19 +22,19 @@ const Admin = () => {
         }));
     };
 
-    const fetchProducts = async () => {
+    const fetchProducts = async () => { /* Fonction fetch qui va être utilisée pour récupérer la liste des produits à montrer sur la page */
         const response = await axios.post(`${baseURL}/fetch`, {
             nombre,
             page,
         });
         const parsedProducts = parseProductData(response.data);
-        setProducts(parsedProducts);
+        setProducts(parsedProducts); /* mis a jour de la liste des produits */
         
     };
-    useEffect(() => {
-        fetchProducts();
+    useEffect(() => { /* useeffect pour appeler fetchProducts  on mount de notre composante */
+        fetchProducts(); 
     }, []);
-    return (
+    return ( /* retour de la section qui affichera les produis */
         <div className="flex flex-col items-center bg-red-50">
             <h1 className="text-2xl font-semibold mb-4">Admin</h1>
             <select
