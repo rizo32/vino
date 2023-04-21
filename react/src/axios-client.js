@@ -9,7 +9,7 @@ const axiosClient = axios.create({
 });
 
 async function getCsrfToken() {
-  const response = await axios.get('http://localhost:8000/api/csrf-token');
+  const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/csrf-token`);
   return response.data.token;
 }
 
