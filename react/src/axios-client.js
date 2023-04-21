@@ -1,4 +1,5 @@
 import axios from 'axios';
+// Elodie
 
 const axiosClient = axios.create({
   baseURL: `${import.meta.env.VITE_API_BASE_URL}/api`,
@@ -33,7 +34,7 @@ axiosClient.interceptors.response.use(
     if (error.response) {
       if (error.response.status === 401) {
         // Redirect the user to the login page if they are unauthorized
-        //a modifier puisque ca marche pas comme ca notre redirection login je pense
+        //a modifier ?
         window.location.href = '/login';
       }
       if (error.response.status === 422) {

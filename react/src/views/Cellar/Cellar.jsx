@@ -4,6 +4,8 @@ import "../Catalog/style/catalog.css";
 import { Link } from "react-router-dom";
 import axiosClient from "../../axios-client";
 
+// Elodie
+
 export default function Cellar() {
   const [bottles, setBottles] = useState([]);
   const [loading, setLoading] = useState(true);

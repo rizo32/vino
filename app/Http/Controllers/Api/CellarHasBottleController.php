@@ -9,6 +9,8 @@ use App\Http\Resources\CellarHasBottleResource;
 use App\Models\CellarHasBottle;
 use Illuminate\Http\Request;
 
+// Elodie et Gabriel
+
 class CellarHasBottleController extends Controller
 {
 

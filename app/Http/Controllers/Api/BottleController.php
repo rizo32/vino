@@ -8,7 +8,7 @@ use App\Models\Bottle;
 use Illuminate\Http\Request;
 use App\Http\Resources\BottleResource;
 
-//elodie
+// Elodie
 
 class BottleController extends Controller
 {
