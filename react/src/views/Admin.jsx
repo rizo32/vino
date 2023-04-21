@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"; 
 import axios from "axios";
 
-const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/saq`; /* definition de l'url de base de notre api/backend */
+const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/saq`;
 
 const Admin = () => {
     const [products, setProducts] = useState([]);

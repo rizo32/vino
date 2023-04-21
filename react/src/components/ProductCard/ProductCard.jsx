@@ -9,7 +9,7 @@ import axiosClient from "../../axios-client";
 export default function ProductCard({ bottle }) {
 
   const addToCellar = (bottle) => {
-    axiosClient.post('http://localhost:8000/api/cellarHasBottles', bottle)
+    axiosClient.post(`${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles`, bottle)
     .catch(err => {
       console.log(err.response);
     })

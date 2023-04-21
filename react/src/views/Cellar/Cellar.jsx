@@ -28,7 +28,8 @@ export default function Cellar() {
   }, []);
 
   const removeFromCellar = (id) => {
-    axiosClient.delete('http://localhost:8000/api/cellarHasBottles/'+id)
+    axiosClient.delete(`${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles/${id}`)
+
     .then(() => {
       getBottles();
     })
