@@ -48,13 +48,10 @@ export default function Cellar() {
               <p>Loading...</p>
           ) : (
               <ul>
-                  {bottles.map((el) => (
-                      // <li key={bottle.id}>{bottle.name} - {bottle.description}</li>
-                      
+                  {bottles.map((el) => (                     
                       <li key={el.bottle.id}>
-                          {/* <Link to={`/product/${bottle.id}`}> */}
                           <ProductCard bottle={el.bottle} />
-                          {/* </Link> */}
+                          {/* mettre en place le comportement swipe */}
                           <span onClick={() => removeFromCellar(el.id)}>delete</span>
                       </li>
                   ))}

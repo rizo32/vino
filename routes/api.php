@@ -18,10 +18,10 @@ use App\Http\Controllers\Api\SaqController;
 |
 */
 // elo
-Route::get('/csrf-token', function() {
-    return response()->json([
-        'token' => csrf_token()
-    ]);
+Route::get('/csrf-token', function () {
+  return response()->json([
+    'token' => csrf_token()
+  ]);
 });
 // 
 
@@ -40,19 +40,11 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::apiResource('/bottles', BottleController::class);
 
-// Route::get('/bottles', function (Request $request) {
-//   return $request->bottles();
-// });
-
 Route::apiResource('/cellarHasBottles', CellarHasBottleController::class);
 
 /* <YG */
 Route::apiResource('/admin', AdminController::class);
 Route::get('/saq/getProduits/{nombre}/{page}', [SaqController::class, 'getProduits'])->where(['nombre' => '[0-9]+', 'page' => '[0-9]+']);
 
-/* YG> */
-
 Route::post('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
 /* YG> */
-
-
