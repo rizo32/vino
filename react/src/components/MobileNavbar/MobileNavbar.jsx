@@ -5,10 +5,9 @@ import logoShort from './img/Cthick.png';
 const MobileNavbar = () => {
   return (
     <nav className="fixed w-full bg-white h-16 shadow-shadow-tiny flex items-center justify-between px-8 z-50">
-      {/* Logo */}
-
       <div className="text-xl font-bold">
         <Link to="/dashboard">
+          {/* Logo */}
           <img src={logoShort} alt="logo" className="h-8" />
         </Link>
       </div>

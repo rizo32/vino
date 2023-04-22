@@ -26,10 +26,11 @@ class Bottle extends Model
     'rating_saq',
   ];
 
-  public function format()
-  {
-    return $this->belongsTo(Format::class);
-  }
+  // Désactivation puisque le cURL actual n'utilise pas la clé étrangère
+  // public function format()
+  // {
+  //   return $this->belongsTo(Format::class);
+  // }
 
   public function country()
   {
@@ -45,6 +46,5 @@ class Bottle extends Model
   {
     return $this->hasMany(CellarHasBottle::class);
   }
-
 
 }

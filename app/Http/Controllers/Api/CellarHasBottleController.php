@@ -9,17 +9,22 @@ use App\Http\Resources\CellarHasBottleResource;
 use App\Models\CellarHasBottle;
 use Illuminate\Http\Request;
 
+// Elodie et Gabriel
+
 class CellarHasBottleController extends Controller
 {
+
+  protected $allowedMethods = ['index', 'show', 'store', 'update', 'destroy'];
   /**
    * Display a listing of the resource.
    *
-   * @return \Illuminate\Http\Response
+   * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
    */
   public function index()
   {
+    //retourne les bouteilles d'un cellier donné (ici id 1) en format json
     return CellarHasBottleResource::collection(
-      CellarHasBottleResource::query()->orderBy('id', 'desc')->paginate(10)
+      CellarHasBottle::query()->where('cellar_id', '=', '1')->orderBy('id', 'desc')->paginate(10)
     );
   }
 
@@ -31,8 +36,7 @@ class CellarHasBottleController extends Controller
    */
   public function store(StoreCellarHasBottleRequest $request)
   {
-    //dd($request->response);
-    // dd($id);
+    //ajouter une bouteille au cellier d'un id donné
 
     $request->validate([ // à mettre dans StoreCellarHasBottleRequest
       // 'cellar_id' => 'required|integer',
@@ -76,6 +80,7 @@ class CellarHasBottleController extends Controller
    */
   public function update(UpdateCellarHasBottleRequest $request, CellarHasBottle $cellarHasBottle)
   {
+    //va devenir changer la quantite de la bouteille dans le cellier
     $data = $request->validated();
     $cellarHasBottle->update($data);
 
@@ -90,6 +95,7 @@ class CellarHasBottleController extends Controller
    */
   public function destroy(CellarHasBottle $cellarHasBottle)
   {
+    //enlever la bouteille du cellier
     $cellarHasBottle->delete();
 
     return response("", 204);
