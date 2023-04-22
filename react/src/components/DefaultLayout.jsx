@@ -12,9 +12,9 @@ export default function DefaultLayout() {
     return <Navigate to="/login" />
   }
 
+  // fonction Log out
   const onLogout = ev => {
     ev.preventDefault()
-
     axiosClient.post('/logout')
       .then(() => {
         setUser({})
@@ -22,6 +22,7 @@ export default function DefaultLayout() {
       })
   }
 
+  // aller chercher les informtions de l'user lorsque quelqu'un est connecté
   useEffect(() => {
     axiosClient.get('/user')
     .then(({data}) => {

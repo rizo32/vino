@@ -9,9 +9,10 @@ import axiosClient from "../../axios-client";
 export default function Catalog() {
     const [bottles, setBottles] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    // Elodie
+    // aller chercher les bouteilles dans la base de données et les mettre dans le state
     const getBottles = () => {
-        setLoading(true);
+        setLoading(true); // à mettre en place (eg Gif)
         axiosClient
             .get("/bottles")
             .then(({ data }) => {
@@ -24,7 +25,8 @@ export default function Catalog() {
                 setLoading(false);
             });
     };
-
+    //  ----
+    // executer fonction
     useEffect(() => {
         getBottles();
     }, []);
@@ -45,11 +47,8 @@ export default function Catalog() {
             ) : (
                 <ul>
                     {bottles.map((bottle) => (
-                        // <li key={bottle.id}>{bottle.name} - {bottle.description}</li>
                         <li key={bottle.id}>
-                            {/* <Link to={`/product/${bottle.id}`}> */}
                             <ProductCard bottle={bottle} />
-                            {/* </Link> */}
                         </li>
                     ))}
                 </ul>

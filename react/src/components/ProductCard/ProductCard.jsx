@@ -8,14 +8,18 @@ import axiosClient from "../../axios-client";
 
 export default function ProductCard({ bottle }) {
 
+  // fonction pour ajouter une bouteille au cellier
   const addToCellar = (bottle) => {
-    axiosClient.post('http://localhost:8000/api/cellarHasBottles', bottle)
+    axiosClient.post(`${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles`, bottle)
     .catch(err => {
       console.log(err.response);
     })
   }
 
   return (
+    // Il faudra mettre le lien en évitant que d'appuyer sur le "+" ou swiper
+    // enclenche la redirection
+    /* <Link to={`/product/${bottle.id}`}> */
     <article
       id="ProductCard"
       className="flex flex-row items-center justify-center py-6 mb-2 bg-white"
@@ -104,10 +108,12 @@ export default function ProductCard({ bottle }) {
               />
             </svg>
           </p>
-          {/* {bottle.numberOfReview????} */}
+          
+          {/* Propriété à venir?: {bottle.numberOfReview????} */}
           <span>|</span> <p>? avis</p>
         </div>
       </section>
     </article>
+    {/* </Link> */}
   );
 }

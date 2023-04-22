@@ -10,7 +10,7 @@ use stdClass;
 class SaqController extends Controller
 {
 
-    private function getTypeID($type)
+    private function getTypeID($type) /* retourne l'id du type de vin en fonction de son nom */
 {
     // remplacement et traitement des types
     $types = [
@@ -20,18 +20,22 @@ class SaqController extends Controller
     ];
 
     foreach ($types as $typeData) {
-        if (strtolower($typeData['name']) === strtolower($type)) {
+        if (strtolower($typeData['name']) === strtolower($type)) { /* si les nom matchs retour id correspondant */
             return $typeData['id'];
         }
     }
 
-    return 1; // ajout d'un type par défaut
+    return 1; // Sinon, ajout d'un type par défaut
 }
 
-public function getProduits(Request $request, $nombre = 24, $page = 1)
+/* 
+ */
+
+public function getProduits(Request $request, $nombre = 24, $page = 1) /* recupere la liste de bouteilles a partir de l'url donner (SAQ) */
 {
     $url = "https://www.saq.com/fr/produits/vin/vin-rouge?p=" . $page . "&product_list_limit=" . $nombre . "&product_list_order=name_asc";
 
+    /* initialise le cURL et configure les options */
     $ch = curl_init();
 
     curl_setopt_array($ch, array(
@@ -47,11 +51,11 @@ public function getProduits(Request $request, $nombre = 24, $page = 1)
             'Upgrade-Insecure-Requests: 1',
         ),
     ));
-
+/* recuperation de la page web et verification du status de requete */
     $webpage = curl_exec($ch);
     $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
-
+/* chargement de la page dans un objet DOMDocument et recuperation de tout les element "li" */
     $doc = new DOMDocument();
     $doc->recover = true;
     $doc->strictErrorChecking = false;
@@ -59,6 +63,7 @@ public function getProduits(Request $request, $nombre = 24, $page = 1)
     $elements = $doc->getElementsByTagName("li");
     $products = [];
 
+    /* Boucle a traver les element recceuillis et pour ceux qui ont la classe "product-item" appele des methode ajouteProduit et recupereInfo */
     foreach ($elements as $key => $noeud) {
         if (strpos($noeud->getAttribute('class'), "product-item") !== false) {
             $info = $this->recupereInfo($noeud);
@@ -67,11 +72,11 @@ public function getProduits(Request $request, $nombre = 24, $page = 1)
         }
     }
 
-    return response()->json($products);
+    return response()->json($products); /* Retourne une liste de produit JSON */
 }
 
 
-private function get_inner_html($node)
+private function get_inner_html($node) /* recupere le contenue HTML d'un element */
 {
     $innerHTML = '';
     $children = $node->childNodes;
@@ -82,7 +87,7 @@ private function get_inner_html($node)
     return $innerHTML;
 }
 
-private function nettoyerEspace($chaine)
+private function nettoyerEspace($chaine) /* nettoie les espaces indesirables d'une chaine de caracteres */
 {
     return preg_replace('/\s+/', ' ', $chaine);
 }
@@ -91,9 +96,10 @@ private function recupereInfo($noeud)
 {
   
 		
-		$info = new stdClass();
+		$info = new stdClass(); /*  crte*/
+
+        /* extraction specifique  et nettoyage pour stocker dans l'objet */
 		$info -> img = $noeud -> getElementsByTagName("img") -> item(0) -> getAttribute('src'); //TODO : Nettoyer le lien
-		;
 		$a_titre = $noeud -> getElementsByTagName("a") -> item(0);
 		$info -> url = $a_titre->getAttribute('href');
 		
@@ -142,22 +148,26 @@ private function recupereInfo($noeud)
 			}
 		}
 		//var_dump($info);
-		return $info;
+		return $info; /* renvoie de l'objet */
 	
 }
 
 private function ajouteProduit($bte)
 {
-    $retour = new stdClass();
+    $retour = new stdClass(); /* creation d'un objet pour stocker les resultat */
+
+    /* valeur par default */
     $retour->succes = false;
     $retour->raison = '';
 
-    $type_id = $this->getTypeID($bte->desc->type);
+    $type_id = $this->getTypeID($bte->desc->type); /* recupere l'id du type de produit */
 
-    $existingBottle = Bottle::where('code_saq', $bte->desc->code_SAQ)->first();
+    $existingBottle = Bottle::where('code_saq', $bte->desc->code_SAQ)->first(); /* verifie si la bouteille existe deja */
 
-    if (!$existingBottle) {
-        $newBottle = new Bottle();
+    if (!$existingBottle) { /* si la bouteille n'existe pas deja */
+        /* creation d'une instance de la class bottle */
+        $newBottle = new Bottle(); 
+        /* assignation des valeurs */
         $newBottle->name = $bte->nom;
         $newBottle->image_path = $bte->img;
         $newBottle->code_saq = $bte->desc->code_SAQ;
@@ -168,8 +178,9 @@ private function ajouteProduit($bte)
         $newBottle->format_id = $bte->desc->format;
         $newBottle->country_id = 1;
         $newBottle->type_id = $type_id;
-
-        if ($newBottle->save()) {
+  
+        /* Enregistrement de la bouteille dans la base de données */
+        if ($newBottle->save()) { 
             $retour->succes = true;
             $retour->raison = 'Nouvelle bouteille insérée';
         } else {
@@ -177,20 +188,22 @@ private function ajouteProduit($bte)
             $retour->raison = 'Erreur lors de l\'insertion';
         }
     } else {
+        /*  La bouteille existe déjà dans la base de données */
         $retour->succes = false;
         $retour->raison = 'Duplication';
     }
 
-    return $retour;
+    return $retour; /* Retorune objet + resultat */
 }
 
 
 public function fetchProduits(Request $request)
 {
+    /* Récupération du nombre d'éléments à retourner et de la page demandée */
     $nombre = intval($request->input('nombre', 24));
     $page = intval($request->input('page', 1));
 
-    return $this->getProduits($request, $nombre, $page);
+    return $this->getProduits($request, $nombre, $page); /* Appel de la méthode getProduits pour récupérer la liste des produits */
 }
 
 
