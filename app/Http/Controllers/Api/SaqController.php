@@ -31,7 +31,7 @@ class SaqController extends Controller
 /* 
  */
 
-public function getProduits(Request $request, $nombre = 24, $page = 1) /* recupere la liste de bouteilles a partir de l'url donner (SAQ) */
+public function getProduits($nombre = 24, $page = 1) /* recupere la liste de bouteilles a partir de l'url donner (SAQ) */
 {
     $url = "https://www.saq.com/fr/produits/vin/vin-rouge?p=" . $page . "&product_list_limit=" . $nombre . "&product_list_order=name_asc";
 
@@ -200,11 +200,19 @@ private function ajouteProduit($bte)
 public function fetchProduits(Request $request)
 {
     /* Récupération du nombre d'éléments à retourner et de la page demandée */
-    $nombre = intval($request->input('nombre', 24));
-    $page = intval($request->input('page', 1));
+    $nombre = 96;
+    $page = 67;
+    $produits = []; /* Tableau qui contiendra les produits */
 
-    return $this->getProduits($request, $nombre, $page); /* Appel de la méthode getProduits pour récupérer la liste des produits */
+    for ($i = 1; $i < 4; $i++) {
+        $response = $this->getProduits(24, $i);
+        $data = $response->getData();
+        $produits = array_merge($produits, $data);
+    }
+
+    return response()->json($produits);
 }
+
 
 
 
