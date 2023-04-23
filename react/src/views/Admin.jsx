@@ -37,7 +37,7 @@ const Admin = () => {
     return ( /* retour de la section qui affichera les produis */
         <div className="flex flex-col items-center bg-red-50">
             <h1 className="text-2xl font-semibold mb-4">Admin</h1>
-            <select
+          {/*   <select
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
                 className="mb-2"
@@ -45,8 +45,8 @@ const Admin = () => {
                 <option value={24}>24</option>
                 <option value={48}>48</option>
                 <option value={96}>96</option>
-            </select>
-            <select
+            </select> */}
+          {/*   <select
                 value={page}
                 onChange={(e) => setPage(e.target.value)}
                 placeholder="Page number"
@@ -58,7 +58,7 @@ const Admin = () => {
                 <option value={8}>8</option>
                 <option value={13}>13</option>
                 <option value={21}>21</option>
-            </select>
+            </select> */}
             <button
                 onClick={fetchProducts}
                 className="bg-red-900 border-2 border-red-900 text-white py-2 px-4 rounded-lg shadow-md hover:bg-transparent hover:border-2 hover:border-red-900 hover:text-black mb-4"
