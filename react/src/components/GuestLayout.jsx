@@ -14,7 +14,7 @@ export default function GuestLayout() {
       <header>
         <MobileNavbar />
       </header>
-      <main className="pt-16">
+      <main className="pt-16 bg-red-50">
         {/* Outlet va aller chercher la vue appropriée dans le router */}
         <Outlet />
       </main>
