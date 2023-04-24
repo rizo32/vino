@@ -1,5 +1,5 @@
 /* importation des modules */
-import { useEffect, useState } from "react"; 
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/saq`;
@@ -8,6 +8,8 @@ const Admin = () => {
     const [products, setProducts] = useState([]);
     const [nombre, setNombre] = useState(24);
     const [page, setPage] = useState(1);
+    let insert = 0;
+    let double = 0;
 
     const parseProductData = (data) => {
         return data.map((product) => ({
@@ -22,22 +24,24 @@ const Admin = () => {
         }));
     };
 
-    const fetchProducts = async () => { /* Fonction fetch qui va être utilisée pour récupérer la liste des produits à montrer sur la page */
+    const fetchProducts = async () => {
+        /* Fonction fetch qui va être utilisée pour récupérer la liste des produits à montrer sur la page */
+        const t0 = performance.now(); // Timer pour mesurer le temps d'execution de la fonction
         const response = await axios.post(`${baseURL}/fetch`, {
             nombre,
             page,
         });
         const parsedProducts = parseProductData(response.data);
         setProducts(parsedProducts); /* mis a jour de la liste des produits */
-        
+        const t1 = performance.now(); // fin du temps d'execution
+        const timeDiff = t1 - t0; // calcul du temps d'execution
+        console.log(`FetchProducts prend ${timeDiff} millisecondes (${(timeDiff / 1000).toFixed(2)} secondes ou ${(timeDiff / 60000).toFixed(2)} minutes)`); // Affichage du temps d'execution
     };
-    useEffect(() => { /* useeffect pour appeler fetchProducts  on mount de notre composante */
-        fetchProducts(); 
-    }, []);
-    return ( /* retour de la section qui affichera les produis */
+    return (
+        /* retour de la section qui affichera les produis */
         <div className="flex flex-col items-center bg-red-50">
             <h1 className="text-2xl font-semibold mb-4">Admin</h1>
-          {/*   <select
+            {/*   <select
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
                 className="mb-2"
@@ -46,7 +50,7 @@ const Admin = () => {
                 <option value={48}>48</option>
                 <option value={96}>96</option>
             </select> */}
-          {/*   <select
+            {/*   <select
                 value={page}
                 onChange={(e) => setPage(e.target.value)}
                 placeholder="Page number"
@@ -65,8 +69,19 @@ const Admin = () => {
             >
                 Fetch Products
             </button>
-
+            <section></section>
             <section className="flex flex-col gap-4 items-start justify-start">
+                {products.forEach((product) => {
+                    if (product.result.insert != 0) {
+                        insert++;
+                    }
+                    if (product.result.double != 0) {
+                        double++;
+                    }
+                })}
+
+                <p>Nombre de produits insérés : {insert}</p>
+                <p>Nombre de produits en doublon : {double}</p>
                 {products.map((product, index) => (
                     <article
                         id="ProductCard"
