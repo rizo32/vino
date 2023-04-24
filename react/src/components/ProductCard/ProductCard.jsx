@@ -23,10 +23,6 @@ export default function ProductCard({ bottle }) {
             id="ProductCard"
             className="flex flex-row justify-center py-4 mb-2 bg-white"
         >
-            {/*
-          Nicolas
-          Lien temporaire vers la fiche produit 
-          */}
             <div className="flex flex-col justify-center">
                 <img
                     className="h-36 object-contain"
@@ -121,6 +117,10 @@ export default function ProductCard({ bottle }) {
                         d="M12 6v12m6-6H6"
                     />
                 </svg>
+                {/*
+          Nicolas
+          Lien temporaire vers la fiche produit 
+          */}
                 <Link to={`/product/${bottle.id}`} state={{ bottle }}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
