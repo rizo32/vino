@@ -3,10 +3,16 @@ A utiliser dans le fichier de destination
 import ProductCard from "./ProductCard/ProductCard.jsx";
 <ProductCard />
 */
+import { useState } from "react";
 import axiosClient from "../../axios-client";
-
+import EditQuantityModal from "../EditQuantityModal/EditQuantityModal";
 import "./style/ProductCard.css";
+
 export default function ProductCard({ bottle, quantity, setBottles }) {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
 
   // fonction pour ajouter une bouteille au cellier
   const addToCellar = (bottle) => {
@@ -42,9 +48,12 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
           <p>{bottle.type}</p> <span>|</span> <p>{bottle.format}</p>
 
         </div>
+        { bottle.country ?
         <p className="font-light">
           {bottle.country}, {bottle.state}
         </p>
+        : null
+        }
         <div className="flex gap-4">
           <span className="flex">
             <svg
@@ -130,9 +139,18 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
         }
       {/* edit bottle qty */}
       { location.pathname === '/cellar' ?
-      <img className="rm-bottle" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAADGklEQVR4nO2du2oWQRiGnyYa4wFTaBFBy3i4AvECbBQsLLRRkwsQLTxEe+8gdyB25iBskUvwgDZiFMEiAUEsoiSghfDJ4PwQAsHk3+zMN7PvA2/773zvO4fd+YddEEIIIYQQQgghhBBi94wD08AC8BHYAKwSbcSa5oGpWKsbDgCPgB8OjLJECrXOxNqzMgG8cmCIZdI74GQu808Aqw5MsMxajV4kJQy9Nw6KNycKs8BoygAeOyjanOlhKvPHe7bg2g61luruaNpBseZUt1IEMO+gUHOquRQBfHZQqDlVeFjrnHUHhZpTBW86J3eR5lwKAAWQvReaRoAv/QGeAlfitsEIcBw4DzwBvmsKojPzw5bJmf9MzEeAWa0B7Ln5L4CxXayKt/fgmlqE+WdE+GNo3xButB0JCgBogP1DOnEY+KYASN7zNxMWZo0A8pgfuKAASDrtbOWYAiBLzx8QgtQURPqeP+CUAiCb+YGrCoDk085mnikAspl/Lu4daQ0g7bQzOG7zWk/CZOn54XcXW5pf9VZE02HPH9nDwwadI/PpVwBNIT2/ygCawsyvKoCmQPOrCaAp1PwqAmgKNr/4AJrCzS86gKYC84sNoKnE/CIDaCoyv7gAmsrMLyqAxY431hYymF9MAO93eWKtFPOLCeBapeYbCWjbwN/AoYrmfCstgKWKzTcS0LaBdyo230hA2wZOVmy+kYA2jftSuflGAto0Lpy9r9l8IwFtGnepcvONBOS8/Rxxbr7rAJZ6YL6RgGEbdrfFNQ/u0aGpXgdwdkjjrwMfHBhbfAA7faXXZBwtYcr65cDQagK4uM3vjcW7o9n4nJDbwGoD+ApcjtPK6cJ7uZUYQF/UObkLNOdSAFQegF5Zxrbm/0wRwCcHw9ycajlFACVsB1gmPU8RwJSDQs2pbqQIYDy+pjd3seZMwZOjJGLGQcHmTPdIyGjPP9xgW/Qy9evrB1/PWHFQvGXWSvQiCxMxfeup3ub8hMmAMPQe9GxhXgPud3iyeyjCHcDN+Ar35cqemNdjTXOxxmR3O0IIIYQQQgghhBCCavgLyCF3vmwLdZkAAAAASUVORK5CYII=" 
-      
+      <><img className="rm-bottle" onClick={handleOpen} src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAADGklEQVR4nO2du2oWQRiGnyYa4wFTaBFBy3i4AvECbBQsLLRRkwsQLTxEe+8gdyB25iBskUvwgDZiFMEiAUEsoiSghfDJ4PwQAsHk3+zMN7PvA2/773zvO4fd+YddEEIIIYQQQgghhBBi94wD08AC8BHYAKwSbcSa5oGpWKsbDgCPgB8OjLJECrXOxNqzMgG8cmCIZdI74GQu808Aqw5MsMxajV4kJQy9Nw6KNycKs8BoygAeOyjanOlhKvPHe7bg2g61luruaNpBseZUt1IEMO+gUHOquRQBfHZQqDlVeFjrnHUHhZpTBW86J3eR5lwKAAWQvReaRoAv/QGeAlfitsEIcBw4DzwBvmsKojPzw5bJmf9MzEeAWa0B7Ln5L4CxXayKt/fgmlqE+WdE+GNo3xButB0JCgBogP1DOnEY+KYASN7zNxMWZo0A8pgfuKAASDrtbOWYAiBLzx8QgtQURPqeP+CUAiCb+YGrCoDk085mnikAspl/Lu4daQ0g7bQzOG7zWk/CZOn54XcXW5pf9VZE02HPH9nDwwadI/PpVwBNIT2/ygCawsyvKoCmQPOrCaAp1PwqAmgKNr/4AJrCzS86gKYC84sNoKnE/CIDaCoyv7gAmsrMLyqAxY431hYymF9MAO93eWKtFPOLCeBapeYbCWjbwN/AoYrmfCstgKWKzTcS0LaBdyo230hA2wZOVmy+kYA2jftSuflGAto0Lpy9r9l8IwFtGnepcvONBOS8/Rxxbr7rAJZ6YL6RgGEbdrfFNQ/u0aGpXgdwdkjjrwMfHBhbfAA7faXXZBwtYcr65cDQagK4uM3vjcW7o9n4nJDbwGoD+ApcjtPK6cJ7uZUYQF/UObkLNOdSAFQegF5Zxrbm/0wRwCcHw9ycajlFACVsB1gmPU8RwJSDQs2pbqQIYDy+pjd3seZMwZOjJGLGQcHmTPdIyGjPP9xgW/Qy9evrB1/PWHFQvGXWSvQiCxMxfeup3ub8hMmAMPQe9GxhXgPud3iyeyjCHcDN+Ar35cqemNdjTXOxxmR3O0IIIYQQQgghhBCCavgLyCF3vmwLdZkAAAAASUVORK5CYII=" />
+
+      {open &&
+      <EditQuantityModal
+        //utiliser le cellier de l'usagé connecté
+        cellarId={1}
+        bottleId={bottle.id}
+        handleClose={handleClose}
       />
+      }
+      </>
+
       : null
       }
 
