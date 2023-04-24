@@ -33,7 +33,7 @@ export default function Catalog() {
 
     return (
         <div className="flex flex-col gap-2">
-            <TextOnImage
+            {/* <TextOnImage
                 text="Vins blancs"
                 imagePath={img}
                 alt="vins blancs"
@@ -41,7 +41,7 @@ export default function Catalog() {
                 contrast="contrast-120"
                 saturation="saturation-70"
                 brightness="brightness-90"
-            />
+            /> */}
             {loading ? (
                 <p>Loading...</p>
             ) : (
