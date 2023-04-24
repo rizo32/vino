@@ -35,7 +35,11 @@ const Admin = () => {
         setProducts(parsedProducts); /* mis a jour de la liste des produits */
         const t1 = performance.now(); // fin du temps d'execution
         const timeDiff = t1 - t0; // calcul du temps d'execution
-        console.log(`FetchProducts prend ${timeDiff} millisecondes (${(timeDiff / 1000).toFixed(2)} secondes ou ${(timeDiff / 60000).toFixed(2)} minutes)`); // Affichage du temps d'execution
+        console.log(
+            `FetchProducts prend ${timeDiff} millisecondes (${(
+                timeDiff / 1000
+            ).toFixed(2)} secondes ou ${(timeDiff / 60000).toFixed(2)} minutes)`
+        ); // Affichage du temps d'execution
     };
     return (
         /* retour de la section qui affichera les produis */
