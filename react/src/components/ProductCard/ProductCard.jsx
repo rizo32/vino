@@ -114,6 +114,6 @@ export default function ProductCard({ bottle }) {
         </div>
       </section>
     </article>
-    ,{/* </Link> */}
+    /* </Link> */
   );
 }
