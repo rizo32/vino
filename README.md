@@ -9,6 +9,12 @@ _Un projet collaboratif de fin d'étude en programmation et conception web d'une
 
 ---
 
+
+## Liens
+[https://rizorizo.art/cellar](#website)
+[https://app.scrumdesk.com/#/projects/37255/work-scrum](#scrumdesk)
+
+
 ## Étapes:
 
 1. **Déclenchement serveur laravel**
@@ -29,35 +35,3 @@ _Un projet collaboratif de fin d'étude en programmation et conception web d'une
     http://localhost:3000/
     ```
 
-## Création de votre projet
-
-- "Forker" le dépôt rizo32/vino, assurez-vous de garder la case "Fork only dev branch" cochée.
-- Clonez-le sur votre dépôt local.
-- `git remote add upstream https://github.com/rizo32/vino.git` pour créer une liaison 'upstream' avec le repertoire maitre (ie commun)
-- Assurez-vous de travailler sur la branche "dev" (de VOTRE fork!!) en utilisant les commandes
-
-```
-git checkout dev (si vous êtes sur main)
-git remote -v (confirmer que origin = votre fork)
-```
-
-## Fork <- Maitre (projet commun)
-
-- À chaque nouvelle session, ou lorsque quelqu'un d'autre effectue un merge (pull request):
-```
-`git fetch upstream`
-```
-pour aller chercher le code, puis pour synchroniser:
-```
-`git merge upstream/dev`
-```
-
-(sinon, directement sur github faire un pull request fork <- maitre et faire git pull à partir du local)
-
-## Maitre <- Fork
-
-- Tout au long de la journée, effectuez plusieurs commits
-- Quelques fois par jour (eg chaque 2 heures), quand le code est stable, faire un git pull et pull request (via github) vers la branche dev du repo maitre
-- Avetissez les autre via discord (thread github) pour qu'ils effectuent leur syncronisation et constate s'il y a des conflits à gérer
-
-Force et robustesse 
