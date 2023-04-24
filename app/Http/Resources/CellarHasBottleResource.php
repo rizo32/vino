@@ -27,5 +27,7 @@ class CellarHasBottleResource extends JsonResource
             //charge toutes les tables reliées avec la table bottle et avoir accès au données
             'bottle' => new BottleResource($this->whenLoaded('bottle')),
         ];
+
+        
     }
 }
