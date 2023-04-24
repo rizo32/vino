@@ -3,10 +3,9 @@ A utiliser dans le fichier de destination
 import ProductCard from "./ProductCard/ProductCard.jsx";
 <ProductCard />
 */
-import bouteille1 from "./img/bouteille1.webp";
 import axiosClient from "../../axios-client";
 
-export default function ProductCard({ bottle }) {
+export default function ProductCard({ bottle, quantity }) {
 
   // fonction pour ajouter une bouteille au cellier
   const addToCellar = (bottle) => {
@@ -24,6 +23,7 @@ export default function ProductCard({ bottle }) {
       id="ProductCard"
       className="flex flex-row items-center justify-center py-6 mb-2 bg-white"
     >
+      <span>{quantity}</span>
       <img className="h-40" src={bottle.image_url} alt="" />
       <section className="flex-flex_column justify-start gap-3 bg-white">
         <div className="flex ">

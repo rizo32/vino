@@ -43,6 +43,17 @@ class CellarHasBottleController extends Controller
       'id' => 'required|integer',
     ]);
 
+    $bottleInCellar = CellarHasBottle::query()->where('bottle_id', '=', $request->input('id'))->first();
+
+    if($bottleInCellar){
+      $data = ['quantity' => $bottleInCellar->quantity+1];
+      $bottleInCellar->update($data);
+      return response()->json([
+        'message' => 'Bottle quantity updated',
+        'cellar_has_bottle' => $bottleInCellar
+      ], 201);
+    }
+
     $cellarHasBottle = new CellarHasBottle([
       // 'cellar_id' => $request->input('cellar_id'),
       'cellar_id' => 1,
