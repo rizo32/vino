@@ -42,9 +42,8 @@ class Bottle extends Model
     return $this->belongsTo(Type::class);
   }
 
-  public function cellarHasBottles()
+  public function cellarHasBottle()
   {
     return $this->hasMany(CellarHasBottle::class);
   }
-
 }

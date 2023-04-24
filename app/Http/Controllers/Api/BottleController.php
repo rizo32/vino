@@ -21,7 +21,7 @@ class BottleController extends Controller
     {
         //retourne toutes les bouteilles en format json
         return BottleResource::collection(
-          Bottle::query()->orderBy('id', 'desc')->paginate(10)
+          Bottle::with('cellarHasBottle')->orderBy('id', 'desc')->paginate(10)
         );
     }
 

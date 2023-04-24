@@ -23,7 +23,7 @@ class BottleResource extends JsonResource
         $this->load(['country', 'type']);
         //ajouter format
 
-        return [
+        $data = [
             'id' => $this->id,
             'name' => $this->name,
             'image_path' => $this->image_path,
@@ -38,5 +38,12 @@ class BottleResource extends JsonResource
             'milesime' => $this->milesime,
             'rating_saq' => $this->rating_saq,
         ];
+
+        if ($this->relationLoaded('cellarHasBottle')) {
+            $data['quantity'] = $this->cellarHasBottle->first()->quantity ?? 0;
+        }
+    
+        return $data;
+
     }
 }

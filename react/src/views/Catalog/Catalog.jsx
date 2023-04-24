@@ -16,7 +16,7 @@ export default function Catalog() {
         axiosClient
             .get("/bottles")
             .then(({ data }) => {
-                //console.log(data);
+                console.log(data);
                 setBottles(data.data);
                 setLoading(false);
             })
