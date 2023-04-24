@@ -44,7 +44,5 @@ Route::apiResource('/cellarHasBottles', CellarHasBottleController::class);
 
 /* <YG */
 Route::apiResource('/admin', AdminController::class);
-Route::get('/saq/getProduits/{nombre}/{page}', [SaqController::class, 'getProduits'])->where(['nombre' => '[0-9]+', 'page' => '[0-9]+']);
-
 Route::post('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
 /* YG> */

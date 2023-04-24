@@ -20,8 +20,8 @@ export default function GuestLayout() {
       </main>
       <aside className="fixed bottom-0 w-full bg-white h-10 flex justify-around">
         <div className="text-violet-500">Hello, Guest</div>
-        <Link to="/cellar">Cellier</Link>
-        <Link to="/catalog">Catalog</Link>
+        <Link to="/login">Login</Link>
+        <Link to="/signup">Singup</Link>
       </aside>
     </div>
   );

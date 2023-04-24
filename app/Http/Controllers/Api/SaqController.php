@@ -159,6 +159,10 @@ private function ajouteProduit($bte)
     /* valeur par default */
     $retour->succes = false;
     $retour->raison = '';
+    $retour->erreur = 0;
+    $retour->insert = 0;
+    $retour->double = 0;
+
 
     $type_id = $this->getTypeID($bte->desc->type); /* recupere l'id du type de produit */
 
@@ -183,14 +187,17 @@ private function ajouteProduit($bte)
         if ($newBottle->save()) { 
             $retour->succes = true;
             $retour->raison = 'Nouvelle bouteille insérée';
+            $retour->insert++;
         } else {
             $retour->succes = false;
             $retour->raison = 'Erreur lors de l\'insertion';
+            $retour->erreur++;
         }
     } else {
         /*  La bouteille existe déjà dans la base de données */
         $retour->succes = false;
         $retour->raison = 'Duplication';
+        $retour->double++;
     }
 
     return $retour; /* Retorune objet + resultat */
