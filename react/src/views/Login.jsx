@@ -1,61 +1,69 @@
 import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import axiosClient from "../axios-client";
-import {useStateContext} from "../contexts/ContextProvider.jsx";
+import { useStateContext } from "../contexts/ContextProvider.jsx";
 
 export default function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const { setUser, setToken } = useStateContext();
-  const [message, setMessage] = useState(null);
-  const [errors, setErrors] = useState(null);
+  const [message, setMessage] = useState([]);
 
   const onSubmit = (ev) => {
-    ev.preventDefault()
+    ev.preventDefault();
+
     const payload = {
       email: emailRef.current.value,
       password: passwordRef.current.value,
-    }
-    setErrors(null);
-    axiosClient.post("/login", payload).then(({ data }) => {
-      setUser(data.user);
-      setToken(data.token);
-    })
-    .catch(err => {
-      const response = err.response;
-      if(response && response.status === 422){
-        if (response.data.errors) {
-          setErrors(response.data.errors)
-        } else {
-          setErrors({
-            email: [response.data.message]
-          })
-        }
-        setErrors(response.data.errors);
-      }
-    })
-  }
+    };
+    axiosClient
+      .post("/login", payload)
+      .then(({ data }) => {
+        setUser(data.user);
+        setToken(data.token);
+      })
+      .catch((err) => {
+        const response = err;
+        setMessage(response);
+      });
+  };
 
- return (
+  return (
     <div className="w-full">
-      <div className="form w-64 mx-auto">
-        <form className="flex flex-col gap-5 border-2 my-5" onSubmit={onSubmit}>
-          <h1 className="title">Login into your account</h1>
-
-          {message &&
+      <div className="form w-full mx-auto">
+        <form className="flex flex-col mt-10vh w-10/12 ml-auto mr-auto" onSubmit={onSubmit}>
+          {/* Si quelqu'un a une meilleure traduction de 'welcome back', the floor is yours! */}
+          <h1 className="text-4xl text-center mt-vh-10">Rebonjour!</h1>
+          {message.length > 0 && (
             <div className="text-red-900">
-              <p>{message}</p>
+              {message.map((message, index) => (
+                <p key={index}>{message}</p>
+              ))}
             </div>
-          }
-
-          <input ref={emailRef} type="email" placeholder="Email"  className="border-2 mt-3" />
-          <input ref={passwordRef} type="password" placeholder="Password"  className="border-2 mt-3" />
-          <button className="btn btn-block">Login</button>
-          <p className="message">Not registered? <Link to="/signup">Create an account</Link></p>
+          )}
+          <label htmlFor="email"
+            className="mt-12 text-xl ml-2">Courriel</label>
+          <input
+            id="email"
+            ref={emailRef}
+            type="email"
+            placeholder="g.harvey@caramail.com"
+            className="rounded-lg bg-white h-12 pl-2 shadow-shadow-tiny-inset"
+          />
+          <label htmlFor="password"
+            className="mt-5 text-xl ml-2">Courriel</label>
+          <input
+            id="password"
+            ref={passwordRef}
+            type="password"
+            placeholder="********"
+            className="rounded-lg bg-white h-12 pl-2 shadow-shadow-tiny-inset"
+          />
+          <button className="btn btn-block mt-12 bg-red-900 rounded-md text-white h-12 text-xl shadow-shadow-tiny">Connexion</button>
+          <p className="text-center absolute bottom-20 left-1/2 transform -translate-x-1/2 w-10/12"><Link to="/signup">Créer un nouveau compte ></Link>
+          </p>
         </form>
       </div>
     </div>
-  )
+  );
 }
-
-
