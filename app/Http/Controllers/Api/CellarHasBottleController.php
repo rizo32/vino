@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCellarHasBottleRequest;
 use App\Http\Requests\UpdateCellarHasBottleRequest;
+use App\Http\Resources\BottleResource;
 use App\Http\Resources\CellarHasBottleResource;
+use App\Models\Bottle;
 use App\Models\CellarHasBottle;
 use Illuminate\Http\Request;
 
@@ -48,10 +50,9 @@ class CellarHasBottleController extends Controller
     if($bottleInCellar){
       $data = ['quantity' => $bottleInCellar->quantity+1];
       $bottleInCellar->update($data);
-      return response()->json([
-        'message' => 'Bottle quantity updated',
-        'cellar_has_bottle' => $bottleInCellar
-      ], 201);
+      return BottleResource::collection(
+        Bottle::with('cellarHasBottle')->orderBy('id', 'desc')->paginate(10)
+      );
     }
 
     $cellarHasBottle = new CellarHasBottle([
@@ -63,10 +64,9 @@ class CellarHasBottleController extends Controller
 
     $cellarHasBottle->save();
 
-    return response()->json([
-      'message' => 'Bottle added to cellar successfully',
-      'cellar_has_bottle' => $cellarHasBottle
-    ], 201);
+    return BottleResource::collection(
+      Bottle::with('cellarHasBottle')->orderBy('id', 'desc')->paginate(10)
+    );
   }
 
   /**

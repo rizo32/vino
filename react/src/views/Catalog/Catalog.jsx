@@ -16,7 +16,7 @@ export default function Catalog() {
         axiosClient
             .get("/bottles")
             .then(({ data }) => {
-                console.log(data);
+                //console.log(data);
                 setBottles(data.data);
                 setLoading(false);
             })
@@ -48,7 +48,7 @@ export default function Catalog() {
                 <ul>
                     {bottles.map((bottle) => (
                         <li key={bottle.id}>
-                            <ProductCard bottle={bottle} />
+                            <ProductCard bottle={bottle} setBottles={setBottles} />
                         </li>
                     ))}
                 </ul>

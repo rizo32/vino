@@ -5,11 +5,14 @@ import ProductCard from "./ProductCard/ProductCard.jsx";
 */
 import axiosClient from "../../axios-client";
 import "./style/ProductCard.css";
-export default function ProductCard({ bottle, quantity }) {
+export default function ProductCard({ bottle, quantity, setBottles }) {
 
   // fonction pour ajouter une bouteille au cellier
   const addToCellar = (bottle) => {
     axiosClient.post(`${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles`, bottle)
+    .then(({data}) => {
+      setBottles(data.data);
+    })
     .catch(err => {
       console.log(err.response);
     })
