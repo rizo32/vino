@@ -206,13 +206,13 @@ private function ajouteProduit($bte)
 
 public function fetchProduits(Request $request)
 {
+    ini_set('max_execution_time', 7200); /* Cettte fonction peu rouler 120 minutes */
     /* Récupération du nombre d'éléments à retourner et de la page demandée */
-    $nombre = 96;
-    $page = 67;
+  
     $produits = []; /* Tableau qui contiendra les produits */
 
-    for ($i = 1; $i < 4; $i++) {
-        $response = $this->getProduits(24, $i);
+    for ($i = 1; $i < 150; $i++) {
+        $response = $this->getProduits(48, $i);
         $data = $response->getData();
         $produits = array_merge($produits, $data);
     }
