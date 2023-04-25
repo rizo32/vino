@@ -99,6 +99,13 @@ private function nettoyer_image_url($url) {
     return $newUrl;
 }
 
+private function image_par_default($url) {
+   if ($url.contains('product_tags') || $url.contains('scene7')) {
+        return   $url = 'https://www.saq.com/media/wysiwyg/placeholder/category/06.png' ;/* image par default */
+   } else {
+       return $url;
+   }
+}
 
 
 
@@ -112,6 +119,7 @@ private function recupereInfo($noeud)
         /* extraction specifique  et nettoyage pour stocker dans l'objet */
 		$info -> img = $noeud -> getElementsByTagName("img") -> item(0) -> getAttribute('src'); //TODO : Nettoyer le lien
         $info->img = $this->nettoyer_image_url($info->img);
+        $info->img = $this->image_par_default($info->img);
 		$a_titre = $noeud -> getElementsByTagName("a") -> item(0);
 		$info -> url = $a_titre->getAttribute('href');
 		
