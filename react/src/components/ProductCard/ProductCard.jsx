@@ -1,37 +1,39 @@
 import { Link } from "react-router-dom";
-
 import axiosClient from "../../axios-client";
 import EditQuantityModal from "../EditQuantityModal/EditQuantityModal";
 import "./style/ProductCard.css";
+import { useState } from "react";
 
 export default function ProductCard({ bottle, quantity, setBottles }) {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
-  // fonction pour ajouter une bouteille au cellier
-  const addToCellar = (bottle) => {
-    axiosClient
-        .post(
-            `${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles`,
-            bottle
-        )
-        .then(({ data }) => {
-            setBottles(data.data);
-        })
-        .catch((err) => {
-            console.log(err.response);
-        });
-};
+    // fonction pour ajouter une bouteille au cellier
+    const addToCellar = (bottle) => {
+        axiosClient
+            .post(
+                `${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles`,
+                bottle
+            )
+            .then(({ data }) => {
+                setBottles(data.data);
+            })
+            .catch((err) => {
+                console.log(err.response);
+            });
+    };
 
     return (
         // Il faudra mettre le lien en évitant que d'appuyer sur le "+" ou swiper
         // enclenche la redirection
         /* <Link to={`/product/${bottle.id}`}> */
+        
         <article
             id="ProductCard"
-            className="flex flex-row justify-center py-4 mb-2 bg-white relative"
+            className="flex flex-row justify-start bg-white relative"
         >
+          <Link to={`/product/${bottle.id}`} state={{ bottle }} className="flex flex-row justify-start py-4 mb-2 bg-white relative">
             {location.pathname === "/cellar" ? (
                 <span className="quantity-chip">{quantity}</span>
             ) : bottle.quantity ? (
@@ -44,16 +46,18 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
                     alt=""
                 />
             </div>
-            <section className="flex flex-col justify-start items-start gap-3 bg-white flex-grow">
+            <section className="flex flex-col justify-start items-start gap-3 bg-white w-[60%]">
                 <h2 className="font-bold">{bottle.name}</h2>
                 <div className="flex gap-3">
                     <p className="font-light">{bottle.type}</p>{" "}
                     <span className="font-light">|</span>{" "}
                     <p className="font-light">{bottle.format}</p>
                 </div>
-                <p className="font-light">
-                    {bottle.country}, {bottle.state}
-                </p>
+                {bottle.country ? (
+                    <p className="font-light">
+                        {bottle.country}, {bottle.state}
+                    </p>
+                ) : null}
                 <div className="flex gap-4">
                     <span className="flex">
                         <svg
@@ -116,7 +120,7 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
                     <p>37 avis</p>
                 </div>
             </section>
-            <Link to={`/product/${bottle.id}`} state={{ bottle }}>
+            {/* <Link to={`/product/${bottle.id}`} state={{ bottle }}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -131,6 +135,7 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
                         d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
                     />
                 </svg>
+            </Link> */}
             </Link>
             {location.pathname != "/cellar" ? (
                 <div className="px-4 py-3">
@@ -152,10 +157,21 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
                 </div>
             ) : null}
             {location.pathname === "/cellar" ? (
-                <img
-                    className="rm-bottle"
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAADGklEQVR4nO2du2oWQRiGnyYa4wFTaBFBy3i4AvECbBQsLLRRkwsQLTxEe+8gdyB25iBskUvwgDZiFMEiAUEsoiSghfDJ4PwQAsHk3+zMN7PvA2/773zvO4fd+YddEEIIIYQQQgghhBBi94wD08AC8BHYAKwSbcSa5oGpWKsbDgCPgB8OjLJECrXOxNqzMgG8cmCIZdI74GQu808Aqw5MsMxajV4kJQy9Nw6KNycKs8BoygAeOyjanOlhKvPHe7bg2g61luruaNpBseZUt1IEMO+gUHOquRQBfHZQqDlVeFjrnHUHhZpTBW86J3eR5lwKAAWQvReaRoAv/QGeAlfitsEIcBw4DzwBvmsKojPzw5bJmf9MzEeAWa0B7Ln5L4CxXayKt/fgmlqE+WdE+GNo3xButB0JCgBogP1DOnEY+KYASN7zNxMWZo0A8pgfuKAASDrtbOWYAiBLzx8QgtQURPqeP+CUAiCb+YGrCoDk085mnikAspl/Lu4daQ0g7bQzOG7zWk/CZOn54XcXW5pf9VZE02HPH9nDwwadI/PpVwBNIT2/ygCawsyvKoCmQPOrCaAp1PwqAmgKNr/4AJrCzS86gKYC84sNoKnE/CIDaCoyv7gAmsrMLyqAxY431hYymF9MAO93eWKtFPOLCeBapeYbCWjbwN/AoYrmfCstgKWKzTcS0LaBdyo230hA2wZOVmy+kYA2jftSuflGAto0Lpy9r9l8IwFtGnepcvONBOS8/Rxxbr7rAJZ6YL6RgGEbdrfFNQ/u0aGpXgdwdkjjrwMfHBhbfAA7faXXZBwtYcr65cDQagK4uM3vjcW7o9n4nJDbwGoD+ApcjtPK6cJ7uZUYQF/UObkLNOdSAFQegF5Zxrbm/0wRwCcHw9ycajlFACVsB1gmPU8RwJSDQs2pbqQIYDy+pjd3seZMwZOjJGLGQcHmTPdIyGjPP9xgW/Qy9evrB1/PWHFQvGXWSvQiCxMxfeup3ub8hMmAMPQe9GxhXgPud3iyeyjCHcDN+Ar35cqemNdjTXOxxmR3O0IIIYQQQgghhBCCavgLyCF3vmwLdZkAAAAASUVORK5CYII="
-                />
+                <>
+                    <img
+                        className="rm-bottle absolute right-5"
+                        onClick={handleOpen}
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAADGklEQVR4nO2du2oWQRiGnyYa4wFTaBFBy3i4AvECbBQsLLRRkwsQLTxEe+8gdyB25iBskUvwgDZiFMEiAUEsoiSghfDJ4PwQAsHk3+zMN7PvA2/773zvO4fd+YddEEIIIYQQQgghhBBi94wD08AC8BHYAKwSbcSa5oGpWKsbDgCPgB8OjLJECrXOxNqzMgG8cmCIZdI74GQu808Aqw5MsMxajV4kJQy9Nw6KNycKs8BoygAeOyjanOlhKvPHe7bg2g61luruaNpBseZUt1IEMO+gUHOquRQBfHZQqDlVeFjrnHUHhZpTBW86J3eR5lwKAAWQvReaRoAv/QGeAlfitsEIcBw4DzwBvmsKojPzw5bJmf9MzEeAWa0B7Ln5L4CxXayKt/fgmlqE+WdE+GNo3xButB0JCgBogP1DOnEY+KYASN7zNxMWZo0A8pgfuKAASDrtbOWYAiBLzx8QgtQURPqeP+CUAiCb+YGrCoDk085mnikAspl/Lu4daQ0g7bQzOG7zWk/CZOn54XcXW5pf9VZE02HPH9nDwwadI/PpVwBNIT2/ygCawsyvKoCmQPOrCaAp1PwqAmgKNr/4AJrCzS86gKYC84sNoKnE/CIDaCoyv7gAmsrMLyqAxY431hYymF9MAO93eWKtFPOLCeBapeYbCWjbwN/AoYrmfCstgKWKzTcS0LaBdyo230hA2wZOVmy+kYA2jftSuflGAto0Lpy9r9l8IwFtGnepcvONBOS8/Rxxbr7rAJZ6YL6RgGEbdrfFNQ/u0aGpXgdwdkjjrwMfHBhbfAA7faXXZBwtYcr65cDQagK4uM3vjcW7o9n4nJDbwGoD+ApcjtPK6cJ7uZUYQF/UObkLNOdSAFQegF5Zxrbm/0wRwCcHw9ycajlFACVsB1gmPU8RwJSDQs2pbqQIYDy+pjd3seZMwZOjJGLGQcHmTPdIyGjPP9xgW/Qy9evrB1/PWHFQvGXWSvQiCxMxfeup3ub8hMmAMPQe9GxhXgPud3iyeyjCHcDN+Ar35cqemNdjTXOxxmR3O0IIIYQQQgghhBCCavgLyCF3vmwLdZkAAAAASUVORK5CYII="
+                    />
+                    {open && (
+                        <EditQuantityModal
+                            //utiliser le cellier de l'usagé connecté
+                            cellarId={1}
+                            bottleId={bottle.id}
+                            handleClose={handleClose}
+                        />
+                    )}
+                </>
             ) : null}
         </article>
         /* </Link> */

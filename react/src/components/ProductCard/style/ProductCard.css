@@ -1,26 +1,3 @@
-#ProductCard {
-<<<<<<< HEAD
-    position: relative;
-    width: 100%;
-    padding-left: 3%;
-    padding-right: 3%;
-=======
-    /* position: relative; */
-    /* width: 94%;
-    margin-left: 3%;
-    margin-right: 3%; */
->>>>>>> upstream/dev
-}
-
-/* #ProductCard h2 {
-    min-height: 50px;
-} */
-
-#ProductCard section {
-    /* width: 60%; */
-    /* margin-left: 10px; */
-}
-
 .quantity-chip {
     background-color: #683436;
     color: white;
@@ -39,4 +16,5 @@
     height : 40px;
     width: auto;
     cursor: pointer;
+    top: 35%;
 }
