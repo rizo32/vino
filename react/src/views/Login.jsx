@@ -31,18 +31,20 @@ export default function Login() {
   return (
     <div className="w-full">
       <div className="form w-full mx-auto">
-        <form className="flex flex-col mt-10vh w-10/12 ml-auto mr-auto" onSubmit={onSubmit}>
+        <form
+          className="flex flex-col w-10/12 ml-auto mr-auto"
+          onSubmit={onSubmit}
+        >
           {/* Si quelqu'un a une meilleure traduction de 'welcome back', the floor is yours! */}
-          <h1 className="text-4xl text-center mt-vh-10">Rebonjour!</h1>
-          {message.length > 0 && (
-            <div className="text-red-900">
-              {message.map((message, index) => (
-                <p key={index}>{message}</p>
-              ))}
+          <h1 className="text-4xl text-center mt-vh-5">Rebonjour!</h1>
+          {message.email && (
+            <div className="text-red-900 mt-vh-20 absolute w-full text-center left-1/2 transform -translate-x-1/2">
+              <p>{message.email[0]}</p>
             </div>
           )}
-          <label htmlFor="email"
-            className="mt-12 text-xl ml-2">Courriel</label>
+          <label htmlFor="email" className="mt-vh-10 text-xl ml-2">
+            Courriel
+          </label>
           <input
             id="email"
             ref={emailRef}
@@ -50,8 +52,14 @@ export default function Login() {
             placeholder="g.harvey@caramail.com"
             className="rounded-lg bg-white h-12 pl-2 shadow-shadow-tiny-inset"
           />
-          <label htmlFor="password"
-            className="mt-5 text-xl ml-2">Courriel</label>
+          {message.password && (
+            <div className="text-red-900 mt-vh-20 absolute w-full text-center left-1/2 transform -translate-x-1/2">
+              <p>{message.password[0]}</p>
+            </div>
+          )}
+          <label htmlFor="password" className="mt-5 text-xl ml-2">
+            Mot de passe
+          </label>
           <input
             id="password"
             ref={passwordRef}
@@ -59,10 +67,13 @@ export default function Login() {
             placeholder="********"
             className="rounded-lg bg-white h-12 pl-2 shadow-shadow-tiny-inset"
           />
-          <button className="btn btn-block mt-12 bg-red-900 rounded-md text-white h-12 text-xl shadow-shadow-tiny">Connexion</button>
-          <p className="text-center absolute bottom-20 left-1/2 transform -translate-x-1/2 w-10/12"><Link to="/signup">Créer un nouveau compte ></Link>
-          </p>
+          <button className="btn btn-block mt-12 bg-red-900 rounded-md text-white h-12 text-xl shadow-shadow-tiny">
+            Connexion
+          </button>
         </form>
+        <p className="text-center absolute bottom-14 left-1/2 transform -translate-x-1/2 w-10/12">
+          <Link to="/signup">Créer un nouveau compte {'>'}</Link>
+        </p>
       </div>
     </div>
   );
