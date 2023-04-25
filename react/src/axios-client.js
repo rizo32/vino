@@ -43,17 +43,17 @@ axiosClient.interceptors.response.use(
     return response;
   },
   function (error) {
-    // Handle error responses
+    // Retour des messages d'erreur
+    console.log(error);
     if (error.response) {
       if (error.response.status === 401) {
         localStorage.removeItem("ACCESS_TOKEN");
       }
       if (error.response.status === 422) {
-        // Handle validation errors
-        // You can customize this to match your validation error response structure
         const errors = error.response.data.errors;
-        const errorMessages = Object.keys(errors).map((key) => errors[key][0]);
-        return Promise.reject(errorMessages);
+        // Gab: j'ai enlevé la ligne suivante pour pouvoir gérer l'erreur différemment dans la vue selon la clé
+        // const errorMessages = Object.keys(errors).map((key) => errors[key][0]);
+        return Promise.reject(errors);
       }
     }
     return Promise.reject(error);
