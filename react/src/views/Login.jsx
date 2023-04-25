@@ -36,7 +36,7 @@ export default function Login() {
           onSubmit={onSubmit}
         >
           {/* Si quelqu'un a une meilleure traduction de 'welcome back', the floor is yours! */}
-          <h1 className="text-4xl text-center mt-vh-10">Rebonjour!</h1>
+          <h1 className="text-4xl text-center mt-vh-5">Rebonjour!</h1>
           {message.email && (
             <div className="text-red-900 mt-vh-20 absolute w-full text-center left-1/2 transform -translate-x-1/2">
               <p>{message.email[0]}</p>
@@ -71,8 +71,8 @@ export default function Login() {
             Connexion
           </button>
         </form>
-        <p className="text-center absolute bottom-20 left-1/2 transform -translate-x-1/2 w-10/12">
-          <Link to="/signup">Créer un nouveau compte ></Link>
+        <p className="text-center absolute bottom-14 left-1/2 transform -translate-x-1/2 w-10/12">
+          <Link to="/signup">Créer un nouveau compte {'>'}</Link>
         </p>
       </div>
     </div>

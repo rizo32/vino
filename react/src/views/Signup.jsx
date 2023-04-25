@@ -3,6 +3,8 @@ import { useRef, useState } from "react";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../contexts/ContextProvider.jsx";
 
+// Gab
+// Je vais changer les dimensions selon la hauteur du
 export default function Signup() {
   const firstNameRef = useRef();
   const lastNameRef = useRef();
@@ -31,9 +33,7 @@ export default function Signup() {
       .catch((err) => {
         console.log(err);
         const response = err;
-        if (response && response.status === 422) {
-          setMessage(response);
-        }
+        setMessage(response);
       });
   };
 
@@ -44,9 +44,15 @@ export default function Signup() {
           className="flex flex-col w-10/12 ml-auto mr-auto"
           onSubmit={onSubmit}
         >
-          <h1 className="text-4xl text-center mt-vh-10">Soyez des nôtres!</h1>
-          <label htmlFor="first-name" className="mt-vh-2 text-md ml-2">
+          <h1 className="text-4xl text-center mt-vh-2">Soyez des nôtres!</h1>
+          {/* À changer le titre */}
+          <label htmlFor="first-name" className="mt-vh-5 ml-2">
             Prénom
+            {message.first_name && (
+              <span className="text-red-900 text-sm pl-2">
+                {message.first_name[0]}
+              </span>
+            )}
           </label>
           <input
             id="first-name"
@@ -55,8 +61,13 @@ export default function Signup() {
             placeholder="Gandalf"
             className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
           />
-          <label htmlFor="last-name" className="mt-vh-2 text-md ml-2">
+          <label htmlFor="last-name" className="mt-vh-2 ml-2">
             Nom de famille
+            {message.last_name && (
+              <span className="text-red-900 text-sm pl-2">
+                {message.last_name[0]}
+              </span>
+            )}
           </label>
           <input
             id="last-name"
@@ -65,8 +76,13 @@ export default function Signup() {
             placeholder="Le gris"
             className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
           />
-          <label htmlFor="email" className="mt-vh-2 text-md ml-2">
+          <label htmlFor="email" className="mt-vh-2 ml-2">
             Courriel
+            {message.email && (
+              <span className="text-red-900 text-sm pl-2">
+                {message.email[0]}
+              </span>
+            )}
           </label>
           <input
             id="email"
@@ -75,28 +91,36 @@ export default function Signup() {
             placeholder="gandalf_grey123@sympatico.com"
             className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
           />
-          <label htmlFor="password" className="mt-vh-2 text-md ml-2">
+          <label htmlFor="password" className="mt-vh-2 ml-2">
             Mot de passe
+            {message.password && (
+              <span className="text-red-900 text-sm pl-2">
+                {message.password[0]}
+              </span>
+            )}
           </label>
           <input
-            id="first-name"
+            id="password"
             ref={passwordRef}
             type="password"
             placeholder="********"
             className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
           />
+          <label htmlFor="password-confirmation" className="mt-vh-2 text ml-2">
+            Confirmation
+          </label>
           <input
-            // id="first-name"
+            id="password-confirmation"
             ref={passwordConfirmationRef}
             type="password"
             placeholder="********"
             className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset mt-2"
           />
-          <button className="btn btn-block mt-12 bg-red-900 rounded-md text-white h-12 text-xl shadow-shadow-tiny">
+          <button className="btn btn-block mt-8 bg-red-900 rounded-md text-white h-8 text-lg shadow-shadow-tiny">
             L'aventure commence!
           </button>
-          <p className="text-center absolute bottom-20 left-1/2 transform -translate-x-1/2 w-10/12">
-            <Link to="/login">Vous avez un compte? ></Link>
+          <p className="text-center absolute bottom-14 left-1/2 transform -translate-x-1/2 w-10/12">
+            <Link to="/login">Vous avez un compte? {">"}</Link>
           </p>
         </form>
       </div>
