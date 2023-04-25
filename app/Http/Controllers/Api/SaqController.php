@@ -100,7 +100,7 @@ private function nettoyer_image_url($url) {
 }
 
 private function image_par_default($url) {
-   if ($url.contains('product_tags') || $url.contains('scene7')) {
+   if (str_contains($url, 'product_tags')|| str_contains($url, 'scene7')) {
         return   $url = 'https://www.saq.com/media/wysiwyg/placeholder/category/06.png' ;/* image par default */
    } else {
        return $url;
