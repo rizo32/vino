@@ -22,7 +22,7 @@ export default function DefaultLayout() {
     });
   };
 
-  // aller chercher les informtions de l'user lorsque quelqu'un est connecté
+  // aller chercher les informtions de l'user lorsque quelqu'un est connectéGg
   useEffect(() => {
     axiosClient.get("/user").then(({ data }) => {
       setUser(data);
@@ -42,7 +42,7 @@ export default function DefaultLayout() {
         <Outlet />
       </main>
       <aside className="fixed bottom-0 w-full bg-white h-10 flex justify-around">
-        <div className="text-violet-500">Hello, {user.first_name}</div>
+        <Link to={`/users/${user.id}`}>{user.first_name}</Link>
         <a href="#" onClick={onLogout} className="btn-logout">
           Logout
         </a>

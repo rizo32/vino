@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BottleController;
 use App\Http\Controllers\Api\CellarHasBottleController;
 use App\Http\Controllers\Api\SaqController;
+use App\Http\Controllers\Api\UserController;
 
 /*
 |--------------------------------------------------------------------------
