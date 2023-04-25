@@ -147,9 +147,9 @@ private function recupereInfo($noeud)
 				$aDesc = explode("|", $info->desc->texte); // Type, Format, Pays
 				if (count ($aDesc) == 3) {
 					
-					$info -> desc -> type = trim($aDesc[0]);
-					$info -> desc -> format = trim($aDesc[1]);
-					$info -> desc -> pays = trim($aDesc[2]);
+                    $info->desc->type_id = $this->getEntityId('App\\Models\\Type', trim($aDesc[0]));
+                    $info->desc->format_id = $this->getEntityId('App\\Models\\Format', trim($aDesc[1]));
+                    $info->desc->country_id = $this->getEntityId('App\\Models\\Country', trim($aDesc[2]));
 				}
 				
 				$info -> desc -> texte = trim($info -> desc -> texte);
