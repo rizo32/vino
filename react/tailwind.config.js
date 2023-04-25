@@ -11,7 +11,11 @@ export default {
             'shadow-tiny-inset': 'inset 0 1px 1px 0 rgba(0, 0, 0, 0.25)',
           },
           margin: {
+            "vh-2": "2vh",
+            "vh-3": "3vh",
+            "vh-5": "5vh",
             "vh-10": "10vh",
+            "vh-20": "20vh",
           },
         },
     },
