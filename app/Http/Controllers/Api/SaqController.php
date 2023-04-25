@@ -107,6 +107,15 @@ private function image_par_default($url) {
    }
 }
 
+private function trouver_id_model($nomModel, $nom)
+{
+    $instance = app($nomModel);
+    $table = $instance::where('name', $nom)->first();
+    if ($table) {
+        return $table->id;
+    }
+    return null; // valeur defaut pour tester
+}
 
 
 
