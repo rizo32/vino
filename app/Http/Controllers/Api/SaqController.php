@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bottle;
+use App\Models\Format;
+use App\Models\Type;
+use App\Models\Country;
 use Illuminate\Http\Request;
 use DOMDocument;
 use stdClass;
 class SaqController extends Controller
+
 {
 
     private function getTypeID($type) /* retourne l'id du type de vin en fonction de son nom */
@@ -107,15 +111,33 @@ private function image_par_default($url) {
    }
 }
 
-private function trouver_id_model($nomModel, $nom)
+private function get_id_type($name)
 {
-    $instance = app($nomModel);
-    $table = $instance::where('name', $nom)->first();
-    if ($table) {
-        return $table->id;
+    $type = Type::where('types', $name)->first();
+    if ($type) {
+        return $type->id;
     }
-    return null; // valeur defaut pour tester
+    return null; // or a default value if necessary
 }
+
+private function get_id_Format($name)
+{
+    $format = Format::where('volume', $name)->first();
+    if ($format) {
+        return $format->id;
+    }
+    return null; // or a default value if necessary
+}
+
+private function get_id_country($name)
+{
+    $country = Country::where('name', $name)->first();
+    if ($country) {
+        return $country->id;
+    }
+    return null; // or a default value if necessary
+}
+
 
 
 
@@ -147,9 +169,9 @@ private function recupereInfo($noeud)
 				$aDesc = explode("|", $info->desc->texte); // Type, Format, Pays
 				if (count ($aDesc) == 3) {
 					
-                    $info->desc->type_id = $this->getEntityId('App\\Models\\Type', trim($aDesc[0]));
-                    $info->desc->format_id = $this->getEntityId('App\\Models\\Format', trim($aDesc[1]));
-                    $info->desc->country_id = $this->getEntityId('App\\Models\\Country', trim($aDesc[2]));
+                    $info->desc->type_id = $this->get_id_type(trim($aDesc[0]));
+                    $info->desc->format_id = $this->get_id_Format(trim($aDesc[1]));
+                    $info->desc->country_id = $this->get_id_country(trim($aDesc[2]));
 				}
 				
 				$info -> desc -> texte = trim($info -> desc -> texte);
@@ -193,7 +215,7 @@ private function ajouteProduit($bte)
     $retour->double = 0;
 
 
-    $type_id = $this->getTypeID($bte->desc->type); /* recupere l'id du type de produit */
+   
 
     $existingBottle = Bottle::where('code_saq', $bte->desc->code_SAQ)->first(); /* verifie si la bouteille existe deja */
 
@@ -208,9 +230,9 @@ private function ajouteProduit($bte)
         $newBottle->price_saq = round(floatval($bte->prix), 2);
         $newBottle->url_saq = $bte->url;
         $newBottle->image_url = $bte->img;
-        $newBottle->format_id = $bte->desc->format;
-        $newBottle->country_id = 1;
-        $newBottle->type_id = $type_id;
+        $newBottle->format_id = $bte->desc->format_id;
+        $newBottle->country_id = $bte->desc->country_id;
+        $newBottle->type_id = $bte->desc->type_id;
   
         /* Enregistrement de la bouteille dans la base de données */
         if ($newBottle->save()) { 
