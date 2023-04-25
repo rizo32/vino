@@ -93,15 +93,9 @@ private function nettoyerEspace($chaine) /* nettoie les espaces indesirables d'u
 }
 
 
-private function modifier_taille_image($url, $heightIncrease = 100, $widthIncrease = 100) {
-    $pattern = "/(height=)(\d+)(.*width=)(\d+)/";
-
-    $newUrl = preg_replace_callback($pattern, function($matches) use ($heightIncrease, $widthIncrease) {
-        $newHeight = $matches[2] + $heightIncrease;
-        $newWidth = $matches[4] + $widthIncrease;
-        return $matches[1] . $newHeight . $matches[3] . $newWidth;
-    }, $url);
-
+private function nettoyer_image_url($url) {
+    $pattern = "/(\.(?:png|jpg|jpeg|gif))(.*)/";
+    $newUrl = preg_replace($pattern, '$1', $url);
     return $newUrl;
 }
 
@@ -117,7 +111,7 @@ private function recupereInfo($noeud)
 
         /* extraction specifique  et nettoyage pour stocker dans l'objet */
 		$info -> img = $noeud -> getElementsByTagName("img") -> item(0) -> getAttribute('src'); //TODO : Nettoyer le lien
-        $info->img = $this->modifier_taille_image($info->img);
+        $info->img = $this->nettoyer_image_url($info->img);
 		$a_titre = $noeud -> getElementsByTagName("a") -> item(0);
 		$info -> url = $a_titre->getAttribute('href');
 		
