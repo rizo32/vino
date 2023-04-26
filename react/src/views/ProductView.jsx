@@ -15,7 +15,7 @@ export default function ProductView(props) {
                 <img
                     className="h-60 object-contain"
                     src={bottle.image_url}
-                    alt=""
+                    alt={bottle.name}
                 />
             </section>
             <section className="w-full flex flex-col justify-start items-start gap-3 p-6 bg-white flex-grow">
