@@ -17,9 +17,9 @@ const Admin = () => {
             desc: {
                 ...product.desc,
                 /* nettoyage des formats  */
-                type: product.desc.type.trim(),
-                format: product.desc.format.trim(),
-                pays: product.desc.pays.trim(),
+                type: product.desc?.type?.trim() || "",
+            format: product.desc?.format?.trim() || "",
+            pays: product.desc?.pays?.trim() || "",
             },
         }));
     };
