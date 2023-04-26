@@ -28,6 +28,7 @@ const Admin = () => {
     };
 
     const fetchProducts = () => {
+        setShowProgressBar(true); 
         const t0 = performance.now();
         const eventSource = new EventSource(`${baseURL}/fetch`);
     
@@ -49,6 +50,7 @@ const Admin = () => {
                 );
     
                 eventSource.close();
+                setShowProgressBar(false); 
             }
         };
     };
