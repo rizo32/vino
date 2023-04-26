@@ -39,7 +39,7 @@ class SaqController extends Controller
 
 public function getProduits($nombre = 24, $page = 1) /* recupere la liste de bouteilles a partir de l'url donner (SAQ) */
 {
-    $url = "https://www.saq.com/fr/produits/vin?p=" . $page . "&product_list_limit=" . $nombre . "&product_list_order=name_asc";
+    $url = "https://www.saq.com/fr/produits/vin?p=" . $page;
 
     /* initialise le cURL et configure les options */
     $ch = curl_init();
@@ -260,7 +260,7 @@ public function fetchProduits(Request $request)
 {
     ini_set('max_execution_time', 0); // Cette fonction peut rouler 120 minutes
 
-    $totalPages = 5; // Set the total number of pages you want to fetch
+    $totalPages = 342; // Set the total number of pages you want to fetch
 
     $response = new StreamedResponse(function () use ($totalPages) {
         $produits = []; // Tableau qui contiendra les produits
