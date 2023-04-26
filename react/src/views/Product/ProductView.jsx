@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import imgFontProduct from "./img/imgFontProduct.png";
+import imgFondProduct from "./img/imgFondProduct.png";
 
 export default function ProductView(props) {
     const location = useLocation();
@@ -13,7 +13,7 @@ export default function ProductView(props) {
         <div
             className="flex flex-col justify-center items-center pb-10 bg-no-repeat bg-contain bg-blend-overlay bg-black/70"
             style={{
-                backgroundImage: `url(${imgFontProduct})`,
+                backgroundImage: `url(${imgFondProduct})`,
             }}
         >
             {/* Zone image */}
