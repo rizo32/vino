@@ -63,17 +63,16 @@ const Admin = () => {
              {/* Progress bar */}
        {/* Progress bar */}
 {showProgressBar && (
-    <div className="w-full bg-gray-300 rounded">
-        <div className="w-full mt-4">
-            <div
-                className={`bg-blue-500 h-2 ${progress === 0 ? "opacity-0" : "opacity-100"}`}
-                style={{ width: `${progress}%` }}
-            ></div>
-            <span className="absolute top-0 left-0 w-full text-center">
+        <div className="w-full bg-gray-300 rounded relative h-6">
+        <div className={`absolute top-0 left-0 w-full h-full bg-red-900 ${progress === 0 ? "opacity-0" : "opacity-100"}`} style={{ width: `${progress}%` }}>
+            <span className="absolute top-0 left-0 w-full text-center h-full flex items-center justify-center text-white">
                 {progress.toFixed(2)}%
             </span>
         </div>
     </div>
+
+
+
 )}
 
             <h1 className="text-2xl font-semibold mb-4">Admin</h1>
