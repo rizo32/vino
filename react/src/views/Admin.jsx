@@ -9,6 +9,8 @@ const Admin = () => {
     const [nombre, setNombre] = useState(24);
     const [page, setPage] = useState(1);
     const [progress, setProgress] = useState(0);
+    const [showProgressBar, setShowProgressBar] = useState(false);
+
     let insert = 0;
     let double = 0;
 
@@ -26,6 +28,7 @@ const Admin = () => {
     };
 
     const fetchProducts = () => {
+        setShowProgressBar(true); 
         const t0 = performance.now();
         const eventSource = new EventSource(`${baseURL}/fetch`);
     
@@ -47,6 +50,7 @@ const Admin = () => {
                 );
     
                 eventSource.close();
+                setShowProgressBar(false); 
             }
         };
     };
@@ -57,17 +61,20 @@ const Admin = () => {
         /* retour de la section qui affichera les produis */
         <div className="flex flex-col items-center bg-red-50">
              {/* Progress bar */}
-        <div className="w-full bg-gray-300 rounded">
-        <div className="w-full mt-4">
-            <div
-                className={`bg-blue-500 h-2 ${progress === 0 ? "opacity-0" : "opacity-100"}`}
-                style={{ width: `${progress}%` }}
-            ></div>
-            <span className="absolute top-0 left-0 w-full text-center">
+       {/* Progress bar */}
+{showProgressBar && (
+        <div className="w-full bg-gray-300 rounded relative h-6">
+        <div className={`absolute top-0 left-0 w-full h-full bg-red-900 ${progress === 0 ? "opacity-0" : "opacity-100"}`} style={{ width: `${progress}%` }}>
+            <span className="absolute top-0 left-0 w-full text-center h-full flex items-center justify-center text-white">
                 {progress.toFixed(2)}%
             </span>
         </div>
-        </div>
+    </div>
+
+
+
+)}
+
             <h1 className="text-2xl font-semibold mb-4">Admin</h1>
             {/*   <select
                 value={nombre}

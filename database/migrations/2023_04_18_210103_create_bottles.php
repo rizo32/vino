@@ -18,7 +18,6 @@ return new class extends Migration {
     Schema::create('bottles', function (Blueprint $table) {
       $table->id();
       $table->string('name', 90);
-      $table->string('image_path', 255);
       $table->string('code_saq', 255);
       $table->text('description');
       $table->decimal('price_saq', 8, 2);
