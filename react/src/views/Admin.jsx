@@ -61,7 +61,9 @@ const Admin = () => {
         /* retour de la section qui affichera les produis */
         <div className="flex flex-col items-center bg-red-50">
              {/* Progress bar */}
-        <div className="w-full bg-gray-300 rounded">
+       {/* Progress bar */}
+{showProgressBar && (
+    <div className="w-full bg-gray-300 rounded">
         <div className="w-full mt-4">
             <div
                 className={`bg-blue-500 h-2 ${progress === 0 ? "opacity-0" : "opacity-100"}`}
@@ -71,7 +73,9 @@ const Admin = () => {
                 {progress.toFixed(2)}%
             </span>
         </div>
-        </div>
+    </div>
+)}
+
             <h1 className="text-2xl font-semibold mb-4">Admin</h1>
             {/*   <select
                 value={nombre}
