@@ -22,7 +22,7 @@ export default function DefaultLayout() {
     });
   };
 
-  // aller chercher les informtions de l'user lorsque quelqu'un est connectéGg
+  // aller chercher les informtions de l'user lorsque quelqu'un est connecté
   useEffect(() => {
     axiosClient.get("/user").then(({ data }) => {
       setUser(data);
