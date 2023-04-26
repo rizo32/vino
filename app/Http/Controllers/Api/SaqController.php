@@ -10,6 +10,8 @@ use App\Models\Country;
 use Illuminate\Http\Request;
 use DOMDocument;
 use stdClass;
+use Illuminate\Support\Facades\Cache;
+use Symfony\Component\HttpFoundation\StreamedResponse; 
 class SaqController extends Controller
 
 {
@@ -257,21 +259,37 @@ private function ajouteProduit($bte)
 
 public function fetchProduits(Request $request)
 {
-    ini_set('max_execution_time', 7200); /* Cettte fonction peu rouler 120 minutes */
-    /* Récupération du nombre d'éléments à retourner et de la page demandée */
-  
-    $produits = []; /* Tableau qui contiendra les produits */
+    ini_set('max_execution_time', 7200); // Cette fonction peut rouler 120 minutes
 
-    for ($i = 1; $i < 2; $i++) {
-        $response = $this->getProduits(24, $i);
-        $data = $response->getData();
-        $produits = array_merge($produits, $data);
-    }
+    $totalPages = 5; // Set the total number of pages you want to fetch
 
-    return response()->json($produits);
+    $response = new StreamedResponse(function () use ($totalPages) {
+        $produits = []; // Tableau qui contiendra les produits
+
+        for ($i = 1; $i <= $totalPages; $i++) {
+            $response = $this->getProduits(24, $i);
+            $data = $response->getData();
+            $produits = array_merge($produits, $data);
+    
+            $progressPercentage = ($i / $totalPages) * 100;
+            echo "data: " . json_encode(['progressPercentage' => $progressPercentage]) . "\n\n";
+            ob_flush();
+            flush();
+        }
+
+        echo "data: " . json_encode(['done' => true, 'produits' => $produits]) . "\n\n";
+        ob_flush();
+        flush();
+    });
+
+    $response->headers->set('Content-Type', 'text/event-stream');
+    $response->headers->set('Cache-Control', 'no-cache');
+    $response->headers->set('Connection', 'keep-alive');
+    $response->headers->set('X-Accel-Buffering', 'no');
+    $response->headers->set('Access-Control-Allow-Origin', '*');
+
+    return $response;
 }
-
-
 
 
 }

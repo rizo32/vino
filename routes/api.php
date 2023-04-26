@@ -48,4 +48,7 @@ Route::apiResource('/cellarHasBottles', CellarHasBottleController::class);
 /* <YG */
 Route::apiResource('/admin', AdminController::class);
 Route::post('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
+Route::get('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
+
+
 /* YG> */
