@@ -1,27 +1,35 @@
 import React from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import imgFontProduct from "./img/imgFontProduct.png";
 
 export default function ProductView(props) {
     const location = useLocation();
-    const data = location.state;
-    console.log(data);
 
     // Récupère les informations de bottle passées depuis la page précédente
     const bottle = location.state.bottle;
+    console.log("bottle:", bottle);
 
     return (
-        <div className="flex flex-col justify-center items-center pb-10">
+        <div
+            className="flex flex-col justify-center items-center pb-10 bg-no-repeat bg-contain bg-blend-overlay bg-black/70"
+            style={{
+                backgroundImage: `url(${imgFontProduct})`,
+            }}
+        >
+            {/* Zone image */}
             <section className="pt-6 ">
                 <img
-                    className="h-60 object-contain"
+                    className="h-72 object-contain"
                     src={bottle.image_url}
-                    alt=""
+                    alt={bottle.name}
                 />
             </section>
-            <section className="w-full flex flex-col justify-start items-start gap-3 p-6 bg-white flex-grow">
+            {/* Zone sous image */}
+            <section className="w-full flex flex-col justify-start items-start gap-3 p-6 bg-white ">
                 <h1 className="font-bold">{bottle.name}</h1>
                 <div className="flex gap-3">
-                    <p className="font-light">{bottle.type}</p> <span>|</span>{" "}
+                    <p className="font-light">{bottle.type}</p>{" "}
+                    <span className="font-light">|</span>{" "}
                     <p className="font-light">{bottle.format}</p>
                 </div>
                 <p className="font-light">
@@ -86,12 +94,14 @@ export default function ProductView(props) {
                         </svg>
                     </span>
                     {/* Propriété à venir?: {bottle.numberOfReview????} */}
-                    <span>|</span> <p className="font-light">? avis</p>
+                    <span className="font-light">|</span>{" "}
+                    <p className="font-light">? avis</p>
                 </div>
             </section>
-            <section className="w-full bg-white ">
+            {/* Zone informations détaillées */}
+            <section className="w-full border border-t-black-50 bg-white ">
                 <h2 className="pt-9 pb-3 px-6 bg-red-50">
-                    Information détaillées
+                    Informations détaillées
                 </h2>
                 <div className="flex flex-col gap-6 p-6">
                     <div>
@@ -100,27 +110,28 @@ export default function ProductView(props) {
                     </div>
                     <div>
                         <p>Désignation réglementée</p>
-                        <strong>{}</strong>
+                        <strong>À venir</strong>
                     </div>
                     <div>
                         <p>Cépage</p>
-                        <strong>{}</strong>
+                        <strong>À venir</strong>
                     </div>
                     <div>
                         <p>Degré d'alcool</p>
-                        <strong>{}</strong>
+                        <strong>À venir</strong>
                     </div>
                     <div>
                         <p>Taux de sucre</p>
-                        <strong>{}</strong>
+                        <strong>À venir</strong>
                     </div>
                     <div>
                         <p>Couleur</p>
-                        <strong>{}</strong>
+                        <strong>{bottle.type}</strong>
                     </div>
                 </div>
             </section>
-            <section className="w-full bg-white ">
+            {/* Zone dégustation */}
+            <section className="w-full border border-t-black-50 bg-white ">
                 <h2 className="pt-9 pb-3 px-6 bg-red-50">Dégustation</h2>
             </section>
         </div>

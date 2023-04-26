@@ -48,7 +48,10 @@ export default function Catalog() {
                 <ul>
                     {bottles.map((bottle) => (
                         <li key={bottle.id}>
-                            <ProductCard bottle={bottle} setBottles={setBottles} />
+                            <ProductCard
+                                bottle={bottle}
+                                setBottles={setBottles}
+                            />
                         </li>
                     ))}
                 </ul>
