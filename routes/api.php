@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BottleController;
 use App\Http\Controllers\Api\CellarHasBottleController;
 use App\Http\Controllers\Api\SaqController;
+use App\Http\Controllers\Api\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,10 +29,12 @@ Route::get('/csrf-token', function () {
 Route::middleware('auth:sanctum')->group(function () {
   Route::post('/logout', [AuthController::class, 'logout']);
 
+  // Pour aller chercher l'user connecté
   Route::get('/user', function (Request $request) {
     return $request->user();
   });
 
+  // Opérations users
   Route::apiResource('/users', UserController::class);
 });
 

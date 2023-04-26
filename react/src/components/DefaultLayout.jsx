@@ -42,7 +42,7 @@ export default function DefaultLayout() {
         <Outlet />
       </main>
       <aside className="fixed bottom-0 w-full bg-white h-10 flex justify-around">
-        <div className="text-violet-500">Hello, {user.first_name}</div>
+        <Link to={`/users/${user.id}`}>{user.first_name}</Link>
         <a href="#" onClick={onLogout} className="btn-logout">
           Logout
         </a>

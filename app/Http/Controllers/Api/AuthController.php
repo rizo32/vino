@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignupRequest;
 use App\Models\User;
+use App\Models\Cellar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,6 +20,10 @@ class AuthController extends Controller
         'last_name' => $data['last_name'],
         'email' => $data['email'],
         'password' => bcrypt($data['password']),
+      ]);
+      $cellar = Cellar::create([
+        'name' => "Le cellier de " . $data['first_name'],
+        'user_id' => $user->id
       ]);
 
       $token = $user->createToken('main')->plainTextToken;

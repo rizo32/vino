@@ -116,7 +116,7 @@ export default function Signup() {
             placeholder="********"
             className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset mt-2"
           />
-          <button className="btn btn-block mt-8 bg-red-900 rounded-md text-white h-8 text-lg shadow-shadow-tiny">
+          <button className="btn btn-block mt-8 bg-red-900 rounded-md text-white h-8 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover">
             L'aventure commence!
           </button>
           <p className="text-center absolute bottom-14 left-1/2 transform -translate-x-1/2 w-10/12">

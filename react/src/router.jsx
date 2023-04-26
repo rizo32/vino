@@ -6,6 +6,7 @@ import Cellar from "./views/Cellar/Cellar.jsx";
 import ProductView from "./views/ProductView.jsx";
 import Catalog from "./views/Catalog/Catalog.jsx";
 import Home from "./views/Home.jsx";
+import UserView from "./views/UserView.jsx";
 import NotFound from "./views/NotFound.jsx";
 import GuestLayout from "./components/GuestLayout.jsx";
 import DefaultLayout from "./components/DefaultLayout.jsx";
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "/product/:id",
         element: <ProductView />,
+      },
+      {
+        path: "/users/:id",
+        element: <UserView />,
       },
       {
         path: "/admin",
