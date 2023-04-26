@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import axiosClient from "../../axios-client";
 import EditQuantityModal from "../EditQuantityModal/EditQuantityModal";
-import "./style/ProductCard.css";
 import { useState } from "react";
 
 export default function ProductCard({ bottle, quantity, setBottles }) {
@@ -25,32 +24,34 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
     };
 
     return (
-        // Il faudra mettre le lien en évitant que d'appuyer sur le "+" ou swiper
-        // enclenche la redirection
-        /* <Link to={`/product/${bottle.id}`}> */
-
         <article
             id="ProductCard"
-            className="flex flex-row justify-start bg-white relative"
+            className="flex flex-row justify-start py-4 bg-white"
         >
             <Link
                 to={`/product/${bottle.id}`}
                 state={{ bottle }}
-                className="flex flex-row justify-start py-4 mb-2 bg-white relative"
+                className="flex flex-row justify-start  bg-white relative"
             >
                 {location.pathname === "/cellar" ? (
-                    <span className="quantity-chip">{quantity}</span>
+                    <span className="absolute left-3 h-8 w-8 bg-red-900 text-white rounded-full flex items-center justify-center">
+                        {quantity}
+                    </span>
                 ) : bottle.quantity ? (
-                    <span className="quantity-chip">{bottle.quantity}</span>
+                    <span className="absolute left-3 h-8 w-8 bg-red-900 text-white rounded-full flex items-center justify-center">
+                        {bottle.quantity}
+                    </span>
                 ) : null}
-                <div className="flex flex-col justify-center">
+                {/* Zone image */}
+                <section className="flex flex-col justify-center ">
                     <img
-                        className="h-36 object-contain"
+                        className="h-48 object-cover"
                         src={bottle.image_url}
-                        alt=""
+                        alt={bottle.name}
                     />
-                </div>
-                <section className="flex flex-col justify-start items-start gap-3 bg-white w-[60%]">
+                </section>
+                {/* Zone information */}
+                <section className="flex flex-col justify-start items-start gap-3 bg-white">
                     <h2 className="font-bold">{bottle.name}</h2>
                     <div className="flex gap-3">
                         <p className="font-light">{bottle.type}</p>{" "}
@@ -124,32 +125,18 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
                         <p>37 avis</p>
                     </div>
                 </section>
-                {/* <Link to={`/product/${bottle.id}`} state={{ bottle }}>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-8 h-8"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
-                    />
-                </svg>
-            </Link> */}
             </Link>
+            {/* Zone bouton d'action */}
+            {/* Zone ajout bouteille (svg +) */}
             {location.pathname != "/cellar" ? (
-                <div className="px-4 py-3">
+                <div className="px-3">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth={2}
                         stroke="currentColor"
-                        className="w-12 h-12"
+                        className="w-10 h-10"
                         onClick={() => addToCellar(bottle)}
                     >
                         <path
@@ -160,13 +147,24 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
                     </svg>
                 </div>
             ) : null}
+            {/* Zone édition bouteille (svg style) */}
             {location.pathname === "/cellar" ? (
-                <>
-                    <img
-                        className="rm-bottle absolute right-5"
+                <section className="px-3">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={2}
+                        stroke="currentColor"
+                        className="w-9 h-9 cursor-pointer"
                         onClick={handleOpen}
-                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAADGklEQVR4nO2du2oWQRiGnyYa4wFTaBFBy3i4AvECbBQsLLRRkwsQLTxEe+8gdyB25iBskUvwgDZiFMEiAUEsoiSghfDJ4PwQAsHk3+zMN7PvA2/773zvO4fd+YddEEIIIYQQQgghhBBi94wD08AC8BHYAKwSbcSa5oGpWKsbDgCPgB8OjLJECrXOxNqzMgG8cmCIZdI74GQu808Aqw5MsMxajV4kJQy9Nw6KNycKs8BoygAeOyjanOlhKvPHe7bg2g61luruaNpBseZUt1IEMO+gUHOquRQBfHZQqDlVeFjrnHUHhZpTBW86J3eR5lwKAAWQvReaRoAv/QGeAlfitsEIcBw4DzwBvmsKojPzw5bJmf9MzEeAWa0B7Ln5L4CxXayKt/fgmlqE+WdE+GNo3xButB0JCgBogP1DOnEY+KYASN7zNxMWZo0A8pgfuKAASDrtbOWYAiBLzx8QgtQURPqeP+CUAiCb+YGrCoDk085mnikAspl/Lu4daQ0g7bQzOG7zWk/CZOn54XcXW5pf9VZE02HPH9nDwwadI/PpVwBNIT2/ygCawsyvKoCmQPOrCaAp1PwqAmgKNr/4AJrCzS86gKYC84sNoKnE/CIDaCoyv7gAmsrMLyqAxY431hYymF9MAO93eWKtFPOLCeBapeYbCWjbwN/AoYrmfCstgKWKzTcS0LaBdyo230hA2wZOVmy+kYA2jftSuflGAto0Lpy9r9l8IwFtGnepcvONBOS8/Rxxbr7rAJZ6YL6RgGEbdrfFNQ/u0aGpXgdwdkjjrwMfHBhbfAA7faXXZBwtYcr65cDQagK4uM3vjcW7o9n4nJDbwGoD+ApcjtPK6cJ7uZUYQF/UObkLNOdSAFQegF5Zxrbm/0wRwCcHw9ycajlFACVsB1gmPU8RwJSDQs2pbqQIYDy+pjd3seZMwZOjJGLGQcHmTPdIyGjPP9xgW/Qy9evrB1/PWHFQvGXWSvQiCxMxfeup3ub8hMmAMPQe9GxhXgPud3iyeyjCHcDN+Ar35cqemNdjTXOxxmR3O0IIIYQQQgghhBCCavgLyCF3vmwLdZkAAAAASUVORK5CYII="
-                    />
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                        />
+                    </svg>
                     {open && (
                         <EditQuantityModal
                             //utiliser le cellier de l'usagé connecté
@@ -175,9 +173,8 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
                             handleClose={handleClose}
                         />
                     )}
-                </>
+                </section>
             ) : null}
         </article>
-        /* </Link> */
     );
 }
