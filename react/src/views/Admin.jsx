@@ -9,6 +9,8 @@ const Admin = () => {
     const [nombre, setNombre] = useState(24);
     const [page, setPage] = useState(1);
     const [progress, setProgress] = useState(0);
+    const [showProgressBar, setShowProgressBar] = useState(false);
+
     let insert = 0;
     let double = 0;
 
