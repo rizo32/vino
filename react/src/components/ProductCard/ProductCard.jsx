@@ -26,12 +26,12 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
     return (
         <article
             id="ProductCard"
-            className="flex flex-row justify-start py-4 bg-white"
+            className="relative flex flex-row justify-start py-2 bg-white"
         >
             <Link
                 to={`/product/${bottle.id}`}
                 state={{ bottle }}
-                className="flex flex-row justify-start  bg-white relative"
+                className="w-full flex flex-row justify-between bg-white relative"
             >
                 {location.pathname === "/cellar" ? (
                     <span className="absolute left-3 h-8 w-8 bg-red-900 text-white rounded-full flex items-center justify-center">
@@ -43,26 +43,23 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
                     </span>
                 ) : null}
                 {/* Zone image */}
-                <section className="flex flex-col justify-center ">
+                <section className="h-40 w-20 flex flex-col justify-center ">
                     <img
-                        className="h-48 object-cover"
+                        className="h-full object-cover"
                         src={bottle.image_url}
                         alt={bottle.name}
                     />
                 </section>
                 {/* Zone information */}
-                <section className="flex flex-col justify-start items-start gap-3 bg-white">
+                <section className="flex flex-col justify-start items-start gap-3 bg-white flex-grow w-[60%]">
                     <h2 className="font-bold">{bottle.name}</h2>
                     <div className="flex gap-3">
                         <p className="font-light">{bottle.type}</p>{" "}
                         <span className="font-light">|</span>{" "}
                         <p className="font-light">{bottle.format}</p>
                     </div>
-                    {bottle.country ? (
-                        <p className="font-light">
-                            {bottle.country}, {bottle.state}
-                        </p>
-                    ) : null}
+                    <p className="font-light">{bottle.format}</p>
+
                     <div className="flex gap-4">
                         <span className="flex">
                             <svg
@@ -136,7 +133,7 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
                         viewBox="0 0 24 24"
                         strokeWidth={2}
                         stroke="currentColor"
-                        className="w-10 h-10"
+                        className="w-10 h-10 cursor-pointer"
                         onClick={() => addToCellar(bottle)}
                     >
                         <path
