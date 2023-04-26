@@ -8,6 +8,7 @@ const Admin = () => {
     const [products, setProducts] = useState([]);
     const [nombre, setNombre] = useState(24);
     const [page, setPage] = useState(1);
+    const [progress, setProgress] = useState(0);
     let insert = 0;
     let double = 0;
 
@@ -24,26 +25,49 @@ const Admin = () => {
         }));
     };
 
-    const fetchProducts = async () => {
-        /* Fonction fetch qui va être utilisée pour récupérer la liste des produits à montrer sur la page */
-        const t0 = performance.now(); // Timer pour mesurer le temps d'execution de la fonction
-        const response = await axios.post(`${baseURL}/fetch`, {
-            nombre,
-            page,
-        });
-        const parsedProducts = parseProductData(response.data);
-        setProducts(parsedProducts); /* mis a jour de la liste des produits */
-        const t1 = performance.now(); // fin du temps d'execution
-        const timeDiff = t1 - t0; // calcul du temps d'execution
-        console.log(
-            `FetchProducts prend ${timeDiff} millisecondes (${(
-                timeDiff / 1000
-            ).toFixed(2)} secondes ou ${(timeDiff / 60000).toFixed(2)} minutes)`
-        ); // Affichage du temps d'execution
+    const fetchProducts = () => {
+        const t0 = performance.now();
+        const eventSource = new EventSource(`${baseURL}/fetch`);
+    
+        eventSource.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+    
+            if (data.progressPercentage) {
+                setProgress(data.progressPercentage);
+            } else if (data.done) {
+                const parsedProducts = parseProductData(data.produits);
+                setProducts(parsedProducts);
+    
+                const t1 = performance.now();
+                const timeDiff = t1 - t0;
+                console.log(
+                    `FetchProducts prend ${timeDiff} millisecondes (${(
+                        timeDiff / 1000
+                    ).toFixed(2)} secondes ou ${(timeDiff / 60000).toFixed(2)} minutes)`
+                );
+    
+                eventSource.close();
+            }
+        };
     };
+
+
+
     return (
         /* retour de la section qui affichera les produis */
         <div className="flex flex-col items-center bg-red-50">
+             {/* Progress bar */}
+        <div className="w-full bg-gray-300 rounded">
+        <div className="w-full mt-4">
+            <div
+                className={`bg-blue-500 h-2 ${progress === 0 ? "opacity-0" : "opacity-100"}`}
+                style={{ width: `${progress}%` }}
+            ></div>
+            <span className="absolute top-0 left-0 w-full text-center">
+                {progress.toFixed(2)}%
+            </span>
+        </div>
+        </div>
             <h1 className="text-2xl font-semibold mb-4">Admin</h1>
             {/*   <select
                 value={nombre}
