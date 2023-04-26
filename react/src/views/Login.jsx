@@ -38,7 +38,7 @@ export default function Login() {
           {/* Si quelqu'un a une meilleure traduction de 'welcome back', the floor is yours! */}
           <h1 className="text-4xl text-center mt-vh-5">Rebonjour!</h1>
           {message.email && (
-            <div className="text-red-900 mt-vh-20 absolute w-full text-center left-1/2 transform -translate-x-1/2">
+            <div className="text-red-900 mt-vh-15 absolute w-full text-center left-1/2 transform -translate-x-1/2">
               <p>{message.email[0]}</p>
             </div>
           )}
@@ -53,7 +53,7 @@ export default function Login() {
             className="rounded-lg bg-white h-12 pl-2 shadow-shadow-tiny-inset"
           />
           {message.password && (
-            <div className="text-red-900 mt-vh-20 absolute w-full text-center left-1/2 transform -translate-x-1/2">
+            <div className="text-red-900 mt-vh-15 absolute w-full text-center left-1/2 transform -translate-x-1/2">
               <p>{message.password[0]}</p>
             </div>
           )}
@@ -67,7 +67,7 @@ export default function Login() {
             placeholder="********"
             className="rounded-lg bg-white h-12 pl-2 shadow-shadow-tiny-inset"
           />
-          <button className="btn btn-block mt-12 bg-red-900 rounded-md text-white h-12 text-xl shadow-shadow-tiny">
+          <button className="btn btn-block mt-12 bg-red-900 rounded-md text-white h-12 text-xl shadow-shadow-tiny hover:shadow-none hover:bg-red-hover">
             Connexion
           </button>
         </form>
