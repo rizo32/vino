@@ -27,7 +27,7 @@ return new class extends Migration {
       $table->foreignId('country_id')->constrained()->onDelete('cascade')->nullable();
       $table->foreignId('type_id')->constrained()->onDelete('cascade')->nullable();
       $table->integer('millesime')->nullable();
-      $table->float('rating_saq')->nullable();
+      $table->string('rating_saq')->nullable();
       $table->timestamps();
   });
   
