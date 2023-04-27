@@ -11,6 +11,7 @@ const Admin = () => {
     const [progress, setProgress] = useState(0);
     const [showProgressBar, setShowProgressBar] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [showButton, setShowButton] = useState(true);
 
     let insert = 0;
     let double = 0;
