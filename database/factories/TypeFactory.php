@@ -28,7 +28,7 @@ class TypeFactory extends Factory
         ];
 
         return [
-            'type' => $this->faker->unique()->randomElement($types),
+            'types' => $this->faker->unique()->randomElement($types),
         ];
     }
 }

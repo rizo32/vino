@@ -23,13 +23,14 @@ return new class extends Migration {
       $table->decimal('price_saq', 8, 2);
       $table->string('image_url', 255)->nullable();
       $table->string('url_saq', 255)->nullable();
-      $table->foreign_id('format_id', 255)->constrained()->onDelete('cascade');
-      $table->foreign_id('country_id', 255)->constrained()->onDelete('cascade');
-      $table->foreign_id('type_id', 255)->constrained()->onDelete('cascade');
+      $table->foreignId('format_id')->constrained()->onDelete('cascade');
+      $table->foreignId('country_id')->constrained()->onDelete('cascade');
+      $table->foreignId('type_id')->constrained()->onDelete('cascade');
       $table->integer('millesime')->nullable();
       $table->float('rating_saq')->nullable();
       $table->timestamps();
-    });
+  });
+  
     
     DB::statement('SET FOREIGN_KEY_CHECKS=1;');
   }
