@@ -37,7 +37,7 @@ export default function ProductView(props) {
         </section>
         {/* Zone sous image */}
         <section className="w-full flex flex-col justify-start items-start gap-3 p-6 bg-white ">
-            <h1 className="font-bold">{bottle.name}</h1>
+            <h1 className="font-bold">{bottle.name.charAt(0).toUpperCase() + bottle.name.slice(1)}</h1>
             <div className="flex gap-3">
             <p className="font-light">{bottle.type}</p>{" "}
             <span className="font-light">|</span>{" "}
