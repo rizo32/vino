@@ -139,7 +139,7 @@ const Admin = () => {
             )}
             <section></section>
             <section className="flex flex-col gap-4 items-start justify-start">
-                {products.forEach((product) => {
+             {/*    {products.forEach((product) => {
                     if (product.result.insert != 0) {
                         insert++;
                     }
@@ -149,7 +149,7 @@ const Admin = () => {
                 })}
 
                 <p>Nombre de produits insérés : {insert}</p>
-                <p>Nombre de produits en doublon : {double}</p>
+                <p>Nombre de produits en doublon : {double}</p> */}
                 {products.map((product, index) => (
                     <article
                         id="ProductCard"
