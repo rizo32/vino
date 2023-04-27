@@ -22,6 +22,7 @@ class Bottle extends Model
     'format_id',
     'type_id',
     'rating_saq',
+    'num_comments'
   ];
 
   // Désactivation puisque le cURL actual n'utilise pas la clé étrangère
