@@ -113,7 +113,30 @@ const Admin = () => {
             >
                 Fetch Products
             </button>
-            
+
+                {/* Add the modal */}
+            {showModal && (
+                <div className="fixed inset-0 flex items-center justify-center z-50">
+                    <div className="bg-white p-8 rounded-lg shadow-md">
+                        <h2 className="text-xl font-semibold mb-4">Confirmation</h2>
+                        <p>Le processus peut être long. Souhaitez-vous poursuivre ?</p>
+                        <div className="flex justify-end mt-6">
+                            <button
+                                onClick={handleCancel}
+                                className="bg-gray-300 text-black py-2 px-4 rounded-lg shadow-md hover:bg-gray-400 mr-2"
+                            >
+                                Annuler
+                            </button>
+                            <button
+                                onClick={handleConfirm}
+                                className="bg-red-900 text-white py-2 px-4 rounded-lg shadow-md hover:bg-red-700"
+                            >
+                                Je confirme
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
             <section></section>
             <section className="flex flex-col gap-4 items-start justify-start">
                 {products.forEach((product) => {
