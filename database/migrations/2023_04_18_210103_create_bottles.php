@@ -18,15 +18,14 @@ return new class extends Migration {
     Schema::create('bottles', function (Blueprint $table) {
       $table->id();
       $table->string('name', 90);
-      $table->string('image_path', 255);
       $table->string('code_saq', 255);
       $table->text('description');
       $table->decimal('price_saq', 8, 2);
       $table->string('image_url', 255)->nullable();
       $table->string('url_saq', 255)->nullable();
-      $table->string('format_id', 255)->nullable()->onDelete('cascade');
-      $table->string('country_id', 255)->nullable()->onDelete('cascade');
-      $table->string('type_id', 255)->nullable()->onDelete('cascade');
+      $table->foreign_id('format_id', 255)->constrained()->onDelete('cascade');
+      $table->foreign_id('country_id', 255)->constrained()->onDelete('cascade');
+      $table->foreign_id('type_id', 255)->constrained()->onDelete('cascade');
       $table->integer('millesime')->nullable();
       $table->float('rating_saq')->nullable();
       $table->timestamps();
