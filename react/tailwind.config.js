@@ -27,9 +27,6 @@ export default {
             },
         },
     },
-    plugins: [
-        require('@tailwindcss/forms'),
-    ],
     corePlugins: {
         // Hide scrollbar track
         scrollbar: ({ addBase }) => {

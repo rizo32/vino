@@ -95,11 +95,10 @@ export default function Cellar() {
                             <ProductCard
                                 bottle={bottle.bottle}
                                 quantity={bottle.quantity}
+                                removeFromCellar={removeFromCellar}
+                                cellarHasBottleId={bottle.id}
                             />
                             {/* mettre en place le comportement swipe */}
-                            <span onClick={() => removeFromCellar(bottle.id)}>
-                                delete
-                            </span>
                         </li>
                     ))}
                 </ul>
