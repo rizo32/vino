@@ -224,16 +224,36 @@ class SaqController extends Controller
             }
         }
 
-
+        // Prix , est-ce qu"ont le garde
         $aElements = $noeud->getElementsByTagName("span");
         foreach ($aElements as $node) {
             if ($node->getAttribute('class') == 'price') {
                 $info->prix = trim($node->textContent);
             }
         }
-        //var_dump($info);
-        return $info; /* renvoie de l'objet */
+       
+
+
+
+        //Nombre de rating
+        $info->num_comments = null; /* initialisation de la variable pour contrer les cas ou il n'y a pas de rating*/
+        $aElements = $noeud->getElementsByTagName("div");
+        foreach ($aElements as $node) {
+            if ($node->getAttribute('class') == 'reviews-actions') {
+                $commentsLink = $node->getElementsByTagName("a")->item(0);
+                if (preg_match("/\d+/", $commentsLink->textContent, $aRes)) {
+                    $info->num_comments = intval(trim($aRes[0]));
+                    Log::info($info->num_comments);
+                }
+            }
+        }
+
+
+         //var_dump($info);
+         return $info; /* renvoie de l'objet */
     }
+
+
 
     private function ajouteProduit($bte)
     {
@@ -264,6 +284,7 @@ class SaqController extends Controller
             $newBottle->country_id = $bte->desc->country_id;
             $newBottle->type_id = $bte->desc->type_id;
             $newBottle->rating_saq = $bte->rating;
+            $newBottle->num_comments = $bte->num_comments;
 
             /* Enregistrement de la bouteille dans la base de données */
             if ($newBottle->save()) {
