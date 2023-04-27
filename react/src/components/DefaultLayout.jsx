@@ -43,7 +43,6 @@ export default function DefaultLayout() {
             </main>
             <aside className="fixed bottom-0 w-full bg-white h-10 flex justify-around">
                 <Link to={`/users/${user.id}`}>{user.first_name}</Link>
-                {/* <Link to={`/users/${user.id}`}>{user.first_name.charAt(0).toUpperCase() + user.first_name.slice(1)}</Link> */}
                 <a href="#" onClick={onLogout} className="btn-logout">
                     Logout
                 </a>
