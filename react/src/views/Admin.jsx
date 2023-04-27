@@ -108,11 +108,12 @@ const Admin = () => {
                 <option value={21}>21</option>
             </select> */}
             <button
-                onClick={fetchProducts}
+                onClick={() => setShowModal(true)}
                 className="bg-red-900 border-2 border-red-900 text-white py-2 px-4 rounded-lg shadow-md hover:bg-transparent hover:border-2 hover:border-red-900 hover:text-black mb-4"
             >
                 Fetch Products
             </button>
+            
             <section></section>
             <section className="flex flex-col gap-4 items-start justify-start">
                 {products.forEach((product) => {
