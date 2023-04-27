@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCellarHasBottleRequest;
 use App\Http\Requests\UpdateCellarHasBottleRequest;
+use App\Http\Resources\BottleResource;
 use App\Http\Resources\CellarHasBottleResource;
+use App\Models\Bottle;
 use App\Models\CellarHasBottle;
 use Illuminate\Http\Request;
 
@@ -13,8 +15,6 @@ use Illuminate\Http\Request;
 
 class CellarHasBottleController extends Controller
 {
-
-  protected $allowedMethods = ['index', 'show', 'store', 'update', 'destroy'];
   /**
    * Display a listing of the resource.
    *
@@ -43,6 +43,16 @@ class CellarHasBottleController extends Controller
       'id' => 'required|integer',
     ]);
 
+    $bottleInCellar = CellarHasBottle::query()->where('bottle_id', '=', $request->input('id'))->first();
+
+    if($bottleInCellar){
+      $data = ['quantity' => $bottleInCellar->quantity+1];
+      $bottleInCellar->update($data);
+      return BottleResource::collection(
+        Bottle::with('cellarHasBottle')->orderBy('id', 'desc')->paginate(10)
+      );
+    }
+
     $cellarHasBottle = new CellarHasBottle([
       // 'cellar_id' => $request->input('cellar_id'),
       'cellar_id' => 1,
@@ -52,10 +62,9 @@ class CellarHasBottleController extends Controller
 
     $cellarHasBottle->save();
 
-    return response()->json([
-      'message' => 'Bottle added to cellar successfully',
-      'cellar_has_bottle' => $cellarHasBottle
-    ], 201);
+    return BottleResource::collection(
+      Bottle::with('cellarHasBottle')->orderBy('id', 'desc')->paginate(10)
+    );
   }
 
   /**
@@ -80,9 +89,7 @@ class CellarHasBottleController extends Controller
    */
   public function update(UpdateCellarHasBottleRequest $request, CellarHasBottle $cellarHasBottle)
   {
-    //va devenir changer la quantite de la bouteille dans le cellier
-    $data = $request->validated();
-    $cellarHasBottle->update($data);
+    $cellarHasBottle->update(['quantity' => $request->input('quantity')]);
 
     return new CellarHasBottleResource($cellarHasBottle);
   }

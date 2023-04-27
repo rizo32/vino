@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignupRequest;
 use App\Models\User;
+use App\Models\Cellar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,6 +21,10 @@ class AuthController extends Controller
         'email' => $data['email'],
         'password' => bcrypt($data['password']),
       ]);
+      $cellar = Cellar::create([
+        'name' => "Le cellier de " . $data['first_name'],
+        'user_id' => $user->id
+      ]);
 
       $token = $user->createToken('main')->plainTextToken;
 
@@ -29,8 +34,12 @@ class AuthController extends Controller
     public function login(LoginRequest $request){
       $credentials = $request->validated();
       if (!Auth::attempt($credentials)) {
-        return response([
-          'message' => "L'adresse courriel ou mot de passe est incorrect"
+        return response()->json([
+          'errors' => [
+            'password' => [
+              "Le mot de passe est invalide"
+            ]
+          ]
         ], 422);
       }
       /** @var User $user */

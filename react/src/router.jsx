@@ -2,11 +2,11 @@ import { createBrowserRouter } from "react-router-dom";
 import Login from "./views/Login.jsx";
 import Admin from "./views/Admin.jsx";
 import Signup from "./views/Signup.jsx";
-import Dashboard from "./views/Dashboard.jsx";
 import Cellar from "./views/Cellar/Cellar.jsx";
-import ProductView from "./views/ProductView.jsx";
+import ProductView from "./views/Product/ProductView.jsx";
 import Catalog from "./views/Catalog/Catalog.jsx";
 import Home from "./views/Home.jsx";
+import UserView from "./views/UserView.jsx";
 import NotFound from "./views/NotFound.jsx";
 import GuestLayout from "./components/GuestLayout.jsx";
 import DefaultLayout from "./components/DefaultLayout.jsx";
@@ -15,16 +15,12 @@ import { Navigate } from "react-router-dom";
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <GuestLayout />,
+        element: <DefaultLayout />,
         children: [
             {
                 // redirection si aucune adresse n'est entrée
                 path: "/",
-                element: <Navigate to="/dashboard" />,
-            },
-            {
-                path: "/dashboard",
-                element: <Dashboard />,
+                element: <Navigate to="/cellar" />,
             },
             {
                 path: "/cellar",
@@ -39,8 +35,12 @@ const router = createBrowserRouter([
                 element: <ProductView />,
             },
             {
+                path: "/users/:id",
+                element: <UserView />,
+            },
+            {
                 path: "/admin",
-                element: <Admin />, 
+                element: <Admin />,
             },
         ],
     },

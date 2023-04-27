@@ -6,6 +6,9 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BottleController;
 use App\Http\Controllers\Api\CellarHasBottleController;
 use App\Http\Controllers\Api\SaqController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\TypeController;
+use App\Http\Controllers\Api\CountryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,32 +22,36 @@ use App\Http\Controllers\Api\SaqController;
 */
 // elo
 Route::get('/csrf-token', function () {
-  return response()->json([
-    'token' => csrf_token()
-  ]);
+    return response()->json([
+        'token' => csrf_token()
+    ]);
 });
 // 
 
-Route::middleware('auth:sanctum')->group(function () {
-  Route::post('/logout', [AuthController::class, 'logout']);
-
-  Route::get('/user', function (Request $request) {
-    return $request->user();
-  });
-
-  Route::apiResource('/users', UserController::class);
+Route::middleware('auth:sanctum')->group(function () {    
+    // Opérations users
+    Route::apiResource('/users', UserController::class);
+    // Pour aller chercher l'user connecté
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
-
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::apiResource('/bottles', BottleController::class);
 
+Route::apiResource('/bottles', BottleController::class);
 Route::apiResource('/cellarHasBottles', CellarHasBottleController::class);
+
+// Filtres
+Route::get('/countries', [CountryController::class, 'index']);
+Route::get('/types', [TypeController::class, 'index']);
 
 /* <YG */
 Route::apiResource('/admin', AdminController::class);
-Route::get('/saq/getProduits/{nombre}/{page}', [SaqController::class, 'getProduits'])->where(['nombre' => '[0-9]+', 'page' => '[0-9]+']);
-
 Route::post('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
+Route::get('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
+
+
 /* YG> */

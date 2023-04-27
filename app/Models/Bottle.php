@@ -16,21 +16,19 @@ class Bottle extends Model
     'image_path',
     'code_saq',
     'country_id',
-    'description',
     'price_saq',
     'url_saq',
     'image_url',
     'format_id',
     'type_id',
-    'milesime',
     'rating_saq',
+    'num_comments'
   ];
 
-  // Désactivation puisque le cURL actual n'utilise pas la clé étrangère
-  // public function format()
-  // {
-  //   return $this->belongsTo(Format::class);
-  // }
+  public function format()
+  {
+    return $this->belongsTo(Format::class);
+  }
 
   public function country()
   {
@@ -42,9 +40,8 @@ class Bottle extends Model
     return $this->belongsTo(Type::class);
   }
 
-  public function cellarHasBottles()
+  public function cellarHasBottle()
   {
     return $this->hasMany(CellarHasBottle::class);
   }
-
 }
