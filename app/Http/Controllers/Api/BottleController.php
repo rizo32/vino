@@ -17,12 +17,25 @@ class BottleController extends Controller
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index()
+    public function index(Request $request)
     {
-        //retourne toutes les bouteilles en format json
-        return BottleResource::collection(
-          Bottle::with('cellarHasBottle')->orderBy('id', 'desc')->paginate(10)
-        );
+        $query = Bottle::with('cellarHasBottle')->orderBy('name', 'asc');
+
+        // Apply search filter
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where('name', 'LIKE', "%{$search}%");
+        }
+
+        // Apply country filter
+        if ($request->has('country')) {
+            $countries = explode(',', $request->country);
+            $query->whereIn('country_name', $countries);
+        }
+
+        // Apply other filters similarly...
+
+        return BottleResource::collection($query->paginate(10));
     }
 
     /**

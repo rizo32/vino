@@ -119,7 +119,7 @@ export default function ProductCard({ bottle, quantity, setBottles, removeFromCe
                             </svg>
                         </span>
                         {/* Propriété à venir?: {bottle.numberOfReview????} */}
-                        <p>37 avis</p>
+                        <p>{bottle.num_comments} avis</p>
                     </div>
                 </section>
             </Link>
