@@ -16,13 +16,11 @@ class Bottle extends Model
     'image_path',
     'code_saq',
     'country_id',
-    'description',
     'price_saq',
     'url_saq',
     'image_url',
     'format_id',
     'type_id',
-    'milesime',
     'rating_saq',
   ];
 
