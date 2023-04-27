@@ -119,7 +119,13 @@ private function get_id_type($name)
     if ($type) {
         return $type->id;
     }
-    return null; // or a default value if necessary
+
+    // Creation d'un nouveau type si non existant
+    $newType = new Type();
+    $newType->types = $name;
+    $newType->save();
+
+    return $newType->id;
 }
 
 private function get_id_Format($name)
@@ -128,7 +134,13 @@ private function get_id_Format($name)
     if ($format) {
         return $format->id;
     }
-    return null; // or a default value if necessary
+
+    // Creation d'un nouveau format si non existant
+    $newFormat = new Format();
+    $newFormat->volume = $name;
+    $newFormat->save();
+
+    return $newFormat->id;
 }
 
 private function get_id_country($name)
@@ -137,9 +149,14 @@ private function get_id_country($name)
     if ($country) {
         return $country->id;
     }
-    return null; // or a default value if necessary
-}
 
+    // Creation d'un nouveau pays si non existant
+    $newCountry = new Country();
+    $newCountry->name = $name;
+    $newCountry->save();
+
+    return $newCountry->id;
+}
 
 
 
