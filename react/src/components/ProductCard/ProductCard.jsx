@@ -3,7 +3,7 @@ import axiosClient from "../../axios-client";
 import EditQuantityModal from "../EditQuantityModal/EditQuantityModal";
 import { useState, useEffect } from "react";
 
-export default function ProductCard({ bottle, quantity, setBottles, removeFromCellar, cellarHasBottleId }) {
+export default function ProductCard({ bottle, quantity, setBottles, removeFromCellar, cellarHasBottleId, updateBottleQty }) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -171,6 +171,7 @@ export default function ProductCard({ bottle, quantity, setBottles, removeFromCe
                             handleClose={handleClose}
                             removeFromCellar={removeFromCellar}
                             cellarHasBottleId={cellarHasBottleId}
+                            updateBottleQty={updateBottleQty}
                         />
                     )}
                 </section>

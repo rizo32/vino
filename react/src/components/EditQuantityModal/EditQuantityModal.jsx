@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axiosClient from "../../axios-client";
 import "./style/EditQuantityModal.css";
 
-export default function ({ cellarId, bottleId, quantity, handleClose, removeFromCellar, cellarHasBottleId }) {
+export default function ({ cellarId, bottleId, quantity, handleClose, removeFromCellar, cellarHasBottleId, updateBottleQty }) {
     const [count, setCount] = useState(quantity);
     const [deleteBottles, setDeleteBottles] = useState(false);
 
@@ -18,6 +18,16 @@ export default function ({ cellarId, bottleId, quantity, handleClose, removeFrom
         removeFromCellar(cellarHasBottleId);
         handleClose();
     }
+
+    const updateQty = () => {
+        if (count == 0) {
+            handleDeleteBottles();
+        } else {
+            const data = {'quantity': count};
+            updateBottleQty(cellarHasBottleId, data);
+            handleClose();
+        }
+    };
 
 
     function incrementCount() {
@@ -59,7 +69,7 @@ export default function ({ cellarId, bottleId, quantity, handleClose, removeFrom
                 { !deleteBottles ?
                 <div className="flex flex-row flex-nowrap w-full mx-auto">
                     <button className="rounded p-2 bg-red-900 w-1/2 m-2 text-white" onClick={handleDeleteBottles}>supprimer tout</button>
-                    <button className="rounded p-2 bg-transparent w-1/2 m-2 text-red-900 border-solid border-2 border-red-900">sauvegarder</button>
+                    <button className="rounded p-2 bg-transparent w-1/2 m-2 text-red-900 border-solid border-2 border-red-900" onClick={updateQty}>sauvegarder</button>
                 </div>
                 : null
                 }
