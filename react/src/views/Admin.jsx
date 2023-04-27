@@ -6,10 +6,12 @@ const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/saq`;
 
 const Admin = () => {
     const [products, setProducts] = useState([]);
-    const [nombre, setNombre] = useState(24);
-    const [page, setPage] = useState(1);
+/*     const [nombre, setNombre] = useState(24);
+    const [page, setPage] = useState(1); */
     const [progress, setProgress] = useState(0);
     const [showProgressBar, setShowProgressBar] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [showButton, setShowButton] = useState(true);
 
     let insert = 0;
     let double = 0;
@@ -55,7 +57,16 @@ const Admin = () => {
         };
     };
 
+    const handleConfirm = () => {
+        setShowModal(false);
+        setShowButton(false); 
+        fetchProducts();
+    };
 
+
+    const handleCancel = () => {
+        setShowModal(false);
+    };
 
     return (
         /* retour de la section qui affichera les produis */
@@ -75,7 +86,7 @@ const Admin = () => {
 
 )}
 
-            <h1 className="text-2xl font-semibold mb-4">Admin</h1>
+            {/* <h1 className="text-2xl font-semibold mb-4">Admin</h1> */}
             {/*   <select
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
@@ -98,15 +109,44 @@ const Admin = () => {
                 <option value={13}>13</option>
                 <option value={21}>21</option>
             </select> */}
-            <button
-                onClick={fetchProducts}
-                className="bg-red-900 border-2 border-red-900 text-white py-2 px-4 rounded-lg shadow-md hover:bg-transparent hover:border-2 hover:border-red-900 hover:text-black mb-4"
-            >
-                Fetch Products
-            </button>
+           {/* Center the button */}
+           {showButton && (
+                <div className="flex items-center justify-center h-full w-full absolute inset-0">
+                    <button
+                        onClick={() => setShowModal(true)}
+                        className="bg-red-900 border-2 border-red-900 text-white py-2 px-4 rounded-lg shadow-md hover:bg-transparent hover:border-2 hover:border-red-900 hover:text-black mb-4"
+                    >
+                        Fetch Products
+                    </button>
+                </div>
+            )}
+
+                {/* Add the modal */}
+            {showModal && (
+                <div className="fixed inset-0 flex items-center justify-center z-50">
+                    <div className="bg-white p-8 rounded-lg shadow-md">
+                        <h2 className="text-xl font-semibold mb-4">Confirmation</h2>
+                        <p>Le processus peut être long. Souhaitez-vous poursuivre ?</p>
+                        <div className="flex justify-end mt-6">
+                            <button
+                                onClick={handleCancel}
+                                className="bg-gray-300 text-black py-2 px-4 rounded-lg shadow-md hover:bg-gray-400 mr-2"
+                            >
+                                Annuler
+                            </button>
+                            <button
+                                onClick={handleConfirm}
+                                className="bg-red-900 text-white py-2 px-4 rounded-lg shadow-md hover:bg-red-700"
+                            >
+                                Je confirme
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
             <section></section>
             <section className="flex flex-col gap-4 items-start justify-start">
-                {products.forEach((product) => {
+             {/*    {products.forEach((product) => {
                     if (product.result.insert != 0) {
                         insert++;
                     }
@@ -116,7 +156,7 @@ const Admin = () => {
                 })}
 
                 <p>Nombre de produits insérés : {insert}</p>
-                <p>Nombre de produits en doublon : {double}</p>
+                <p>Nombre de produits en doublon : {double}</p> */}
                 {products.map((product, index) => (
                     <article
                         id="ProductCard"
