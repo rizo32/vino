@@ -59,6 +59,7 @@ const Admin = () => {
 
     const handleConfirm = () => {
         setShowModal(false);
+        setShowButton(false); 
         fetchProducts();
     };
 
