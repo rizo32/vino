@@ -120,12 +120,12 @@ const FilterPanel = ({ filters, setFilters }) => {
                             index !== types.length - 1 ? "border-b-2" : ""
                         } leading-tight cursor-pointer flex justify-between mx-4 py-4`}
                     >
-                        {type.types}
+                        {type.name}
                         <input
                             type="checkbox"
                             className="mr-2"
-                            value={type.types}
-                            checked={checkedItems.type[type.types] || false}
+                            value={type.name}
+                            checked={checkedItems.type[type.name] || false}
                             onChange={(e) => handleFilterChange(e, "type")}
                         />
                     </label>
