@@ -15,8 +15,6 @@ use Illuminate\Http\Request;
 
 class CellarHasBottleController extends Controller
 {
-
-  protected $allowedMethods = ['index', 'show', 'store', 'update', 'destroy'];
   /**
    * Display a listing of the resource.
    *
@@ -91,9 +89,7 @@ class CellarHasBottleController extends Controller
    */
   public function update(UpdateCellarHasBottleRequest $request, CellarHasBottle $cellarHasBottle)
   {
-    //va devenir changer la quantite de la bouteille dans le cellier
-    $data = $request->validated();
-    $cellarHasBottle->update($data);
+    $cellarHasBottle->update(['quantity' => $request->input('quantity')]);
 
     return new CellarHasBottleResource($cellarHasBottle);
   }
