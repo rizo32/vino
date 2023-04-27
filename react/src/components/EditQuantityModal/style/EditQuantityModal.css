@@ -20,4 +20,15 @@
     font-size: 20px;
     background-color: rgb(112, 67, 67);
     color: white;
+    cursor: pointer;
+}
+
+.increment-btn {
+    text-align: center;
+    cursor: pointer;
+}
+
+.increment-btn span{
+    padding-top: 3px;
+    font-size: 20px;
 }
