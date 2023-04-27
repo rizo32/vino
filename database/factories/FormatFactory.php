@@ -32,6 +32,7 @@ class FormatFactory extends Factory
             '375 ml',
             '4 L',
             '500 ml',
+            '750 ml',
         ];
 
         return [
