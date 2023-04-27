@@ -3,6 +3,7 @@
 
 namespace Database\Seeders;
 use App\Models\Country;
+use App\Models\Format;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
 
         // Add countries
         Country::factory()->count(33)->create();
+        Format::factory()->count(10)->create();
     }
 
     
