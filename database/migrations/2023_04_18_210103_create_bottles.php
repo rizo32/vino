@@ -19,15 +19,13 @@ return new class extends Migration {
       $table->id();
       $table->string('name', 90);
       $table->string('code_saq', 255);
-      $table->text('description');
       $table->decimal('price_saq', 8, 2);
       $table->string('image_url', 255)->nullable();
       $table->string('url_saq', 255)->nullable();
       $table->foreignId('format_id')->constrained()->onDelete('cascade')->nullable();
       $table->foreignId('country_id')->constrained()->onDelete('cascade')->nullable();
       $table->foreignId('type_id')->constrained()->onDelete('cascade')->nullable();
-      $table->integer('millesime')->nullable();
-      $table->string('rating_saq')->nullable();
+      $table->float('rating_saq')->nullable();
       $table->timestamps();
   });
   
