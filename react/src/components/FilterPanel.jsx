@@ -113,19 +113,21 @@ const FilterPanel = ({ filters, setFilters }) => {
                     </label>
                 ));
             case "type":
-                return types.map((type) => (
+                return types.map((type, index) => (
                     <label
                         key={type.id}
-                        className="block text-sm leading-tight mb-2 cursor-pointer"
+                        className={`${
+                            index !== types.length - 1 ? "border-b-2" : ""
+                        } leading-tight cursor-pointer flex justify-between mx-4 py-4`}
                     >
+                        {type.types}
                         <input
                             type="checkbox"
                             className="mr-2"
-                            value={type.id}
-                            checked={checkedItems.type[type.type] || false}
+                            value={type.types}
+                            checked={checkedItems.type[type.types] || false}
                             onChange={(e) => handleFilterChange(e, "type")}
                         />
-                        {type.name}
                     </label>
                 ));
             default:
