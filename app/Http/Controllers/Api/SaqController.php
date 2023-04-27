@@ -10,6 +10,7 @@ use App\Models\Country;
 use Illuminate\Http\Request;
 use DOMDocument;
 use stdClass;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -211,12 +212,14 @@ class SaqController extends Controller
         }
 
         // Rating
+        $info->rating = null; /* initialisation de la variable pour contrer les cas ou il n'y a pas de rating*/
         $aElements = $noeud->getElementsByTagName("div");
         foreach ($aElements as $node) {
             if ($node->getAttribute('class') == 'rating-result') {
                 $ratingSpan = $node->getElementsByTagName("span")->item(0);
                 if (preg_match("/\d+%/", $ratingSpan->textContent, $aRes)) {
-                    $info->rating = trim($aRes[0]);
+                    $info->rating = floatval(trim($aRes[0]));
+                    Log::info($info->rating);
                 }
             }
         }
