@@ -61,6 +61,11 @@ const Admin = () => {
         fetchProducts();
     };
 
+
+    const handleCancel = () => {
+        setShowModal(false);
+    };
+
     return (
         /* retour de la section qui affichera les produis */
         <div className="flex flex-col items-center bg-red-50">
