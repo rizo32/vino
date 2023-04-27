@@ -6,8 +6,8 @@ const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/saq`;
 
 const Admin = () => {
     const [products, setProducts] = useState([]);
-    const [nombre, setNombre] = useState(24);
-    const [page, setPage] = useState(1);
+/*     const [nombre, setNombre] = useState(24);
+    const [page, setPage] = useState(1); */
     const [progress, setProgress] = useState(0);
     const [showProgressBar, setShowProgressBar] = useState(false);
 
