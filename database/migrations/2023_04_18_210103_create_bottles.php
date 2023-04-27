@@ -23,9 +23,9 @@ return new class extends Migration {
       $table->decimal('price_saq', 8, 2);
       $table->string('image_url', 255)->nullable();
       $table->string('url_saq', 255)->nullable();
-      $table->foreignId('format_id')->constrained()->onDelete('cascade');
-      $table->foreignId('country_id')->constrained()->onDelete('cascade');
-      $table->foreignId('type_id')->constrained()->onDelete('cascade');
+      $table->foreignId('format_id')->constrained()->onDelete('cascade')->nullable();
+      $table->foreignId('country_id')->constrained()->onDelete('cascade')->nullable();
+      $table->foreignId('type_id')->constrained()->onDelete('cascade')->nullable();
       $table->integer('millesime')->nullable();
       $table->float('rating_saq')->nullable();
       $table->timestamps();
