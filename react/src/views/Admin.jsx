@@ -1,78 +1,96 @@
-/* importation des modules */
+// Importation des modules nécessaires
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+// URL de base pour les requêtes à l'API
 const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/saq`;
 
 const Admin = () => {
+    // Déclaration des états
     const [products, setProducts] = useState([]);
-/*     const [nombre, setNombre] = useState(24);
-    const [page, setPage] = useState(1); */
+    // const [nombre, setNombre] = useState(24);
+    // const [page, setPage] = useState(1);
     const [progress, setProgress] = useState(0);
     const [showProgressBar, setShowProgressBar] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showButton, setShowButton] = useState(true);
 
-    let insert = 0;
-    let double = 0;
+    // Initialisation des compteurs pour les produits insérés et les doublons
+    // let insert = 0;
+    // let double = 0;
 
+    // Fonction pour nettoyer les données des produits
     const parseProductData = (data) => {
         return data.map((product) => ({
             ...product,
             desc: {
                 ...product.desc,
-                /* nettoyage des formats  */
+                // Nettoyage des formats
                 type: product.desc?.type?.trim() || "",
-            format: product.desc?.format?.trim() || "",
-            pays: product.desc?.pays?.trim() || "",
+                format: product.desc?.format?.trim() || "",
+                pays: product.desc?.pays?.trim() || "",
             },
         }));
     };
 
-    const fetchProducts = () => {
-        setShowProgressBar(true); 
-        const t0 = performance.now();
-        const eventSource = new EventSource(`${baseURL}/fetch`);
-    
-        eventSource.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-    
-            if (data.progressPercentage) {
-                setProgress(data.progressPercentage);
-            } else if (data.done) {
-                const parsedProducts = parseProductData(data.produits);
-                setProducts(parsedProducts);
-    
-                const t1 = performance.now();
-                const timeDiff = t1 - t0;
-                console.log(
-                    `FetchProducts prend ${timeDiff} millisecondes (${(
-                        timeDiff / 1000
-                    ).toFixed(2)} secondes ou ${(timeDiff / 60000).toFixed(2)} minutes)`
-                );
-    
-                eventSource.close();
-                setShowProgressBar(false); 
-            }
-        };
-    };
+// Fonction pour récupérer les produits depuis l'API
+const fetchProducts = () => {
+    // Afficher la barre de progression
+    setShowProgressBar(true);
+    // Mesurer le temps d'exécution de la requête
+    const t0 = performance.now();
+    // Créer un flux d'événements pour suivre la progression
+    const eventSource = new EventSource(`${baseURL}/fetch`);
 
-    const handleConfirm = () => {
-        setShowModal(false);
-        setShowButton(false); 
-        fetchProducts();
-    };
+    // Traitement des messages reçus depuis le flux d'événements
+    eventSource.onmessage = (event) => {
+        const data = JSON.parse(event.data);
 
+        // Mettre à jour la progression si une valeur de pourcentage est disponible
+        if (data.progressPercentage) {
+            setProgress(data.progressPercentage);
+        }
+        // Si les données sont complètes, traiter et afficher les produits
+        else if (data.done) {
+            const parsedProducts = parseProductData(data.produits);
+            setProducts(parsedProducts);
 
-    const handleCancel = () => {
-        setShowModal(false);
+            // Calculer et afficher le temps d'exécution de la requête
+            const t1 = performance.now();
+            const timeDiff = t1 - t0;
+            console.log(
+                `FetchProducts prend ${timeDiff} millisecondes (${(
+                    timeDiff / 1000
+                ).toFixed(2)} secondes ou ${(timeDiff / 60000).toFixed(2)} minutes)`
+            );
+
+            // Fermer le flux d'événements et masquer la barre de progression
+            eventSource.close();
+            setShowProgressBar(false);
+        }
     };
+};
+
+// Gestionnaire pour confirmer la récupération des produits
+const handleConfirm = () => {
+    // Fermer la fenêtre modale et masquer le bouton
+    setShowModal(false);
+    setShowButton(false);
+    // Lancer la récupération des produits
+    fetchProducts();
+};
+
+// Gestionnaire pour annuler la récupération des produits
+const handleCancel = () => {
+    // Fermer la fenêtre modale
+    setShowModal(false);
+};
+
 
     return (
         /* retour de la section qui affichera les produis */
         <div className="flex flex-col items-center bg-red-50">
-             {/* Progress bar */}
-       {/* Progress bar */}
+             {/* ajout et logique du Progress bar */}
 {showProgressBar && (
         <div className="w-full bg-gray-300 rounded relative h-6">
         <div className={`absolute top-0 left-0 w-full h-full bg-red-900 ${progress === 0 ? "opacity-0" : "opacity-100"}`} style={{ width: `${progress}%` }}>
@@ -85,31 +103,7 @@ const Admin = () => {
 
 
 )}
-
-            {/* <h1 className="text-2xl font-semibold mb-4">Admin</h1> */}
-            {/*   <select
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
-                className="mb-2"
-            >
-                <option value={24}>24</option>
-                <option value={48}>48</option>
-                <option value={96}>96</option>
-            </select> */}
-            {/*   <select
-                value={page}
-                onChange={(e) => setPage(e.target.value)}
-                placeholder="Page number"
-                className="mb-2"
-            >
-                <option value={1}>1</option>
-                <option value={3}>3</option>
-                <option value={5}>5</option>
-                <option value={8}>8</option>
-                <option value={13}>13</option>
-                <option value={21}>21</option>
-            </select> */}
-           {/* Center the button */}
+           {/* centrer et logique pour btn */}
            {showButton && (
                 <div className="flex items-center justify-center h-full w-full absolute inset-0">
                     <button
@@ -121,7 +115,7 @@ const Admin = () => {
                 </div>
             )}
 
-                {/* Add the modal */}
+                {/* ajout et logique du mdodal */}
             {showModal && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">
                     <div className="bg-white p-8 rounded-lg shadow-md">
@@ -146,17 +140,6 @@ const Admin = () => {
             )}
             <section></section>
             <section className="flex flex-col gap-4 items-start justify-start">
-             {/*    {products.forEach((product) => {
-                    if (product.result.insert != 0) {
-                        insert++;
-                    }
-                    if (product.result.double != 0) {
-                        double++;
-                    }
-                })}
-
-                <p>Nombre de produits insérés : {insert}</p>
-                <p>Nombre de produits en doublon : {double}</p> */}
                 {products.map((product, index) => (
                     <article
                         id="ProductCard"
@@ -175,7 +158,6 @@ const Admin = () => {
                                         strokeWidth={2}
                                         stroke="currentColor"
                                         className="w-12 h-12"
-                                        /* onClick={() => addToCellar(bottle)} */
                                     >
                                         <path
                                             strokeLinecap="round"
@@ -248,7 +230,6 @@ const Admin = () => {
                                         />
                                     </svg>
                                 </p>
-                                {/* {bottle.numberOfReview????} */}
                                 <span>|</span> <p>? avis</p>
                             </div>
                         </section>
