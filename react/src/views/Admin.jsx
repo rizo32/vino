@@ -10,6 +10,7 @@ const Admin = () => {
     const [page, setPage] = useState(1); */
     const [progress, setProgress] = useState(0);
     const [showProgressBar, setShowProgressBar] = useState(false);
+     const [showModal, setShowModal] = useState(false);
 
     let insert = 0;
     let double = 0;
