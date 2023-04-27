@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import axiosClient from "../../axios-client";
 import EditQuantityModal from "../EditQuantityModal/EditQuantityModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function ProductCard({ bottle, quantity, setBottles }) {
     const [open, setOpen] = useState(false);
@@ -167,6 +167,7 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
                             //utiliser le cellier de l'usagé connecté
                             cellarId={1}
                             bottleId={bottle.id}
+                            quantity={quantity}
                             handleClose={handleClose}
                         />
                     )}
