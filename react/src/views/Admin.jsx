@@ -86,7 +86,7 @@ const Admin = () => {
 
 )}
 
-            <h1 className="text-2xl font-semibold mb-4">Admin</h1>
+            {/* <h1 className="text-2xl font-semibold mb-4">Admin</h1> */}
             {/*   <select
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
@@ -109,12 +109,17 @@ const Admin = () => {
                 <option value={13}>13</option>
                 <option value={21}>21</option>
             </select> */}
-            <button
-                onClick={() => setShowModal(true)}
-                className="bg-red-900 border-2 border-red-900 text-white py-2 px-4 rounded-lg shadow-md hover:bg-transparent hover:border-2 hover:border-red-900 hover:text-black mb-4"
-            >
-                Fetch Products
-            </button>
+           {/* Center the button */}
+           {showButton && (
+                <div className="flex items-center justify-center h-full w-full absolute inset-0">
+                    <button
+                        onClick={() => setShowModal(true)}
+                        className="bg-red-900 border-2 border-red-900 text-white py-2 px-4 rounded-lg shadow-md hover:bg-transparent hover:border-2 hover:border-red-900 hover:text-black mb-4"
+                    >
+                        Fetch Products
+                    </button>
+                </div>
+            )}
 
                 {/* Add the modal */}
             {showModal && (
