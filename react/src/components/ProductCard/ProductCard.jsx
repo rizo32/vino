@@ -58,7 +58,7 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
                         <span className="font-light">|</span>{" "}
                         <p className="font-light">{bottle.format}</p>
                     </div>
-                    <p className="font-light">{bottle.format}</p>
+                    <p className="font-light">{bottle.country_name}</p>
 
                     <div className="flex gap-4">
                         <span className="flex">
