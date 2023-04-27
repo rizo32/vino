@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('formats', function (Blueprint $table) {
             $table->id();
-            $table->integer('volume');
+            $table->string('volume');
             $table->timestamps();
         });
     }
