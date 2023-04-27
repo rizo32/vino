@@ -257,7 +257,6 @@ class SaqController extends Controller
             /* assignation des valeurs */
             $newBottle->name = $bte->nom;
             $newBottle->code_saq = $bte->desc->code_SAQ;
-            $newBottle->description = $bte->desc->texte;
             $newBottle->price_saq = round(floatval($bte->prix), 2);
             $newBottle->url_saq = $bte->url;
             $newBottle->image_url = $bte->img;
