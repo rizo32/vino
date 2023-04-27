@@ -261,6 +261,7 @@ class SaqController extends Controller
             $newBottle->format_id = $bte->desc->format_id;
             $newBottle->country_id = $bte->desc->country_id;
             $newBottle->type_id = $bte->desc->type_id;
+            $newBottle->rating_saq = $bte->rating;
 
             /* Enregistrement de la bouteille dans la base de données */
             if ($newBottle->save()) {
