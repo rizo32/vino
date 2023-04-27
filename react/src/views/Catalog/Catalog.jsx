@@ -19,8 +19,21 @@ export default function Catalog() {
     // aller chercher les bouteilles dans la base de données et les mettre dans le state
     const getBottles = () => {
         setLoading(true); // à mettre en place (eg Gif)
+
+        const filterParams = new URLSearchParams();
+
+        if (filters.country.length > 0) {
+            filterParams.append("country", filters.country.join(","));
+        }
+
+        if (searchValue) {
+            filterParams.append("search", searchValue);
+        }
+        // autres filtres
+
+
         axiosClient
-            .get("/bottles")
+            .get(`/bottles?${filterParams.toString()}`)
             .then(({ data }) => {
                 //console.log(data);
                 setBottles(data.data);
@@ -35,7 +48,7 @@ export default function Catalog() {
     // executer fonction
     useEffect(() => {
         getBottles();
-    }, []);
+    }, [filters, searchValue]);
 
     // const filteredBottles = !searchValue
     //     ? bottles
