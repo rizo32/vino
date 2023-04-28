@@ -8,7 +8,10 @@
 }
 
 a.active {
-    color: hsl(0, 63%, 31%);
+    color: #811d1d;
+}
+a.active svg {
+    fill: #811d1d;
 }
 
 /* Hide scrollbar for Firefox */
