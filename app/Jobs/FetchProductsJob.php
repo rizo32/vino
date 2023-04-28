@@ -21,6 +21,9 @@ class FetchProductsJob implements ShouldQueue
     public function handle()
     {
         $saqController = new SaqController();
-        $saqController->fetchProduits(request());
+        $totalPages = 342; 
+        for ($i = 1; $i <= $totalPages; $i++) {
+            $saqController->getProduits(24,$i);
+        }
     }
 }
