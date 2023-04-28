@@ -17,8 +17,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly(); 
-        $schedule->job(new FetchProductsJob())->weekly()->at('3:00'); /* 1x par semaine a 3h du matin */
-
+        $schedule->job(new FetchProductsJob())
+        ->weekly()
+        ->days([3,7]) // Mercredi et dimanche
+        ->dailyAt('03:30'); // 3:30 am
 
     }
 
