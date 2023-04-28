@@ -182,7 +182,7 @@ class SaqController extends Controller
                 $ratingSpan = $node->getElementsByTagName("span")->item(0);
                 if (preg_match("/\d+%/", $ratingSpan->textContent, $aRes)) {
                     $info->rating = floatval(trim($aRes[0]));
-                    Log::info($info->rating);
+                    /* Log::info($info->rating); */
                 }
             }
         }
@@ -206,7 +206,7 @@ class SaqController extends Controller
                 $commentsLink = $node->getElementsByTagName("a")->item(0);
                 if (preg_match("/\d+/", $commentsLink->textContent, $aRes)) {
                     $info->num_comments = intval(trim($aRes[0]));
-                    Log::info($info->num_comments);
+                    /* Log::info($info->num_comments); */
                 }
             }
         }
