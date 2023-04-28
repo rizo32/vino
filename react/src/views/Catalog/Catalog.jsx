@@ -8,6 +8,7 @@ export default function Catalog() {
     const { searchValue } = useStateContext();
     const [bottles, setBottles] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
 
     const [filters, setFilters] = useState({
         country: [],
