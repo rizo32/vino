@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\FetchProductsJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,7 +16,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // $schedule->command('inspire')->hourly(); 
+        $schedule->job(new FetchProductsJob())
+        ->weekly()
+        ->days([3,7]) // Mercredi et dimanche
+        ->dailyAt('03:30'); // 3:30 am
+
     }
 
     /**

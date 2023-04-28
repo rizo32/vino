@@ -17,29 +17,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class SaqController extends Controller
 
 {
-
-    private function getTypeID($type) /* retourne l'id du type de vin en fonction de son nom */
-    {
-        // remplacement et traitement des types
-        $types = [
-            ['id' => 1, 'name' => 'Vin rouge'],
-            ['id' => 2, 'name' => 'Vin blanc'],
-            ['id' => 3, 'name' => 'Vin rose'],
-        ];
-
-        foreach ($types as $typeData) {
-            if (strtolower($typeData['name']) === strtolower($type)) { /* si les nom matchs retour id correspondant */
-                return $typeData['id'];
-            }
-        }
-
-        return 1; // Sinon, ajout d'un type par défaut
-    }
-
-    /* 
- */
-
-    public function getProduits($nombre = 24, $page = 1) /* recupere la liste de bouteilles a partir de l'url donner (SAQ) */
+ public function getProduits($nombre = 24, $page = 1) /* recupere la liste de bouteilles a partir de l'url donner (SAQ) */
     {
         $url = "https://www.saq.com/fr/produits/vin?p=" . $page;
 
@@ -204,7 +182,7 @@ class SaqController extends Controller
                 $ratingSpan = $node->getElementsByTagName("span")->item(0);
                 if (preg_match("/\d+%/", $ratingSpan->textContent, $aRes)) {
                     $info->rating = floatval(trim($aRes[0]));
-                    Log::info($info->rating);
+                    /* Log::info($info->rating); */
                 }
             }
         }
@@ -228,7 +206,7 @@ class SaqController extends Controller
                 $commentsLink = $node->getElementsByTagName("a")->item(0);
                 if (preg_match("/\d+/", $commentsLink->textContent, $aRes)) {
                     $info->num_comments = intval(trim($aRes[0]));
-                    Log::info($info->num_comments);
+                    /* Log::info($info->num_comments); */
                 }
             }
         }
@@ -292,7 +270,7 @@ class SaqController extends Controller
     }
 
 
-    public function fetchProduits(Request $request)
+    public function fetchProduits()
     {
         ini_set('max_execution_time', 0); // Cette fonction peut rouler 120 minutes
 
