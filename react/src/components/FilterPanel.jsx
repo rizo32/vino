@@ -233,7 +233,7 @@ const FilterPanel = ({ filters, setFilters }) => {
                     >
                         Confirmation
                     </button>
-                    <div className="text-center absolute bottom-14 left-1/2 transform -translate-x-1/2 w-10/12">
+                    <div className="text-center absolute bottom-20 left-1/2 transform -translate-x-1/2 w-10/12">
                         <p className="cursor-pointer" onClick={uncheck}>
                             {"<"} Retirer les filtres
                         </p>
