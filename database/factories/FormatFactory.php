@@ -36,7 +36,7 @@ class FormatFactory extends Factory
         ];
 
         return [
-            'volume' => $this->faker->unique()->randomElement($volumes),
+            'name' => $this->faker->unique()->randomElement($volumes),
         ];
     }
 }

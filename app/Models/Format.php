@@ -12,6 +12,6 @@ class Format extends Model
     protected $table = 'formats';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'volume',
+        'name',
     ];
 }
