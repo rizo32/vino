@@ -119,7 +119,7 @@ class SaqController extends Controller
 
     private function get_id_type($name)
     {
-        $type = Type::where('types', $name)->first();
+        $type = Type::where('name', $name)->first();
         if ($type) {
             return $type->id;
         }
@@ -134,7 +134,7 @@ class SaqController extends Controller
 
     private function get_id_Format($name)
     {
-        $format = Format::where('volume', $name)->first();
+        $format = Format::where('name', $name)->first();
         if ($format) {
             return $format->id;
         }
