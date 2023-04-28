@@ -7,6 +7,10 @@
     display: none;
 }
 
+a.active {
+    color: hsl(0, 63%, 31%);
+}
+
 /* Hide scrollbar for Firefox */
 scrollbar-width: none;
 
