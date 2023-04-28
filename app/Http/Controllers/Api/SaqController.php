@@ -117,50 +117,35 @@ class SaqController extends Controller
         }
     }
 
-    private function get_id_type($name)
+    private function get_id($model, $name)
     {
-        $type = Type::where('name', $name)->first();
-        if ($type) {
-            return $type->id;
+        $models = [
+            'Type' => ['class' => Type::class, 'attribute' => 'name'],
+            'Format' => ['class' => Format::class, 'attribute' => 'name'],
+            'Country' => ['class' => Country::class, 'attribute' => 'name'],
+        ];
+
+        $modelClass = $models[$model]['class'] ?? null;
+        $attribute = $models[$model]['attribute'] ?? null;
+
+        if (!$modelClass || !$attribute) {
+            return null;
         }
 
-        // Creation d'un nouveau type si non existant
-        $newType = new Type();
-        $newType->types = $name;
-        $newType->save();
+        $instance = $modelClass::where($attribute, $name)->first();
 
-        return $newType->id;
-    }
-
-    private function get_id_Format($name)
-    {
-        $format = Format::where('name', $name)->first();
-        if ($format) {
-            return $format->id;
+        if ($instance) {
+            return $instance->id;
         }
 
-        // Creation d'un nouveau format si non existant
-        $newFormat = new Format();
-        $newFormat->volume = $name;
-        $newFormat->save();
+        // Create a new instance if not found
+        $newInstance = new $modelClass();
+        $newInstance->$attribute = $name;
+        $newInstance->save();
 
-        return $newFormat->id;
+        return $newInstance->id;
     }
 
-    private function get_id_country($name)
-    {
-        $country = Country::where('name', $name)->first();
-        if ($country) {
-            return $country->id;
-        }
-
-        // Creation d'un nouveau pays si non existant
-        $newCountry = new Country();
-        $newCountry->name = $name;
-        $newCountry->save();
-
-        return $newCountry->id;
-    }
 
 
 
@@ -192,9 +177,9 @@ class SaqController extends Controller
                 $aDesc = explode("|", $info->desc->texte); // Type, Format, Pays
                 if (count($aDesc) == 3) {
 
-                    $info->desc->type_id = $this->get_id_type(trim($aDesc[0]));
-                    $info->desc->format_id = $this->get_id_Format(trim($aDesc[1]));
-                    $info->desc->country_id = $this->get_id_country(trim($aDesc[2]));
+                    $info->desc->type_id = $this->get_id('Type', trim($aDesc[0]));
+                    $info->desc->format_id = $this->get_id('Format', trim($aDesc[1]));
+                    $info->desc->country_id = $this->get_id('Country', trim($aDesc[2]));
                 }
 
                 $info->desc->texte = trim($info->desc->texte);
@@ -231,7 +216,7 @@ class SaqController extends Controller
                 $info->prix = trim($node->textContent);
             }
         }
-       
+
 
 
 
@@ -249,8 +234,8 @@ class SaqController extends Controller
         }
 
 
-         //var_dump($info);
-         return $info; /* renvoie de l'objet */
+        //var_dump($info);
+        return $info; /* renvoie de l'objet */
     }
 
 
