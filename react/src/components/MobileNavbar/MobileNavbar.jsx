@@ -55,7 +55,7 @@ const MobileNavbar = () => {
                     <input
                         ref={searchInputRef}
                         type="text"
-                        className="bg-red-50 rounded-lg py-1 px-4 w-full h-9 placeholder-gray-500"
+                        className="bg-gray-100 rounded-lg py-1 px-4 w-full h-9 placeholder-gray-500"
                         placeholder="Trouvez votre bouteille"
                         onChange={handleSearchInputChange}
                     />

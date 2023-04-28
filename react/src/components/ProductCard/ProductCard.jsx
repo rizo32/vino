@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import axiosClient from "../../axios-client";
 import EditQuantityModal from "../EditQuantityModal/EditQuantityModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function ProductCard({ bottle, quantity, setBottles }) {
+export default function ProductCard({ bottle, quantity, setBottles, removeFromCellar, cellarHasBottleId, updateBottleQty }) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -58,7 +58,7 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
                         <span className="font-light">|</span>{" "}
                         <p className="font-light">{bottle.format}</p>
                     </div>
-                    <p className="font-light">{bottle.format}</p>
+                    <p className="font-light">{bottle.country_name}</p>
 
                     <div className="flex gap-4">
                         <span className="flex">
@@ -119,7 +119,7 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
                             </svg>
                         </span>
                         {/* Propriété à venir?: {bottle.numberOfReview????} */}
-                        <p>37 avis</p>
+                        <p>{bottle.num_comments} avis</p>
                     </div>
                 </section>
             </Link>
@@ -167,7 +167,11 @@ export default function ProductCard({ bottle, quantity, setBottles }) {
                             //utiliser le cellier de l'usagé connecté
                             cellarId={1}
                             bottleId={bottle.id}
+                            quantity={quantity}
                             handleClose={handleClose}
+                            removeFromCellar={removeFromCellar}
+                            cellarHasBottleId={cellarHasBottleId}
+                            updateBottleQty={updateBottleQty}
                         />
                     )}
                 </section>

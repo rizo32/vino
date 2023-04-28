@@ -12,6 +12,6 @@ class Type extends Model
     protected $table = 'types';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'types',
+        'name',
     ];
 }

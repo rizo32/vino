@@ -83,6 +83,21 @@ export default function Cellar() {
             });
     };
 
+    // modifier quantite bouteille
+    const updateBottleQty = (id, data) => {
+        axiosClient
+            .put(
+                `${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles/${id}`,
+                data
+                )
+            .then(() => {
+                getBottles();
+            })
+            .catch((err) => {
+                console.log(err.response);
+            });
+    };
+
     return (
         <div className="flex flex-col gap-2">
             <FilterPanel filters={filters} setFilters={setFilters} />
@@ -95,11 +110,11 @@ export default function Cellar() {
                             <ProductCard
                                 bottle={bottle.bottle}
                                 quantity={bottle.quantity}
+                                removeFromCellar={removeFromCellar}
+                                cellarHasBottleId={bottle.id}
+                                updateBottleQty={updateBottleQty}
                             />
                             {/* mettre en place le comportement swipe */}
-                            <span onClick={() => removeFromCellar(bottle.id)}>
-                                delete
-                            </span>
                         </li>
                     ))}
                 </ul>

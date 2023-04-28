@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 import axiosClient from "../axios-client";
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
+
+// const element = <FontAwesomeIcon icon={faCheck} />
 
 const FilterPanel = ({ filters, setFilters }) => {
     const [selectedCategory, setSelectedCategory] = useState(null);
@@ -7,6 +11,7 @@ const FilterPanel = ({ filters, setFilters }) => {
     const [types, setTypes] = useState([]);
     const [showCategories, setShowCategories] = useState(false);
     const [optionsVisible, setOptionsVisible] = useState(false);
+    const [checkedItems, setCheckedItems] = useState({ country: {}, type: {} });
 
     useEffect(() => {
         // Pour aller chercher les options de filtres
@@ -21,46 +26,108 @@ const FilterPanel = ({ filters, setFilters }) => {
     const handleCategoryClick = (category) => {
         setSelectedCategory(category);
         setOptionsVisible(true);
-      };
+    };
+
+    const uncheck = () => {
+        if (selectedCategory) {
+            setFilters((prevFilters) => {
+                const newFilters = { ...prevFilters };
+                newFilters[selectedCategory] = [];
+                return newFilters;
+            });
+        }
+        setCheckedItems((prevCheckedItems) => {
+            const newCheckedItems = { ...prevCheckedItems };
+            newCheckedItems[selectedCategory] = {};
+            return newCheckedItems;
+        });
+        setOptionsVisible(false);
+    };
 
     const handleFilterChange = (e, filterCategory) => {
         const value = e.target.value;
-        setFilters((prevFilters) => ({
-            ...prevFilters,
-            [filterCategory]: [...prevFilters[filterCategory], value],
+        const isChecked = e.target.checked;
+
+        setCheckedItems((prevCheckedItems) => ({
+            ...prevCheckedItems,
+            [filterCategory]: {
+                ...prevCheckedItems[filterCategory],
+                [value]: isChecked,
+            },
         }));
+
+        setFilters((prevFilters) => {
+            const newFilters = { ...prevFilters };
+
+            if (isChecked) {
+                // Add the value to the filter category if it's checked
+                newFilters[filterCategory] = [
+                    ...prevFilters[filterCategory],
+                    value,
+                ];
+            } else {
+                // Remove the value from the filter category if it's unchecked
+                newFilters[filterCategory] = prevFilters[filterCategory].filter(
+                    (item) => item !== value
+                );
+            }
+
+            return newFilters;
+        });
+        console.log(filters);
     };
 
+    // faudrait voir avec les autres filres qu'on a mais je vais surement changer switch pour foreach
     const renderOptions = () => {
         switch (selectedCategory) {
             case "country":
-                return countries.map((country) => (
+                return countries.map((country, index) => (
                     <label
                         key={country.id}
-                        className="block text-sm leading-tight mb-2 cursor-pointer"
+                        className={`${
+                            index !== countries.length - 1 ? "border-b-2" : ""
+                        } leading-tight cursor-pointer flex justify-between mx-4 py-4`}
                     >
+                        {country.name}
                         <input
                             type="checkbox"
-                            className="mr-2"
+                            className="hidden"
                             value={country.name}
+                            checked={
+                                checkedItems.country[country.name] || false
+                            }
                             onChange={(e) => handleFilterChange(e, "country")}
                         />
-                        {country.name}
+                        <span
+                            className={`inline-block w-5 h-5 border-2 rounded-full border-gray-300 ml-3 ${
+                                checkedItems.country[country.name]
+                                    ? "bg-red-900"
+                                    : "bg-white"
+                            }`}
+                        >
+                            {checkedItems.country[country.name] && (
+                                // <FontAwesomeIcon icon="fa-solid fa-check" />
+                                <span className="block w-3 h-3 rounded-full bg-white mx-auto mt-1"></span>
+                            )}
+                        </span>
                     </label>
                 ));
             case "type":
-                return types.map((type) => (
+                return types.map((type, index) => (
                     <label
                         key={type.id}
-                        className="block text-sm leading-tight mb-2 cursor-pointer"
+                        className={`${
+                            index !== types.length - 1 ? "border-b-2" : ""
+                        } leading-tight cursor-pointer flex justify-between mx-4 py-4`}
                     >
+                        {type.name}
                         <input
                             type="checkbox"
                             className="mr-2"
-                            value={type.id}
+                            value={type.name}
+                            checked={checkedItems.type[type.name] || false}
                             onChange={(e) => handleFilterChange(e, "type")}
                         />
-                        {type.name}
                     </label>
                 ));
             default:
@@ -155,19 +222,20 @@ const FilterPanel = ({ filters, setFilters }) => {
                     optionsVisible ? "translate-x-0" : "translate-x-full"
                 }`}
             >
-                <div className="options-list">{renderOptions()}</div>
+                <div className="options-list bg-red-50 rounded-lg py-4">
+                    {renderOptions()}
+                </div>
 
                 <div className="flex justify-center">
                     <button
                         onClick={() => setOptionsVisible(false)}
-                        // onClick={() => setSelectedCategory(null)}
                         className="btn btn-block mt-12 bg-red-900 rounded-md text-white h-12 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover w-10/12 mx-auto"
                     >
                         Confirmation
                     </button>
                     <div className="text-center absolute bottom-14 left-1/2 transform -translate-x-1/2 w-10/12">
-                        <p className="cursor-pointer" onClick={() => setOptionsVisible(false)}>
-                            {"<"} Retour
+                        <p className="cursor-pointer" onClick={uncheck}>
+                            {"<"} Retirer les filtres
                         </p>
                     </div>
                 </div>
