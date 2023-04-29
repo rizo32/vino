@@ -11,7 +11,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     // Envois d'avertissement dans la console pour les fonctions dangereuses ou dépréciées
     <React.StrictMode>
 
-        {/* Gestion des erreurs 403, 500, etc */}
+        {/* Gestion des erreurs 404, 500, etc */}
         <ErrorBoundary>
 
             {/* ContexteProvider protège les vues nécéssitant une authentification */}
