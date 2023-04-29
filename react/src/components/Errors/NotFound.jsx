@@ -7,7 +7,7 @@ const NotFound = ({ handleBackClick }) => {
                 cherchez!
             </p>
             <button
-                className="btn btn-block bg-red-900 rounded-md text-white h-12 text-xl shadow-shadow-tiny hover:shadow-none hover:bg-red-hover  absolute bottom-36 left-1/2 transform -translate-x-1/2 w-10/12"
+                className="btn btn-block bg-red-900 rounded-md text-white h-12 text-xl shadow-shadow-tiny hover:shadow-none hover:bg-red-hover active:bg-red-hover active:shadow-none absolute bottom-36 left-1/2 transform -translate-x-1/2 w-10/12"
                 onClick={handleBackClick}
             >
                 Retour

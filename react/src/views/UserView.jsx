@@ -83,7 +83,7 @@ function UserView() {
                 <div className="w-full flex justify-center">
                         <button
                             type="button"
-                            className="bg-red-900 btn btn-block mt-8 rounded-md text-white h-8 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover w-10/12 ml-auto mr-auto"
+                            className="bg-red-900 btn btn-block mt-8 rounded-md text-white h-8 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover active:bg-red-hover active:shadow-none w-10/12 ml-auto mr-auto"
                             onClick={onLogout}
                         >
                             Déconnexion
