@@ -42,15 +42,16 @@ Route::middleware('auth:sanctum')->group(function () {
     // logout
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    // gestion de cellier
-    Route::apiResource('/cellarHasBottles', CellarHasBottleController::class);
-
-    /* <YG */
-    Route::apiResource('/admin', AdminController::class);
-    Route::post('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
-    Route::get('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
-    /* YG> */
 });
+
+/* <YG */
+Route::apiResource('/admin', AdminController::class);
+Route::post('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
+Route::get('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
+/* YG> */
+
+// gestion de cellier
+Route::apiResource('/cellarHasBottles', CellarHasBottleController::class);
 
 // Routes non protégées
 
