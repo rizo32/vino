@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
-import axiosClient from "../axios-client";
+import axiosClient from "../../axios-client";
+import OptionsList from "./OptionsList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faEarthAmericas, faWineBottle } from "@fortawesome/free-solid-svg-icons";
 
 const FilterPanel = ({ filters, setFilters }) => {
     const [selectedCategory, setSelectedCategory] = useState(null);
@@ -9,8 +10,17 @@ const FilterPanel = ({ filters, setFilters }) => {
     const [types, setTypes] = useState([]);
     const [showCategories, setShowCategories] = useState(false);
     const [optionsVisible, setOptionsVisible] = useState(false);
-    const [checkedItems, setCheckedItems] = useState({ country: {}, type: {} });
     const [isAtTop, setIsAtTop] = useState(true);
+
+    const CATEGORIES = {
+        type: { internalName: "type", displayName: "Raisins", icon: faWineBottle },
+        country: { internalName: "country", displayName: "Région", icon: faEarthAmericas },
+    };
+    
+    const [checkedItems, setCheckedItems] = useState({
+        [CATEGORIES.type.internalName]: {},
+        [CATEGORIES.country.internalName]: {},
+    });
 
     // Vérifie si le scroll est en haut, pour changer le z-index du volet de filtre (pour enlever le box shadow du navbar)
     useEffect(() => {
@@ -41,13 +51,30 @@ const FilterPanel = ({ filters, setFilters }) => {
         });
     }, []);
 
+    const getCategories = (countries, types) => [
+        {
+            internalName: 'type',
+            displayName: CATEGORIES.type.displayName,
+            options: types
+        },
+        {
+            internalName: 'country',
+            displayName: CATEGORIES.country.displayName,
+            options: countries
+        },
+        // ajouter d'autres catégories ici si nécessaire
+    ];
+    
+    const getCategoryIcon = (internalName) => {
+        if (CATEGORIES.hasOwnProperty(internalName)) {
+            return CATEGORIES[internalName].icon;
+        }
+        return null;
+    };
+
     // useMemo = Évite de refaire le fetch des filtres si pas nécéssaire
     const categories = useMemo(
-        () => [
-            { name: "country", options: countries },
-            { name: "type", options: types },
-            // ajouter d'autres catégories ici si nécessaire
-        ],
+        () => getCategories(countries, types),
         [countries, types]
     );
 
@@ -56,7 +83,7 @@ const FilterPanel = ({ filters, setFilters }) => {
         setOptionsVisible(true);
     }, []);
 
-    const uncheck = useCallback(() => {
+    const clearSelectedFilters = useCallback(() => {
         if (selectedCategory) {
             setFilters((prevFilters) => {
                 const newFilters = { ...prevFilters };
@@ -92,7 +119,7 @@ const FilterPanel = ({ filters, setFilters }) => {
                         filterCategory
                     ].filter((item) => item !== value);
                 }
-
+                console.log(newFilters);
                 return newFilters;
             });
 
@@ -107,53 +134,6 @@ const FilterPanel = ({ filters, setFilters }) => {
         [setFilters]
     );
 
-    const renderOptions = () => {
-        const currentCategory = categories.find(
-            (category) => category.name === selectedCategory
-        );
-
-        if (!currentCategory) {
-            return <div>Select an option</div>;
-        }
-
-        return currentCategory.options.map((option, index) => (
-            <label
-                key={option.id}
-                className={`${
-                    index !== currentCategory.options.length - 1
-                        ? "border-b-2 border-gray-300"
-                        : ""
-                } leading-tight cursor-pointer flex justify-between mx-4 py-4`}
-            >
-                {option.name}
-                <input
-                    type="checkbox"
-                    className="hidden"
-                    value={option.id}
-                    checked={
-                        checkedItems[currentCategory.name][option.id] || false
-                    }
-                    onChange={(e) =>
-                        handleFilterChange(e, currentCategory.name)
-                    }
-                />
-                <span
-                    className={`flex justify-center items-center inline-block w-5 h-5 rounded-full ml-3 ${
-                        checkedItems[currentCategory.name][option.id]
-                            ? "bg-red-900"
-                            : "bg-white border-2 border-gray-400"
-                    }`}
-                >
-                    {checkedItems[currentCategory.name][option.id] && (
-                        <FontAwesomeIcon
-                            icon={faCheck}
-                            className="text-white text-sm"
-                        />
-                    )}
-                </span>
-            </label>
-        ));
-    };
     const categoryIsActive = (category) => {
         return filters[category] && filters[category].length > 0;
     };
@@ -199,21 +179,22 @@ const FilterPanel = ({ filters, setFilters }) => {
             >
                 {categories.map((category) => (
                     <button
-                        key={category.name}
+                        key={category.internalName}
                         className={`${
-                            categoryIsActive(category.name)
+                            categoryIsActive(category.internalName)
                                 ? "text-white bg-red-900 shadow-shadow-tiny"
                                 : "text-black bg-gray-200 shadow-shadow-tiny-inset"
                         } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px] shadow-shadow-tiny-inset hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
-                        onClick={() => handleCategoryClick(category.name)}
+                        onClick={() => handleCategoryClick(category.internalName)}
                     >
-                        <div>icon</div>
-                        <div>{category.name}</div>
+                        <FontAwesomeIcon
+                            icon={getCategoryIcon(category.internalName)}
+                        />
+                        <div>{category.displayName}</div>
                     </button>
                 ))}
             </div>
 
-            {/* {selectedCategory && ( */}
             {/* la taille du navbar */}
             <div
                 className={`fixed inset-0 bg-white p-8 top-16 transition-all duration-300 ease-in-out ${
@@ -221,10 +202,12 @@ const FilterPanel = ({ filters, setFilters }) => {
                 }`}
             >
                 <h1 className="text-lg font-bold">Filtres</h1>
-                <div className="options-list bg-red-50 rounded-lg py-4 h-3/4 xs-h:h-2/3 overflow-y-auto shadow-shadow-tiny-inset">
-                    {renderOptions()}
-                </div>
-
+                <OptionsList
+                    categories={categories}
+                    selectedCategory={selectedCategory}
+                    checkedItems={checkedItems}
+                    handleFilterChange={handleFilterChange}
+                />
                 <div className="flex justify-center">
                     <button
                         onClick={() => setOptionsVisible(false)}
@@ -234,13 +217,15 @@ const FilterPanel = ({ filters, setFilters }) => {
                         Confirmation
                     </button>
                     <div className="text-center absolute bottom-20 left-1/2 transform -translate-x-1/2 w-10/12">
-                        <p className="cursor-pointer" onClick={uncheck}>
+                        <p
+                            className="cursor-pointer"
+                            onClick={clearSelectedFilters}
+                        >
                             {"<"} Retirer les filtres
                         </p>
                     </div>
                 </div>
             </div>
-            {/* )} */}
         </div>
     );
 };
