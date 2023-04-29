@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import axiosClient from "../axios-client";
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 
-// const element = <FontAwesomeIcon icon={faCheck} />
+const element = <FontAwesomeIcon icon={faCheck} />
 
 const FilterPanel = ({ filters, setFilters }) => {
     const [selectedCategory, setSelectedCategory] = useState(null);
@@ -72,9 +72,9 @@ const FilterPanel = ({ filters, setFilters }) => {
                 );
             }
 
+            console.log(newFilters);
             return newFilters;
         });
-        console.log(filters);
     };
 
     // faudrait voir avec les autres filres qu'on a mais je vais surement changer switch pour foreach
@@ -85,29 +85,28 @@ const FilterPanel = ({ filters, setFilters }) => {
                     <label
                         key={country.id}
                         className={`${
-                            index !== countries.length - 1 ? "border-b-2" : ""
+                            index !== countries.length - 1 ? "border-b-2 border-gray-300" : ""
                         } leading-tight cursor-pointer flex justify-between mx-4 py-4`}
                     >
                         {country.name}
                         <input
                             type="checkbox"
                             className="hidden"
-                            value={country.name}
+                            value={country.id}
                             checked={
-                                checkedItems.country[country.name] || false
+                                checkedItems.country[country.id] || false
                             }
                             onChange={(e) => handleFilterChange(e, "country")}
                         />
                         <span
-                            className={`inline-block w-5 h-5 border-2 rounded-full border-gray-300 ml-3 ${
-                                checkedItems.country[country.name]
+                            className={`flex justify-center items-center inline-block w-5 h-5 rounded-full ml-3 ${
+                                checkedItems.country[country.id]
                                     ? "bg-red-900"
-                                    : "bg-white"
+                                    : "bg-white border-2 border-gray-400"
                             }`}
                         >
-                            {checkedItems.country[country.name] && (
-                                // <FontAwesomeIcon icon="fa-solid fa-check" />
-                                <span className="block w-3 h-3 rounded-full bg-white mx-auto mt-1"></span>
+                            {checkedItems.country[country.id] && (
+                                <FontAwesomeIcon icon={faCheck} className="text-white text-sm" />
                             )}
                         </span>
                     </label>
@@ -124,8 +123,8 @@ const FilterPanel = ({ filters, setFilters }) => {
                         <input
                             type="checkbox"
                             className="mr-2"
-                            value={type.name}
-                            checked={checkedItems.type[type.name] || false}
+                            value={type.id}
+                            checked={checkedItems.type[type.id] || false}
                             onChange={(e) => handleFilterChange(e, "type")}
                         />
                     </label>
@@ -141,19 +140,20 @@ const FilterPanel = ({ filters, setFilters }) => {
 
     return (
         <div
-            className={`relative z-10 transition-all duration-200 ease-in-out overflow-hidden ${
+        /* List des catégories de filtre */
+            className={`relative z-10 transition-all duration-200 ease-in-out overflow-hidden shadow-shadow-tiny ${
                 showCategories ? "max-h-[100px]" : "max-h-0"
             }`}
         >
             <button
                 onClick={() => setShowCategories(!showCategories)}
-                className="flex justify-center items-center fixed bottom-32 right-12 h-16 w-16 text-white rounded-full bg-red-900"
+                className="flex justify-center items-center fixed bottom-32 right-12 h-16 w-16 text-white rounded-full bg-red-900 shadow-shadow-tiny hover:shadow-none hover:bg-red-hover active:bg-red-hover active:shadow-none"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    strokeWidth={2}
+                    strokeWidth={1.75}
                     stroke="currentColor"
                     className="w-8 h-8"
                 >
@@ -164,6 +164,7 @@ const FilterPanel = ({ filters, setFilters }) => {
                     />
                 </svg>
             </button>
+            
             <div
                 className={`relative overflow-x-auto scrollbar-hide left-0 top-full flex gap-4 p-2 transition-all duration-300 ease-in-out transform ${
                     showCategories
@@ -174,9 +175,9 @@ const FilterPanel = ({ filters, setFilters }) => {
                 <button
                     className={`${
                         categoryIsActive("country")
-                            ? "text-white bg-red-900"
-                            : "text-black bg-gray-200"
-                    } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px]`}
+                            ? "text-white bg-red-900 shadow-shadow-tiny"
+                            : "text-black bg-gray-200 shadow-shadow-tiny-inset"
+                    } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px] shadow-shadow-tiny-inset hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
                     onClick={() => handleCategoryClick("country")}
                 >
                     <div>icon</div>
@@ -185,9 +186,9 @@ const FilterPanel = ({ filters, setFilters }) => {
                 <button
                     className={`${
                         categoryIsActive("type")
-                            ? "text-white bg-red-900"
-                            : "text-black bg-gray-200"
-                    } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px]`}
+                            ? "text-white bg-red-900 shadow-shadow-tiny"
+                            : "text-black bg-gray-200 shadow-shadow-tiny-inset"
+                    } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px] shadow-shadow-tiny-inset hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
                     onClick={() => handleCategoryClick("type")}
                 >
                     <div>icon</div>
@@ -196,9 +197,9 @@ const FilterPanel = ({ filters, setFilters }) => {
                 <button
                     className={`${
                         categoryIsActive("ratings")
-                            ? "text-white bg-red-900"
-                            : "text-black bg-gray-200"
-                    } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px]`}
+                            ? "text-white bg-red-900 shadow-shadow-tiny"
+                            : "text-black bg-gray-200 shadow-shadow-tiny-inset"
+                    } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px] shadow-shadow-tiny-inset hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
                     onClick={() => handleCategoryClick("ratings")}
                 >
                     <div>icon</div>
@@ -207,9 +208,9 @@ const FilterPanel = ({ filters, setFilters }) => {
                 <button
                     className={`${
                         categoryIsActive("ratings")
-                            ? "text-white bg-red-900"
-                            : "text-black bg-gray-200"
-                    } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px]`}
+                            ? "text-white bg-red-900 shadow-shadow-tiny"
+                            : "text-black bg-gray-200 shadow-shadow-tiny-inset"
+                    } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px] hover:bg-red-900 active:bg-red-900 hover:text-white active:text-white`}
                 >
                     <div>icon</div>
                     <div>bitch</div>
@@ -222,14 +223,16 @@ const FilterPanel = ({ filters, setFilters }) => {
                     optionsVisible ? "translate-x-0" : "translate-x-full"
                 }`}
             >
-                <div className="options-list bg-red-50 rounded-lg py-4">
+                <h1 className="text-lg font-bold">Filtres</h1>
+                <div className="options-list bg-red-50 rounded-lg py-4 h-3/4 xs-h:h-2/3 overflow-y-auto shadow-shadow-tiny-inset">
                     {renderOptions()}
                 </div>
 
                 <div className="flex justify-center">
                     <button
                         onClick={() => setOptionsVisible(false)}
-                        className="btn btn-block mt-12 bg-red-900 rounded-md text-white h-12 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover w-10/12 mx-auto"
+                        // className="btn btn-block mt-12 bg-red-900 rounded-md text-white h-12 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover w-10/12 mx-auto"
+                        className="btn btn-block bottom-32 left-1/2 transform absolute -translate-x-1/2 bg-red-900 rounded-md text-white h-12 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover   active:bg-red-hover active:shadow-none w-10/12"
                     >
                         Confirmation
                     </button>
