@@ -9,10 +9,10 @@ const MobileNavbar = () => {
     const searchInputRef = useRef(null);
     const { searchValue, setSearchValue } = useStateContext();
 
+    // La barre de recherche deviens active (ouvre le clavier sur mobile) dès l'ouverture de la page Catalogue afin d'aider les usagers à trouver la bouteille rapidement
     useEffect(() => {
         if (
-            location.pathname === "/catalog" ||
-            location.pathname === "/cellar"
+            location.pathname === "/catalog"
         ) {
             setSearchBarOpen(true);
             if (searchInputRef.current) {
@@ -85,6 +85,11 @@ const MobileNavbar = () => {
                         </svg>
                     </button>
                 </div>
+
+                {/* ATTENTION
+CECI EST LE MENU BURGER
+IL SERA PEUT-ÊTRE UTILE D'ICI LA FIN DU PROJET
+SVP LAISSEZ COMMENTÉ JUSQU'À NOUVEL AVIS */}
 
                 {/* Hamburger menu icon */}
                 {/* <button className="text-gray-600 focus:outline-none ml-12">

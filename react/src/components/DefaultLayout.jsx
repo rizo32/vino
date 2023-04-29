@@ -1,28 +1,42 @@
-import { Link, NavLink, Navigate, Outlet } from "react-router-dom";
+import { Link, NavLink, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import MobileNavbar from "../components/MobileNavbar/MobileNavbar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
 import { Helmet } from "react-helmet";
 
 export default function DefaultLayout() {
     const { user, token, setUser, setToken } = useStateContext();
 
+    // Gestion du nom de la page actuelle
+    const location = useLocation();
+    const [viewName, setViewName] = useState("Home");
+    useEffect(() => {
+        const updateViewName = () => {
+            switch (location.pathname) {
+                case "/catalog":
+                    setViewName("Catalogue");
+                    break;
+                case "/cellar":
+                    setViewName("Cellier");
+                    break;
+                case `/users/${user.id}`:
+                    setViewName(`${user.first_name}`);
+                    break;
+                default:
+                    setViewName("Accueil");
+            }
+        };
+
+        updateViewName();
+    }, [location, user]);
+
     // un utilisateur non connecté n'a pas accès aux vues enfants de DefaultLayout
     if (!token) {
         return <Navigate to="/login" />;
     }
 
-    // fonction Log out
-    const onLogout = (ev) => {
-        ev.preventDefault();
-        axiosClient.post("/logout").then(() => {
-            setUser({});
-            setToken(null);
-        });
-    };
-
-    // aller chercher les informtions de l'user lorsque quelqu'un est connecté
+    // aller chercher les informations de l'user lorsque quelqu'un est connecté
     useEffect(() => {
         axiosClient.get("/user").then(({ data }) => {
             setUser(data);
@@ -32,7 +46,7 @@ export default function DefaultLayout() {
     return (
         <div id="defaultLayout">
             <Helmet>
-                <title>Le Cellier</title>
+                <title>Le Cellier - {viewName}</title>
             </Helmet>
             <header>
                 <MobileNavbar />
@@ -40,10 +54,17 @@ export default function DefaultLayout() {
             <main className="bg-red-50 pt-16 min-h-screen">
                 {/* Outlet va aller chercher la vue appropriée dans le router */}
                 <Outlet />
+
+                {/*
+
+                *** ATTENTION ***
+
+                Menu navigation devrait être une composante
+                - Gab 
+                
+                */}
+
                 <aside className="fixed bottom-0 w-full bg-white h-16 flex items-center justify-around">
-                    {/* <a href="#" onClick={onLogout} className="btn-logout">
-                    Logout
-                </a> */}
                     {/*                 <Link to="/wishlist">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

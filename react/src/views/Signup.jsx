@@ -45,7 +45,7 @@ export default function Signup() {
                     onSubmit={onSubmit}
                 >
                     <h1 className="text-4xl text-center mt-vh-2">
-                        Soyez des nôtres!
+                        Bienvenue!
                     </h1>
                     {/* À changer le titre */}
                     <label htmlFor="first-name" className="mt-vh-5 ml-2">
@@ -60,7 +60,7 @@ export default function Signup() {
                         id="first-name"
                         ref={firstNameRef}
                         type="text"
-                        placeholder="Gandalf"
+                        placeholder="Jon"
                         className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
                     />
                     <label htmlFor="last-name" className="mt-vh-2 ml-2">
@@ -75,7 +75,7 @@ export default function Signup() {
                         id="last-name"
                         ref={lastNameRef}
                         type="text"
-                        placeholder="Le gris"
+                        placeholder="Snow"
                         className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
                     />
                     <label htmlFor="email" className="mt-vh-2 ml-2">
@@ -90,7 +90,7 @@ export default function Signup() {
                         id="email"
                         ref={emailRef}
                         type="email"
-                        placeholder="gandalf_grey123@sympatico.com"
+                        placeholder="king@north.com"
                         className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
                     />
                     <label htmlFor="password" className="mt-vh-2 ml-2">
