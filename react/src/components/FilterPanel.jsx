@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import axiosClient from "../axios-client";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
-const element = <FontAwesomeIcon icon={faCheck} />
+const element = <FontAwesomeIcon icon={faCheck} />;
 
 const FilterPanel = ({ filters, setFilters }) => {
     const [selectedCategory, setSelectedCategory] = useState(null);
@@ -12,6 +12,25 @@ const FilterPanel = ({ filters, setFilters }) => {
     const [showCategories, setShowCategories] = useState(false);
     const [optionsVisible, setOptionsVisible] = useState(false);
     const [checkedItems, setCheckedItems] = useState({ country: {}, type: {} });
+    const [isAtTop, setIsAtTop] = useState(true);
+
+    // Vérifie si le scroll est en haut, pour changer le z-index du volet de filtre (pour enlever le box shadow du navbar)
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsAtTop(window.pageYOffset === 0);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
+    // Add the following function to scroll the window to the top
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
 
     useEffect(() => {
         // Pour aller chercher les options de filtres
@@ -85,7 +104,9 @@ const FilterPanel = ({ filters, setFilters }) => {
                     <label
                         key={country.id}
                         className={`${
-                            index !== countries.length - 1 ? "border-b-2 border-gray-300" : ""
+                            index !== countries.length - 1
+                                ? "border-b-2 border-gray-300"
+                                : ""
                         } leading-tight cursor-pointer flex justify-between mx-4 py-4`}
                     >
                         {country.name}
@@ -93,9 +114,7 @@ const FilterPanel = ({ filters, setFilters }) => {
                             type="checkbox"
                             className="hidden"
                             value={country.id}
-                            checked={
-                                checkedItems.country[country.id] || false
-                            }
+                            checked={checkedItems.country[country.id] || false}
                             onChange={(e) => handleFilterChange(e, "country")}
                         />
                         <span
@@ -106,7 +125,10 @@ const FilterPanel = ({ filters, setFilters }) => {
                             }`}
                         >
                             {checkedItems.country[country.id] && (
-                                <FontAwesomeIcon icon={faCheck} className="text-white text-sm" />
+                                <FontAwesomeIcon
+                                    icon={faCheck}
+                                    className="text-white text-sm"
+                                />
                             )}
                         </span>
                     </label>
@@ -140,13 +162,18 @@ const FilterPanel = ({ filters, setFilters }) => {
 
     return (
         <div
-        /* List des catégories de filtre */
-            className={`relative z-10 transition-all duration-200 ease-in-out overflow-hidden shadow-shadow-tiny bg-white ${
+            /* List des catégories de filtre */
+            className={` ${
+                isAtTop ? 'z-20' : 'z-10'
+            } relative transition-all duration-200 ease-in-out overflow-hidden shadow-shadow-tiny bg-white ${
                 showCategories ? "max-h-[100px]" : "max-h-0"
             }`}
         >
             <button
-                onClick={() => setShowCategories(!showCategories)}
+                 onClick={() => {
+                    setShowCategories(true);
+                    scrollToTop();
+                }}
                 className="flex justify-center items-center fixed bottom-32 right-12 h-16 w-16 text-white rounded-full bg-red-900 shadow-shadow-tiny hover:shadow-none hover:bg-red-hover active:bg-red-hover active:shadow-none"
             >
                 <svg
@@ -164,7 +191,7 @@ const FilterPanel = ({ filters, setFilters }) => {
                     />
                 </svg>
             </button>
-            
+
             <div
                 className={`relative overflow-x-auto scrollbar-hide left-0 top-full flex gap-4 p-2 transition-all duration-300 ease-in-out transform ${
                     showCategories
