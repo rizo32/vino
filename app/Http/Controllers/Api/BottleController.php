@@ -19,18 +19,20 @@ class BottleController extends Controller
      */
     public function index(Request $request)
     {
+        // \Log::info(['country_filter' => $request->country]);
         $query = Bottle::with('cellarHasBottle')->orderBy('name', 'asc');
-
-        // Apply search filter
+        
+        // Recherche dans le NOM
         if ($request->has('search')) {
             $search = $request->search;
             $query->where('name', 'LIKE', "%{$search}%");
         }
-
-        // Apply country filter
+        
+        // Filtre PAYS
         if ($request->has('country')) {
             $countries = explode(',', $request->country);
-            $query->whereIn('country_name', $countries);
+            $query->whereIn('country_id', $countries);
+            // \Log::info(['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
         }
 
         // Apply other filters similarly...
