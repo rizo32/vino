@@ -13,16 +13,7 @@ export default function DefaultLayout() {
         return <Navigate to="/login" />;
     }
 
-    // fonction Log out
-    const onLogout = (ev) => {
-        ev.preventDefault();
-        axiosClient.post("/logout").then(() => {
-            setUser({});
-            setToken(null);
-        });
-    };
-
-    // aller chercher les informtions de l'user lorsque quelqu'un est connecté
+    // aller chercher les informations de l'user lorsque quelqu'un est connecté
     useEffect(() => {
         axiosClient.get("/user").then(({ data }) => {
             setUser(data);
@@ -32,7 +23,7 @@ export default function DefaultLayout() {
     return (
         <div id="defaultLayout">
             <Helmet>
-                <title>Le Cellier</title>
+                <title>Le Cellier - </title>
             </Helmet>
             <header>
                 <MobileNavbar />
@@ -40,10 +31,17 @@ export default function DefaultLayout() {
             <main className="bg-red-50 pt-16 min-h-screen">
                 {/* Outlet va aller chercher la vue appropriée dans le router */}
                 <Outlet />
+
+                {/*
+
+                *** ATTENTION ***
+
+                Menu navigation devrait être une composante
+                - Gab 
+                
+                */}
+
                 <aside className="fixed bottom-0 w-full bg-white h-16 flex items-center justify-around">
-                    {/* <a href="#" onClick={onLogout} className="btn-logout">
-                    Logout
-                </a> */}
                     {/*                 <Link to="/wishlist">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
