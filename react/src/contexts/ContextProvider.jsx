@@ -16,8 +16,6 @@ export const ContextProvider = ({ children }) => {
     const [user, setUser] = useState({});
     const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
     const [searchValue, setSearchValue] = useState("");
-    // Utiliser la ligne suivante pour accéder aux vues protégées
-    // const [token, _setToken] = useState(124);
 
     const setToken = (token) => {
         _setToken(token);

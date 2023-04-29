@@ -10,7 +10,6 @@ export default function GuestLayout() {
     return <Navigate to="/" />;
   }
   return (
-    // Gab: pas de barre de navigation dans Guest Layout. Faut utiliser 'login' et 'signup'
     <div id="GuestLayout">
       <Helmet>
         <title>Le Cellier</title>

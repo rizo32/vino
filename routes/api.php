@@ -28,30 +28,38 @@ Route::get('/csrf-token', function () {
 });
 // 
 
-Route::middleware('auth:sanctum')->group(function () {    
+// Protection des routes avec access token
+Route::middleware('auth:sanctum')->group(function () {
+
     // Opérations users
     Route::apiResource('/users', UserController::class);
+
     // Pour aller chercher l'user connecté
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+
+    // logout
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    // gestion de cellier
+    Route::apiResource('/cellarHasBottles', CellarHasBottleController::class);
+
+    /* <YG */
+    Route::apiResource('/admin', AdminController::class);
+    Route::post('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
+    Route::get('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
+    /* YG> */
 });
+
+// Routes non protégées
+
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
 
-
+// Gestion des bouteilles
 Route::apiResource('/bottles', BottleController::class);
-Route::apiResource('/cellarHasBottles', CellarHasBottleController::class);
 
-// Filtres
+// Va chercher les options pour les filtres
 Route::get('/countries', [CountryController::class, 'index']);
 Route::get('/types', [TypeController::class, 'index']);
-
-/* <YG */
-Route::apiResource('/admin', AdminController::class);
-Route::post('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
-Route::get('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
-
-
-/* YG> */
