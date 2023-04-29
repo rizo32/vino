@@ -6,9 +6,7 @@ import ErrorPage from "../../views/ErrorPage.jsx";
 class ErrorBoundary extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            errorStatus: null,
-        };
+        this.state = { hasError: false, error: null, errorInfo: null };
     }
 
     componentDidCatch(error, errorInfo) {

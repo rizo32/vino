@@ -16,10 +16,12 @@ function UserView() {
     // fonction Log out
     const onLogout = (ev) => {
         ev.preventDefault();
+        const navigate = useNavigate();
+
         axiosClient.post("/logout").then(() => {
             setUser({});
             setToken(null);
-            return <Navigate to="/login" replace />;
+            navigate("/login", { replace: true });
         });
     };
 

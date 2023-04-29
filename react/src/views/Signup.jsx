@@ -45,7 +45,7 @@ export default function Signup() {
                     onSubmit={onSubmit}
                 >
                     <h1 className="text-4xl text-center mt-vh-2">
-                        Soyez des nôtres!
+                        Bienvenue!
                     </h1>
                     {/* À changer le titre */}
                     <label htmlFor="first-name" className="mt-vh-5 ml-2">

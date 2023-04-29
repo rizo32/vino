@@ -1,12 +1,35 @@
-import { Link, NavLink, Navigate, Outlet } from "react-router-dom";
+import { Link, NavLink, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import MobileNavbar from "../components/MobileNavbar/MobileNavbar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
 import { Helmet } from "react-helmet";
 
 export default function DefaultLayout() {
     const { user, token, setUser, setToken } = useStateContext();
+
+    // Gestion du nom de la page actuelle
+    const location = useLocation();
+    const [viewName, setViewName] = useState("Home");
+    useEffect(() => {
+        const updateViewName = () => {
+            switch (location.pathname) {
+                case "/catalog":
+                    setViewName("Catalogue");
+                    break;
+                case "/cellar":
+                    setViewName("Cellier");
+                    break;
+                case `/users/${user.id}`:
+                    setViewName(`${user.first_name}`);
+                    break;
+                default:
+                    setViewName("Accueil");
+            }
+        };
+
+        updateViewName();
+    }, [location, user]);
 
     // un utilisateur non connecté n'a pas accès aux vues enfants de DefaultLayout
     if (!token) {
@@ -23,7 +46,7 @@ export default function DefaultLayout() {
     return (
         <div id="defaultLayout">
             <Helmet>
-                <title>Le Cellier - </title>
+                <title>Le Cellier - {viewName}</title>
             </Helmet>
             <header>
                 <MobileNavbar />
