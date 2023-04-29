@@ -1,9 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import axiosClient from "../axios-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
-
-const element = <FontAwesomeIcon icon={faCheck} />;
 
 const FilterPanel = ({ filters, setFilters }) => {
     const [selectedCategory, setSelectedCategory] = useState(null);
@@ -27,27 +25,38 @@ const FilterPanel = ({ filters, setFilters }) => {
         };
     }, []);
 
-    // Add the following function to scroll the window to the top
+    // Fait défiler la fenêtre vers le haut
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
+    // Pour faire les deux fetchs en parallèles
     useEffect(() => {
-        // Pour aller chercher les options de filtres
-        axiosClient.get("/countries").then((response) => {
-            setCountries(response.data);
-        });
-        axiosClient.get("/types").then((response) => {
-            setTypes(response.data);
+        Promise.all([
+            axiosClient.get("/countries"),
+            axiosClient.get("/types"),
+        ]).then(([countriesResponse, typesResponse]) => {
+            setCountries(countriesResponse.data);
+            setTypes(typesResponse.data);
         });
     }, []);
 
-    const handleCategoryClick = (category) => {
+    // useMemo = Évite de refaire le fetch des filtres si pas nécéssaire
+    const categories = useMemo(
+        () => [
+            { name: "country", options: countries },
+            { name: "type", options: types },
+            // ajouter d'autres catégories ici si nécessaire
+        ],
+        [countries, types]
+    );
+
+    const handleCategoryClick = useCallback((category) => {
         setSelectedCategory(category);
         setOptionsVisible(true);
-    };
+    }, []);
 
-    const uncheck = () => {
+    const uncheck = useCallback(() => {
         if (selectedCategory) {
             setFilters((prevFilters) => {
                 const newFilters = { ...prevFilters };
@@ -61,101 +70,90 @@ const FilterPanel = ({ filters, setFilters }) => {
             return newCheckedItems;
         });
         setOptionsVisible(false);
-    };
+    }, [selectedCategory, setFilters]);
 
-    const handleFilterChange = (e, filterCategory) => {
-        const value = e.target.value;
-        const isChecked = e.target.checked;
+    const handleFilterChange = useCallback(
+        (e, filterCategory) => {
+            const value = e.target.value;
+            const isChecked = e.target.checked;
 
-        setCheckedItems((prevCheckedItems) => ({
-            ...prevCheckedItems,
-            [filterCategory]: {
-                ...prevCheckedItems[filterCategory],
-                [value]: isChecked,
-            },
-        }));
+            setFilters((prevFilters) => {
+                const newFilters = { ...prevFilters };
 
-        setFilters((prevFilters) => {
-            const newFilters = { ...prevFilters };
+                if (isChecked) {
+                    // Add the value to the filter category if it's checked
+                    newFilters[filterCategory] = [
+                        ...prevFilters[filterCategory],
+                        value,
+                    ];
+                } else {
+                    // Remove the value from the filter category if it's unchecked
+                    newFilters[filterCategory] = prevFilters[
+                        filterCategory
+                    ].filter((item) => item !== value);
+                }
 
-            if (isChecked) {
-                // Add the value to the filter category if it's checked
-                newFilters[filterCategory] = [
-                    ...prevFilters[filterCategory],
-                    value,
-                ];
-            } else {
-                // Remove the value from the filter category if it's unchecked
-                newFilters[filterCategory] = prevFilters[filterCategory].filter(
-                    (item) => item !== value
-                );
-            }
+                return newFilters;
+            });
 
-            console.log(newFilters);
-            return newFilters;
-        });
-    };
+            setCheckedItems((prevCheckedItems) => ({
+                ...prevCheckedItems,
+                [filterCategory]: {
+                    ...prevCheckedItems[filterCategory],
+                    [value]: isChecked,
+                },
+            }));
+        },
+        [setFilters]
+    );
 
-    // faudrait voir avec les autres filres qu'on a mais je vais surement changer switch pour foreach
     const renderOptions = () => {
-        switch (selectedCategory) {
-            case "country":
-                return countries.map((country, index) => (
-                    <label
-                        key={country.id}
-                        className={`${
-                            index !== countries.length - 1
-                                ? "border-b-2 border-gray-300"
-                                : ""
-                        } leading-tight cursor-pointer flex justify-between mx-4 py-4`}
-                    >
-                        {country.name}
-                        <input
-                            type="checkbox"
-                            className="hidden"
-                            value={country.id}
-                            checked={checkedItems.country[country.id] || false}
-                            onChange={(e) => handleFilterChange(e, "country")}
-                        />
-                        <span
-                            className={`flex justify-center items-center inline-block w-5 h-5 rounded-full ml-3 ${
-                                checkedItems.country[country.id]
-                                    ? "bg-red-900"
-                                    : "bg-white border-2 border-gray-400"
-                            }`}
-                        >
-                            {checkedItems.country[country.id] && (
-                                <FontAwesomeIcon
-                                    icon={faCheck}
-                                    className="text-white text-sm"
-                                />
-                            )}
-                        </span>
-                    </label>
-                ));
-            case "type":
-                return types.map((type, index) => (
-                    <label
-                        key={type.id}
-                        className={`${
-                            index !== types.length - 1 ? "border-b-2" : ""
-                        } leading-tight cursor-pointer flex justify-between mx-4 py-4`}
-                    >
-                        {type.name}
-                        <input
-                            type="checkbox"
-                            className="mr-2"
-                            value={type.id}
-                            checked={checkedItems.type[type.id] || false}
-                            onChange={(e) => handleFilterChange(e, "type")}
-                        />
-                    </label>
-                ));
-            default:
-                return <div>Select an option</div>;
-        }
-    };
+        const currentCategory = categories.find(
+            (category) => category.name === selectedCategory
+        );
 
+        if (!currentCategory) {
+            return <div>Select an option</div>;
+        }
+
+        return currentCategory.options.map((option, index) => (
+            <label
+                key={option.id}
+                className={`${
+                    index !== currentCategory.options.length - 1
+                        ? "border-b-2 border-gray-300"
+                        : ""
+                } leading-tight cursor-pointer flex justify-between mx-4 py-4`}
+            >
+                {option.name}
+                <input
+                    type="checkbox"
+                    className="hidden"
+                    value={option.id}
+                    checked={
+                        checkedItems[currentCategory.name][option.id] || false
+                    }
+                    onChange={(e) =>
+                        handleFilterChange(e, currentCategory.name)
+                    }
+                />
+                <span
+                    className={`flex justify-center items-center inline-block w-5 h-5 rounded-full ml-3 ${
+                        checkedItems[currentCategory.name][option.id]
+                            ? "bg-red-900"
+                            : "bg-white border-2 border-gray-400"
+                    }`}
+                >
+                    {checkedItems[currentCategory.name][option.id] && (
+                        <FontAwesomeIcon
+                            icon={faCheck}
+                            className="text-white text-sm"
+                        />
+                    )}
+                </span>
+            </label>
+        ));
+    };
     const categoryIsActive = (category) => {
         return filters[category] && filters[category].length > 0;
     };
@@ -164,13 +162,13 @@ const FilterPanel = ({ filters, setFilters }) => {
         <div
             /* List des catégories de filtre */
             className={` ${
-                isAtTop ? 'z-20' : 'z-10'
+                isAtTop ? "z-20" : "z-10"
             } relative transition-all duration-200 ease-in-out overflow-hidden shadow-shadow-tiny bg-white ${
                 showCategories ? "max-h-[100px]" : "max-h-0"
             }`}
         >
             <button
-                 onClick={() => {
+                onClick={() => {
                     setShowCategories(true);
                     scrollToTop();
                 }}
@@ -199,50 +197,22 @@ const FilterPanel = ({ filters, setFilters }) => {
                         : "-translate-y-full opacity-0 invisible"
                 }`}
             >
-                <button
-                    className={`${
-                        categoryIsActive("country")
-                            ? "text-white bg-red-900 shadow-shadow-tiny"
-                            : "text-black bg-gray-200 shadow-shadow-tiny-inset"
-                    } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px] shadow-shadow-tiny-inset hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
-                    onClick={() => handleCategoryClick("country")}
-                >
-                    <div>icon</div>
-                    <div>Country</div>
-                </button>
-                <button
-                    className={`${
-                        categoryIsActive("type")
-                            ? "text-white bg-red-900 shadow-shadow-tiny"
-                            : "text-black bg-gray-200 shadow-shadow-tiny-inset"
-                    } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px] shadow-shadow-tiny-inset hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
-                    onClick={() => handleCategoryClick("type")}
-                >
-                    <div>icon</div>
-                    <div>Type</div>
-                </button>
-                <button
-                    className={`${
-                        categoryIsActive("ratings")
-                            ? "text-white bg-red-900 shadow-shadow-tiny"
-                            : "text-black bg-gray-200 shadow-shadow-tiny-inset"
-                    } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px] shadow-shadow-tiny-inset hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
-                    onClick={() => handleCategoryClick("ratings")}
-                >
-                    <div>icon</div>
-                    <div>Ratings</div>
-                </button>
-                <button
-                    className={`${
-                        categoryIsActive("ratings")
-                            ? "text-white bg-red-900 shadow-shadow-tiny"
-                            : "text-black bg-gray-200 shadow-shadow-tiny-inset"
-                    } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px] hover:bg-red-900 active:bg-red-900 hover:text-white active:text-white`}
-                >
-                    <div>icon</div>
-                    <div>bitch</div>
-                </button>
+                {categories.map((category) => (
+                    <button
+                        key={category.name}
+                        className={`${
+                            categoryIsActive(category.name)
+                                ? "text-white bg-red-900 shadow-shadow-tiny"
+                                : "text-black bg-gray-200 shadow-shadow-tiny-inset"
+                        } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px] shadow-shadow-tiny-inset hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
+                        onClick={() => handleCategoryClick(category.name)}
+                    >
+                        <div>icon</div>
+                        <div>{category.name}</div>
+                    </button>
+                ))}
             </div>
+
             {/* {selectedCategory && ( */}
             {/* la taille du navbar */}
             <div

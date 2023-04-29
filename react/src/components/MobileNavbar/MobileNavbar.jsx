@@ -36,7 +36,7 @@ const MobileNavbar = () => {
     };
 
     return (
-        <nav className="fixed w-full bg-white h-16 shadow-shadow-tiny flex items-center justify-between px-2 z-10">
+        <nav className="fixed w-full bg-white h-16 shadow-shadow-tiny flex items-center justify-between px-2 z-20">
             <Link to="/cellar">
                 {/* Logo */}
                 {/* Padding autour permet d'agrandir la zone de clique */}
