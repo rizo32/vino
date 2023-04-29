@@ -141,7 +141,7 @@ const FilterPanel = ({ filters, setFilters }) => {
     return (
         <div
         /* List des catégories de filtre */
-            className={`relative z-10 transition-all duration-200 ease-in-out overflow-hidden shadow-shadow-tiny ${
+            className={`relative z-10 transition-all duration-200 ease-in-out overflow-hidden shadow-shadow-tiny bg-white ${
                 showCategories ? "max-h-[100px]" : "max-h-0"
             }`}
         >
