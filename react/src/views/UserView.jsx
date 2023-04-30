@@ -1,29 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosClient from "../axios-client";
 import UserDisplay from "../components/UserViewComponents/UserDisplay";
 import UserForm from "../components/UserViewComponents/UserForm";
-import { useStateContext } from "../contexts/ContextProvider";
-import { Navigate } from "react-router-dom";
 
 function UserView() {
     const { id } = useParams();
     const [user, setUser] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [message, setMessage] = useState([]);
-    const { setToken } = useStateContext();
 
-    // fonction Log out
-    const onLogout = (ev) => {
-        ev.preventDefault();
-        const navigate = useNavigate();
 
-        axiosClient.post("/logout").then(() => {
-            setUser({});
-            setToken(null);
-            navigate("/login", { replace: true });
-        });
-    };
+
 
     // Va chercher l'information et le met dans le state
     useEffect(() => {
@@ -33,7 +21,7 @@ function UserView() {
     }, [id]);
 
     if (!user) {
-        return <div>Loading...</div>;
+        return <div>Chargement...</div>;
     }
 
     const handleInputChange = (event) => {
@@ -79,16 +67,6 @@ function UserView() {
                 ) : (
                     <UserDisplay user={user} onEdit={toggleEdit} />
                 )}
-
-                <div className="w-full flex justify-center">
-                        <button
-                            type="button"
-                            className="bg-red-900 btn btn-block mt-8 rounded-md text-white h-8 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover active:bg-red-hover active:shadow-none w-10/12 ml-auto mr-auto"
-                            onClick={onLogout}
-                        >
-                            Déconnexion
-                        </button>
-                </div>
             </div>
         </div>
     );
