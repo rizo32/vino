@@ -15,96 +15,131 @@ use Illuminate\Http\Request;
 
 class CellarHasBottleController extends Controller
 {
-  /**
-   * Display a listing of the resource.
-   *
-   * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-   */
-  public function index()
-  {
-    //retourne les bouteilles d'un cellier donné (ici id 1) en format json
-    return CellarHasBottleResource::collection(
-      CellarHasBottle::query()->where('cellar_id', '=', '1')->orderBy('id', 'desc')->paginate(10)
-    );
-  }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function index(Request $request)
+    {
+        // Le join ici est nécéssaire pour ordonner par 'name'. Le loading dans CellarHasBottleResource ne le permet pas.
+        $query = CellarHasBottle::with(['bottle' => function ($q) {
+            $q->orderBy('name', 'asc');
+        }])->where('cellar_id', '=', '1');
 
-  /**
-   * Store a newly created resource in storage.
-   *
-   * @param  \App\Http\Requests\StoreCellarHasBottleRequest  $request
-   * @return \Illuminate\Http\Response
-   */
-  public function store(StoreCellarHasBottleRequest $request)
-  {
-    //ajouter une bouteille au cellier d'un id donné
+        // Recherche dans le NOM
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->whereHas('bottle', function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%");
+            });
+        }
 
-    $request->validate([ // à mettre dans StoreCellarHasBottleRequest
-      // 'cellar_id' => 'required|integer',
-      'id' => 'required|integer',
-    ]);
+        // Filtre PAYS
+        if ($request->has('country')) {
+            $countries = explode(',', $request->country);
+            $query->whereHas('bottle', function ($q) use ($countries) {
+                $q->whereIn('country_id', $countries);
+            });
+            // \Log::info(['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
+        }
 
-    $bottleInCellar = CellarHasBottle::query()->where('bottle_id', '=', $request->input('id'))->first();
+        // Filtre TYPE
+        if ($request->has('type')) {
+            $types = explode(',', $request->type);
+            $query->whereHas('bottle', function ($q) use ($types) {
+                $q->whereIn('type_id', $types);
+            });
+            // \Log::info(['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
+        }
 
-    if($bottleInCellar){
-      $data = ['quantity' => $bottleInCellar->quantity+1];
-      $bottleInCellar->update($data);
-      return BottleResource::collection(
-        Bottle::with('cellarHasBottle')->orderBy('id', 'desc')->paginate(10)
-      );
+        // Apply filters across different categories with 'AND'
+        if ($request->has(['country', 'type'])) {
+            $query->whereIn('country_id', $countries)->whereIn('type_id', $types);
+        }
+
+        //retourne les bouteilles d'un cellier donné (ici id 1) en format json
+        return CellarHasBottleResource::collection($query->paginate(10));
     }
 
-    $cellarHasBottle = new CellarHasBottle([
-      // 'cellar_id' => $request->input('cellar_id'),
-      'cellar_id' => 1,
-      'bottle_id' => $request->input('id'),
-      'quantity' => 1,
-    ]);
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\StoreCellarHasBottleRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreCellarHasBottleRequest $request)
+    {
+        //ajouter une bouteille au cellier d'un id donné
 
-    $cellarHasBottle->save();
+        $request->validate([
+            // à mettre dans StoreCellarHasBottleRequest
+            // 'cellar_id' => 'required|integer',
+            'id' => 'required|integer',
+        ]);
 
-    return BottleResource::collection(
-      Bottle::with('cellarHasBottle')->orderBy('id', 'desc')->paginate(10)
-    );
-  }
+        $bottleInCellar = CellarHasBottle::query()->where('bottle_id', '=', $request->input('id'))->first();
 
-  /**
-   * Display the specified resource.
-   *
-   * @param  \App\Models\CellarHasBottle  $cellarHasBottle
-   * @return \Illuminate\Http\Response
-   */
-  public function show(CellarHasBottle $cellarHasBottle)
-  {
-    //comment on utilise ca en parallele avec juste show une bouteille, vu que ici on a la donnée quantity ?
+        if ($bottleInCellar) {
+            $data = ['quantity' => $bottleInCellar->quantity + 1];
+            $bottleInCellar->update($data);
+            return BottleResource::collection(
+                Bottle::with('cellarHasBottle')->orderBy('id', 'desc')->paginate(10)
+            );
+        }
 
-    return new CellarHasBottleResource($cellarHasBottle);
-  }
+        $cellarHasBottle = new CellarHasBottle([
+            // 'cellar_id' => $request->input('cellar_id'),
+            'cellar_id' => 1,
+            'bottle_id' => $request->input('id'),
+            'quantity' => 1,
+        ]);
 
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  \App\Http\Requests\UpdateCellarHasBottleRequest  $request
-   * @param  \App\Models\CellarHasBottle  $cellarHasBottle
-   * @return \Illuminate\Http\Response
-   */
-  public function update(UpdateCellarHasBottleRequest $request, CellarHasBottle $cellarHasBottle)
-  {
-    $cellarHasBottle->update(['quantity' => $request->input('quantity')]);
+        $cellarHasBottle->save();
 
-    return new CellarHasBottleResource($cellarHasBottle);
-  }
+        return BottleResource::collection(
+            Bottle::with('cellarHasBottle')->orderBy('id', 'desc')->paginate(10)
+        );
+    }
 
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  \App\Models\CellarHasBottle  $cellarHasBottle
-   * @return \Illuminate\Http\Response
-   */
-  public function destroy(CellarHasBottle $cellarHasBottle)
-  {
-    //enlever la bouteille du cellier
-    $cellarHasBottle->delete();
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\CellarHasBottle  $cellarHasBottle
+     * @return \Illuminate\Http\Response
+     */
+    public function show(CellarHasBottle $cellarHasBottle)
+    {
+        //comment on utilise ca en parallele avec juste show une bouteille, vu que ici on a la donnée quantity ?
 
-    return response("", 204);
-  }
+        return new CellarHasBottleResource($cellarHasBottle);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdateCellarHasBottleRequest  $request
+     * @param  \App\Models\CellarHasBottle  $cellarHasBottle
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdateCellarHasBottleRequest $request, CellarHasBottle $cellarHasBottle)
+    {
+        $cellarHasBottle->update(['quantity' => $request->input('quantity')]);
+
+        return new CellarHasBottleResource($cellarHasBottle);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\CellarHasBottle  $cellarHasBottle
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(CellarHasBottle $cellarHasBottle)
+    {
+        //enlever la bouteille du cellier
+        $cellarHasBottle->delete();
+
+        return response("", 204);
+    }
 }
