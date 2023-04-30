@@ -10,6 +10,7 @@ use App\Http\Resources\CellarHasBottleResource;
 use App\Models\Bottle;
 use App\Models\CellarHasBottle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 // Elodie et Gabriel
 
@@ -25,7 +26,10 @@ class CellarHasBottleController extends Controller
         // Le join ici est nécéssaire pour ordonner par 'name'. Le loading dans CellarHasBottleResource ne le permet pas.
         $query = CellarHasBottle::with(['bottle' => function ($q) {
             $q->orderBy('name', 'asc');
-        }])->where('cellar_id', '=', '1');
+        }, 'cellar'])
+        ->whereHas('cellar', function ($q) {
+            $q->where('user_id', Auth::id());
+        });
 
         // Recherche dans le NOM
         if ($request->has('search')) {
