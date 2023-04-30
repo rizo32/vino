@@ -1,24 +1,6 @@
-import { useNavigate } from 'react-router-dom';
-import { useStateContext } from "../../contexts/ContextProvider";
-import axiosClient from "../../axios-client";
-
-
 // affiche les données utilisateurs
-function UserDisplay({ user, onEdit }) {
-    const { setToken } = useStateContext();
-    const navigate = useNavigate();
-
-    // fonction Log out
-    const onLogout = (ev) => {
-        ev.preventDefault();
-
-        axiosClient.post("/logout").then(() => {
-            setUser({});
-            setToken(null);
-            navigate("/login", { replace: true });
-        });
-    };
-
+function UserDisplay({ user, onEdit, onLogout }) {
+    
     return (
         <div className="flex flex-col w-10/12 ml-auto mr-auto">
             <p className="mt-vh-3 ml-2">Prénom</p>
