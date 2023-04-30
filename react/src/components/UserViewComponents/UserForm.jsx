@@ -85,7 +85,7 @@ function UserForm({ user, onChange, onSubmit, onReturn, message, setMessage }) {
             />
             <button
                 type="submit"
-                className="btn btn-block mt-8 bg-red-900 rounded-md text-white h-8 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover"
+                className="btn btn-block mt-8 bg-red-900 rounded-md text-white h-8 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover active:bg-red-hover active:shadow-none"
             >
                 Enregistrer
             </button>

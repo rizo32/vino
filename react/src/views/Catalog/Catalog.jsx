@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../../contexts/ContextProvider";
-import FilterPanel from "../../components/FilterPanel";
+import FilterPanel from "../../components/Filter/FilterPanel";
 
 export default function Catalog() {
     const { searchValue } = useStateContext();
@@ -11,8 +11,8 @@ export default function Catalog() {
     const [page, setPage] = useState(1);
 
     const [filters, setFilters] = useState({
-        country: [],
         type: [],
+        country: [],
         ratings: [],
     });
 
@@ -23,8 +23,14 @@ export default function Catalog() {
 
         const filterParams = new URLSearchParams();
 
+        // Change la requête selon recherche/filtre
         if (filters.country.length > 0) {
             filterParams.append("country", filters.country.join(","));
+        }
+
+        // Change la requête selon recherche/filtre
+        if (filters.type.length > 0) {
+            filterParams.append("type", filters.type.join(","));
         }
 
         if (searchValue) {
@@ -32,11 +38,9 @@ export default function Catalog() {
         }
         // autres filtres
 
-
         axiosClient
             .get(`/bottles?${filterParams.toString()}`)
             .then(({ data }) => {
-                //console.log(data);
                 setBottles(data.data);
                 setLoading(false);
             })
@@ -51,43 +55,14 @@ export default function Catalog() {
         getBottles();
     }, [filters, searchValue]);
 
-    // const filteredBottles = !searchValue
-    //     ? bottles
-    //     : bottles.filter((bottle) => {
-    //           return (
-    //               bottle.name &&
-    //               bottle.name.toLowerCase().includes(searchValue.toLowerCase())
-    //           );
-    //       });
-
-    
-    const filteredBottles = bottles.filter((bottle) => {
-        const nameMatch =
-            !searchValue ||
-            (bottle.name &&
-                bottle.name.toLowerCase().includes(searchValue.toLowerCase()));
-        const countryMatch =
-            filters.country.length === 0 ||
-            filters.country.includes(bottle.country_name);
-        // const typeMatch =
-        //     filters.type.length === 0 || filters.type.includes(bottle.type);
-        // const ratingsMatch =
-        //     filters.ratings.length === 0 ||
-        //     filters.ratings.includes(bottle.rating);
-
-        // return nameMatch && countryMatch && typeMatch && ratingsMatch;
-        // console.log(filters.country);
-        return nameMatch && countryMatch;
-    });
-
     return (
         <div className="flex flex-col gap-2">
             <FilterPanel filters={filters} setFilters={setFilters} />
             {loading ? (
-                <p>Loading...</p>
+                <p>Chargement...</p>
             ) : (
                 <ul className="flex flex-col gap-2">
-                    {filteredBottles.map((bottle) => (
+                    {bottles.map((bottle) => (
                         <li key={bottle.id}>
                             <ProductCard
                                 bottle={bottle}

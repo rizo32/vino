@@ -67,7 +67,7 @@ export default function Login() {
                         placeholder="********"
                         className="rounded-lg bg-white h-12 pl-2 shadow-shadow-tiny-inset"
                     />
-                    <button className="btn btn-block mt-12 bg-red-900 rounded-md text-white h-12 text-xl shadow-shadow-tiny hover:shadow-none hover:bg-red-hover">
+                    <button className="btn btn-block mt-12 bg-red-900 rounded-md text-white h-12 text-xl shadow-shadow-tiny hover:shadow-none hover:bg-red-hover active:bg-red-hover active:shadow-none">
                         Connexion
                     </button>
                 </form>
