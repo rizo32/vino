@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('designation_reglementes', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->timestamps();
         });
     }
