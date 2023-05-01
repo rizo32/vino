@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class SaqController extends Controller
+class SaqCatalogueController extends Controller
 
 {
  public function getProduits($nombre = 24, $page = 1) /* recupere la liste de bouteilles a partir de l'url donner (SAQ) */
@@ -215,6 +215,7 @@ class SaqController extends Controller
         //var_dump($info);
         return $info; /* renvoie de l'objet */
     }
+    
 
 
 
@@ -272,7 +273,7 @@ class SaqController extends Controller
 
     public function fetchProduits()
     {
-        ini_set('max_execution_time', 0); // Cette fonction peut rouler 120 minutes
+        ini_set('max_execution_time', 0); // Cette fonction peut rouler infiniment
 
         $totalPages = 342;  // Set the total number of pages you want to fetch
 

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BottleController;
 use App\Http\Controllers\Api\CellarHasBottleController;
-use App\Http\Controllers\Api\SaqController;
+use App\Http\Controllers\Api\SaqCatalogueController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TypeController;
 use App\Http\Controllers\Api\CountryController;
@@ -49,8 +49,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 /* <YG */
 Route::apiResource('/admin', AdminController::class);
-Route::post('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
-Route::get('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
+Route::post('/saq/fetch', [SaqCatalogueController::class, 'fetchProduits'])->name('saq.fetch');
+Route::get('/saq/fetch', [SaqCatalogueController::class, 'fetchProduits'])->name('saq.fetch');
 /* YG> */
 
 
