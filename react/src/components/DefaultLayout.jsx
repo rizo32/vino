@@ -64,7 +64,7 @@ export default function DefaultLayout() {
                 
                 */}
 
-                <aside className="fixed bottom-0 w-full bg-white h-16 flex items-center justify-around">
+                <aside className="fixed bottom-0 w-full bg-white h-16 flex items-center justify-around z-20">
                     {/*                 <Link to="/wishlist">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
