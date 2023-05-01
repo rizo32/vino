@@ -215,6 +215,7 @@ class SaqController extends Controller
         //var_dump($info);
         return $info; /* renvoie de l'objet */
     }
+    
 
 
 
