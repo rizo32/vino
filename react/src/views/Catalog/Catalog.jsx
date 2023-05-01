@@ -21,8 +21,9 @@ export default function Catalog() {
     const getBottles = () => {
         setLoading(true); // à mettre en place (eg Gif)
 
+        console.log(filters);
         const filterParams = new URLSearchParams();
-
+        
         // Change la requête selon recherche/filtre
         if (filters.country.length > 0) {
             filterParams.append("country", filters.country.join(","));
@@ -66,7 +67,7 @@ export default function Catalog() {
                         <li key={bottle.id}>
                             <ProductCard
                                 bottle={bottle}
-                                setBottles={setBottles}
+                                getBottles={getBottles}
                             />
                         </li>
                     ))}
