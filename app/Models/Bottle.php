@@ -22,7 +22,18 @@ class Bottle extends Model
     'format_id',
     'type_id',
     'rating_saq',
-    'num_comments'
+    'num_comments',
+    'cepage',
+    'region',
+    'designation_reglemente',
+    'taux_alcool',
+    'taux_sucre',
+    'producteur',
+    'code_cup',
+    
+
+    
+
   ];
 
   public function format()
