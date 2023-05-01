@@ -164,6 +164,38 @@ class SaqProductController extends Controller
         return preg_replace('/\s+/', ' ', $chaine);
     }
 
+    private function get_id($model, $name)
+{
+    $models = [
+        'Region' => ['class' => Region::class, 'attribute' => 'name'],
+        'Cepage' => ['class' => Cepage::class, 'attribute' => 'name'],
+        'DesignationReglemente' => ['class' => DesignationReglemente::class, 'attribute' => 'name'],
+        'TauxAlcool' => ['class' => TauxAlcool::class, 'attribute' => 'name'],
+        'TauxSucre' => ['class' => TauxSucre::class, 'attribute' => 'name'],
+        'Producteur' => ['class' => Producteur::class, 'attribute' => 'name'],
+        'TemperatureService' => ['class' => TemperatureService::class, 'attribute' => 'name'],
+        'Aroma' => ['class' => Aroma::class, 'attribute' => 'name'],
+    ];
 
+    $modelClass = $models[$model]['class'] ?? null;
+    $attribute = $models[$model]['attribute'] ?? null;
+
+    if (!$modelClass || !$attribute) {
+        return null;
+    }
+
+    $instance = $modelClass::where($attribute, $name)->first();
+
+    if ($instance) {
+        return $instance->id;
+    }
+
+    // Create a new instance if not found
+    $newInstance = new $modelClass();
+    $newInstance->$attribute = $name;
+    $newInstance->save();
+
+    return $newInstance->id;
+}
 
 }
