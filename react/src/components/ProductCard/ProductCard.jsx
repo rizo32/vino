@@ -16,7 +16,7 @@ export default function ProductCard({ bottle, quantity, getBottles, removeFromCe
                 bottle
             )
             .then(() => {
-                getBottles();
+                getBottles(bottle);
             })
             .catch((err) => {
                 console.log(err.response);
