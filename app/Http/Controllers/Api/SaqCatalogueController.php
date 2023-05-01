@@ -222,19 +222,16 @@ class SaqCatalogueController extends Controller
     private function ajouteProduit($bte)
     {
         $retour = new stdClass(); /* creation d'un objet pour stocker les resultat */
-
+    
         /* valeur par default */
         $retour->succes = false;
         $retour->raison = '';
         $retour->erreur = 0;
         $retour->insert = 0;
         $retour->double = 0;
-
-
-
-
+    
         $existingBottle = Bottle::where('code_saq', $bte->desc->code_SAQ)->first(); /* verifie si la bouteille existe deja */
-
+    
         if (!$existingBottle) { /* si la bouteille n'existe pas deja */
             /* creation d'une instance de la class bottle */
             $newBottle = new Bottle();
@@ -249,7 +246,15 @@ class SaqCatalogueController extends Controller
             $newBottle->type_id = $bte->desc->type_id;
             $newBottle->rating_saq = $bte->rating;
             $newBottle->num_comments = $bte->num_comments;
-
+            $newBottle->region_id = isset($bte->desc->region_id) ? $bte->desc->region_id : NULL;
+            $newBottle->cepage_id = isset($bte->desc->cepage_id) ? $bte->desc->cepage_id : NULL;
+            $newBottle->designation_reglemente_id = isset($bte->desc->designation_reglemente_id) ? $bte->desc->designation_reglemente_id : NULL;
+            $newBottle->taux_alcool_id = isset($bte->desc->taux_alcool_id) ? $bte->desc->taux_alcool_id : NULL;
+            $newBottle->taux_sucre_id = isset($bte->desc->taux_sucre_id) ? $bte->desc->taux_sucre_id : NULL;
+            $newBottle->producteur_id = isset($bte->desc->producteur_id) ? $bte->desc->producteur_id : NULL; 
+            $newBottle->temperature_service_id = isset($bte->desc->temperature_service_id) ? $bte->desc->temperature_service_id : NULL; 
+            $newBottle->aroma_id = isset($bte->desc->aroma_id) ? $bte->desc->aroma_id : NULL; 
+    
             /* Enregistrement de la bouteille dans la base de données */
             if ($newBottle->save()) {
                 $retour->succes = true;
@@ -266,9 +271,10 @@ class SaqCatalogueController extends Controller
             $retour->raison = 'Duplication';
             $retour->double++;
         }
-
+    
         return $retour; /* Retorune objet + resultat */
     }
+    
 
 
     public function fetchProduits()

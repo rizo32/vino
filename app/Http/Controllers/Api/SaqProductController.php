@@ -4,9 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bottle;
-use App\Models\Format;
-use App\Models\Type;
-use App\Models\Country;
+use App\Models\Aroma;
+use App\Models\Cepage;
+use App\Models\DesignationReglemente;
+use App\Models\Producteur;
+use App\Models\Region;
+use App\Models\TauxAlcool;
+use App\Models\TauxSucre;
+use App\Models\TemperatureService;
 use Illuminate\Http\Request;
 use DOMDocument;
 use stdClass;
@@ -108,31 +113,31 @@ class SaqProductController extends Controller
 
             // Check if the key exists in $productDetails before adding it to $updateData
             if (array_key_exists('Région', $productDetails)) {
-                $updateData['region_id'] = $this->nettoyerEspace($productDetails['Région']);
+                $updateData['region_id'] = $this->get_id('Region', $this->nettoyerEspace($productDetails['Région']));
             }
             if (array_key_exists('Cépages', $productDetails)) {
-                $updateData['cepage_id'] = $this->nettoyerEspace($productDetails['Cépages']);
+                $updateData['cepage_id'] = $this->get_id('Cepage', $this->nettoyerEspace($productDetails['Cépages']));
             }
             if (array_key_exists('Désignation réglementée', $productDetails)) {
-                $updateData['designation_reglemente_id'] = $this->nettoyerEspace($productDetails['Désignation réglementée']);
+                $updateData['designation_reglemente_id'] = $this->get_id('DesignationReglemente', $this->nettoyerEspace($productDetails['Désignation réglementée']));
             }
             if (array_key_exists("Degré d'alcool", $productDetails)) {
-                $updateData['taux_alcool_id'] = $this->nettoyerEspace($productDetails["Degré d'alcool"]);
+                $updateData['taux_alcool_id'] = $this->get_id('TauxAlcool', $this->nettoyerEspace($productDetails["Degré d'alcool"]));
             }
             if (array_key_exists('Taux de sucre', $productDetails)) {
-                $updateData['taux_sucre_id'] = $this->nettoyerEspace($productDetails['Taux de sucre']);
+            $updateData['taux_sucre_id'] = $this->get_id('TauxSucre', $this->nettoyerEspace($productDetails['Taux de sucre']));
             }
             if (array_key_exists('Producteur', $productDetails)) {
-                $updateData['producteur_id'] = $this->nettoyerEspace($productDetails['Producteur']);
+            $updateData['producteur_id'] = $this->get_id('Producteur', $this->nettoyerEspace($productDetails['Producteur']));
             }
             if (array_key_exists('Code CUP', $productDetails)) {
-                $updateData['code_cup'] = $this->nettoyerEspace($productDetails['Code CUP']);
+            $updateData['code_cup'] = $this->nettoyerEspace($productDetails['Code CUP']);
             }
             if (array_key_exists('Température de service', $productDetails)) {
-                $updateData['temperature_service_id'] = $this->nettoyerEspace($productDetails['Température de service']);
+            $updateData['temperature_service_id'] = $this->get_id('TemperatureService', $this->nettoyerEspace($productDetails['Température de service']));
             }
             if (array_key_exists('Arômes', $productDetails)) {
-                $updateData['aroma_id'] = $this->nettoyerEspace($productDetails['Arômes']);
+            $updateData['aroma_id'] = $this->get_id('Aroma', $this->nettoyerEspace($productDetails['Arômes']));
             }
 
             // ... (add more fields if needed)
@@ -158,4 +163,39 @@ class SaqProductController extends Controller
     {
         return preg_replace('/\s+/', ' ', $chaine);
     }
+
+    private function get_id($model, $name)
+{
+    $models = [
+        'Region' => ['class' => Region::class, 'attribute' => 'name'],
+        'Cepage' => ['class' => Cepage::class, 'attribute' => 'name'],
+        'DesignationReglemente' => ['class' => DesignationReglemente::class, 'attribute' => 'name'],
+        'TauxAlcool' => ['class' => TauxAlcool::class, 'attribute' => 'name'],
+        'TauxSucre' => ['class' => TauxSucre::class, 'attribute' => 'name'],
+        'Producteur' => ['class' => Producteur::class, 'attribute' => 'name'],
+        'TemperatureService' => ['class' => TemperatureService::class, 'attribute' => 'name'],
+        'Aroma' => ['class' => Aroma::class, 'attribute' => 'name'],
+    ];
+
+    $modelClass = $models[$model]['class'] ?? null;
+    $attribute = $models[$model]['attribute'] ?? null;
+
+    if (!$modelClass || !$attribute) {
+        return null;
+    }
+
+    $instance = $modelClass::where($attribute, $name)->first();
+
+    if ($instance) {
+        return $instance->id;
+    }
+
+    // Create a new instance if not found
+    $newInstance = new $modelClass();
+    $newInstance->$attribute = $name;
+    $newInstance->save();
+
+    return $newInstance->id;
+}
+
 }
