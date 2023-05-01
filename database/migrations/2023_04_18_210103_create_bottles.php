@@ -24,15 +24,18 @@ return new class extends Migration {
       $table->string('url_saq', 255)->nullable();
       $table->foreignId('format_id')->constrained()->onDelete('cascade')->nullable();
       $table->foreignId('country_id')->constrained()->onDelete('cascade')->nullable();
-      $table->string('region')->nullable();
-      $table->string('cepage')->nullable();
-      $table->string('designation_reglemente')->nullable();
-      $table->string('taux_alcool')->nullable();
-      $table->string('producteur')->nullable();
-      $table->string('code_cup')->nullable();
+      $table->string('region_id')->nullable();
+      $table->string('cepage_id')->nullable();
+      $table->string('designation_reglemente_id')->nullable();
+      $table->string('taux_alcool_id')->nullable();
+      $table->string('taux_sucre_id')->nullable();
+      $table->string('producteur_id')->nullable();
+      $table->string('temperature_service_id')->nullable();
+      $table->string('aroma_id')->nullable();
       $table->foreignId('type_id')->constrained()->onDelete('cascade')->nullable();
       $table->float('rating_saq')->nullable();
       $table->integer('num_comments')->nullable();
+      $table->string('code_cup')->nullable();
       $table->timestamps();
   });
   
