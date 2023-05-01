@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\SaqController;
+use App\Http\Controllers\Api\SaqProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,3 +16,8 @@ use App\Http\Controllers\Api\SaqController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+/* YG TEST */
+Route::get('/saqtest', [SaqProductController::class, 'getItem'])->name('saq');
+/* YG TEST */
