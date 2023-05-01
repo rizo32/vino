@@ -4,9 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bottle;
-use App\Models\Format;
-use App\Models\Type;
-use App\Models\Country;
+use App\Models\Aroma;
+use App\Models\Cepage;
+use App\Models\DesignationReglemente;
+use App\Models\Producteur;
+use App\Models\Region;
+use App\Models\TauxAlcool;
+use App\Models\TauxSucre;
+use App\Models\TemperatureService;
 use Illuminate\Http\Request;
 use DOMDocument;
 use stdClass;
@@ -158,4 +163,7 @@ class SaqProductController extends Controller
     {
         return preg_replace('/\s+/', ' ', $chaine);
     }
+
+
+
 }
