@@ -152,7 +152,7 @@ const FilterPanel = ({ filters, setFilters }) => {
                     setShowCategories(true);
                     scrollToTop();
                 }}
-                className="flex justify-center items-center fixed bottom-32 right-12 h-16 w-16 text-white rounded-full bg-red-900 shadow-shadow-tiny hover:shadow-none hover:bg-red-hover active:bg-red-hover active:shadow-none"
+                className="flex justify-center items-center fixed bottom-32 right-12 h-16 w-16 text-white rounded-full bg-red-900 shadow-shadow-tiny hover:shadow-none hover:bg-red-hover active:bg-red-hover active:shadow-none z-20"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

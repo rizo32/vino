@@ -3,7 +3,7 @@ import axiosClient from "../../axios-client";
 import EditQuantityModal from "../EditQuantityModal/EditQuantityModal";
 import { useState, useEffect } from "react";
 
-export default function ProductCard({ bottle, quantity, setBottles, removeFromCellar, cellarHasBottleId, updateBottleQty }) {
+export default function ProductCard({ bottle, quantity, getBottles, removeFromCellar, cellarHasBottleId, updateBottleQty }) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -15,8 +15,8 @@ export default function ProductCard({ bottle, quantity, setBottles, removeFromCe
                 `${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles`,
                 bottle
             )
-            .then(({ data }) => {
-                setBottles(data.data);
+            .then(() => {
+                getBottles(bottle);
             })
             .catch((err) => {
                 console.log(err.response);
