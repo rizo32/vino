@@ -20,8 +20,7 @@ export default function Catalog() {
     // aller chercher les bouteilles dans la base de données et les mettre dans le state
     const getBottles = () => {
         setLoading(true); // à mettre en place (eg Gif)
-
-        console.log(filters);
+        
         const filterParams = new URLSearchParams();
         
         // Change la requête selon recherche/filtre
