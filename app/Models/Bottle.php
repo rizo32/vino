@@ -23,13 +23,15 @@ class Bottle extends Model
     'type_id',
     'rating_saq',
     'num_comments',
-    'cepage',
-    'region',
-    'designation_reglemente',
-    'taux_alcool',
-    'taux_sucre',
-    'producteur',
+    'cepage_id',
+    'region_id',
+    'designation_reglemente_id',
+    'taux_alcool_id',
+    'taux_sucre_id',
+    'producteur_id',
     'code_cup',
+    'aroma_id',
+    'temperature_service_id',
     
 
     
