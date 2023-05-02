@@ -2,7 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Http\Controllers\Api\SaqController;
+use App\Http\Controllers\Api\SaqCatalogueController;
+use App\Http\Controllers\Api\SaqProductController;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -20,10 +21,13 @@ class FetchProductsJob implements ShouldQueue
 
     public function handle()
     {
-        $saqController = new SaqController();
+        $SaqCatalogueController = new SaqCatalogueController();
         $totalPages = 342; 
         for ($i = 1; $i <= $totalPages; $i++) {
-            $saqController->getProduits(24,$i);
+            $SaqCatalogueController->getProduits(24,$i);
         }
+
+        $SaqProductController = new SaqProductController();
+        $SaqProductController->getItem();
     }
 }
