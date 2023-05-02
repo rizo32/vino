@@ -18,6 +18,7 @@ function UserForm({ user, onChange, onSubmit, onReturn, message, setMessage }) {
                 name="first_name"
                 value={user.first_name}
                 className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
+                placeholder="Jon"
                 onChange={onChange}
             />
             <label htmlFor="last-name" className="mt-vh-2 ml-2">
@@ -33,6 +34,7 @@ function UserForm({ user, onChange, onSubmit, onReturn, message, setMessage }) {
                 name="last_name"
                 value={user.last_name}
                 className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
+                placeholder="Snow"
                 onChange={onChange}
             />
             <label htmlFor="email" className="mt-vh-2 ml-2">
@@ -48,6 +50,7 @@ function UserForm({ user, onChange, onSubmit, onReturn, message, setMessage }) {
                 name="email"
                 value={user.email}
                 className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
+                placeholder="king@north.com"
                 onChange={onChange}
             />
             <label htmlFor="password" className="mt-vh-2 ml-2">
@@ -82,7 +85,7 @@ function UserForm({ user, onChange, onSubmit, onReturn, message, setMessage }) {
             />
             <button
                 type="submit"
-                className="btn btn-block mt-8 bg-red-900 rounded-md text-white h-8 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover"
+                className="btn btn-block mt-8 bg-red-900 rounded-md text-white h-8 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover active:bg-red-hover active:shadow-none"
             >
                 Enregistrer
             </button>

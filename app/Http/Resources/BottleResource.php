@@ -29,11 +29,14 @@ class BottleResource extends JsonResource
             'price_saq' => $this->price_saq,
             'url_saq' => $this->url_saq,
             'image_url' => $this->image_url,
-            'type' => $this->type->name,
-            'format' => $this->format->volume,
+            'type_name' => $this->type->name,
+            'type_id' => $this->type_id,
+            'format_name' => $this->format->name,
             'country_name' => $this->country->name,
+            'country_id' => $this->country_id,
             'milesime' => $this->milesime,
             'rating_saq' => $this->rating_saq,
+            'num_comments' => $this->num_comments
         ];
 
         if ($this->relationLoaded('cellarHasBottle')) {

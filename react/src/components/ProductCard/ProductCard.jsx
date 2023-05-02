@@ -3,7 +3,7 @@ import axiosClient from "../../axios-client";
 import EditQuantityModal from "../EditQuantityModal/EditQuantityModal";
 import { useState, useEffect } from "react";
 
-export default function ProductCard({ bottle, quantity, setBottles, removeFromCellar, cellarHasBottleId, updateBottleQty }) {
+export default function ProductCard({ bottle, quantity, getBottles, removeFromCellar, cellarHasBottleId, updateBottleQty }) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -15,8 +15,8 @@ export default function ProductCard({ bottle, quantity, setBottles, removeFromCe
                 `${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles`,
                 bottle
             )
-            .then(({ data }) => {
-                setBottles(data.data);
+            .then(() => {
+                getBottles(bottle);
             })
             .catch((err) => {
                 console.log(err.response);
@@ -26,12 +26,12 @@ export default function ProductCard({ bottle, quantity, setBottles, removeFromCe
     return (
         <article
             id="ProductCard"
-            className="relative flex flex-row justify-start py-2 bg-white"
+            className="relative flex flex-row justify-start py-2 bg-white shadow-shadow-tiny hover:shadow-none active:shadow-none hover:bg-gray-50 active:shadow-none"
         >
             <Link
                 to={`/product/${bottle.id}`}
                 state={{ bottle }}
-                className="w-full flex flex-row justify-between bg-white relative"
+                className="w-full flex flex-row justify-between relative"
             >
                 {location.pathname === "/cellar" ? (
                     <span className="absolute left-3 h-8 w-8 bg-red-900 text-white rounded-full flex items-center justify-center">
@@ -51,12 +51,12 @@ export default function ProductCard({ bottle, quantity, setBottles, removeFromCe
                     />
                 </section>
                 {/* Zone information */}
-                <section className="flex flex-col justify-start items-start gap-3 bg-white flex-grow w-[60%]">
+                <section className="flex flex-col justify-start items-start gap-3 flex-grow w-[60%]">
                     <h2 className="font-bold">{bottle.name}</h2>
                     <div className="flex gap-3">
-                        <p className="font-light">{bottle.type}</p>{" "}
+                        <p className="font-light">{bottle.type_name}</p>{" "}
                         <span className="font-light">|</span>{" "}
-                        <p className="font-light">{bottle.format}</p>
+                        <p className="font-light">{bottle.format_name}</p>
                     </div>
                     <p className="font-light">{bottle.country_name}</p>
 

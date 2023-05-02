@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../../contexts/ContextProvider";
-import FilterPanel from "../../components/FilterPanel";
+import FilterPanel from "../../components/Filter/FilterPanel";
 
 // Elodie
 export default function Cellar() {
@@ -11,16 +11,34 @@ export default function Cellar() {
     const [loading, setLoading] = useState(true);
 
     const [filters, setFilters] = useState({
-        country: [],
         type: [],
+        country: [],
         ratings: [],
     });
 
     // aller chercher les bouteilles du cellier de l'usager dans la base de données et les mettre dans le state
     const getBottles = () => {
         setLoading(true);
+
+        const filterParams = new URLSearchParams();
+
+        // Change la requête selon recherche/filtre
+        if (filters.country.length > 0) {
+            filterParams.append("country", filters.country.join(","));
+        }
+
+        // Change la requête selon recherche/filtre
+        if (filters.type.length > 0) {
+            filterParams.append("type", filters.type.join(","));
+        }
+
+        if (searchValue) {
+            filterParams.append("search", searchValue);
+        }
+        // autres filtres
+
         axiosClient
-            .get("/cellarHasBottles")
+            .get(`/cellarHasBottles?${filterParams.toString()}`)
             .then(({ data }) => {
                 //console.log(data);
                 setBottles(data.data);
@@ -35,37 +53,7 @@ export default function Cellar() {
     //executer la fonction
     useEffect(() => {
         getBottles();
-    }, []);
-
-    // const filteredBottles = !searchValue
-    //     ? bottles
-    //     : bottles.filter((cellarBottle) => {
-    //           return (
-    //               cellarBottle.bottle.name &&
-    //               cellarBottle.bottle.name
-    //                   .toLowerCase()
-    //                   .includes(searchValue.toLowerCase())
-    //           );
-    //       });
-
-    const filteredBottles = bottles.filter((cellarBottle) => {
-        const bottle = cellarBottle.bottle;
-        const nameMatch =
-            !searchValue ||
-            (bottle.name &&
-                bottle.name.toLowerCase().includes(searchValue.toLowerCase()));
-        const countryMatch =
-            filters.country.length === 0 ||
-            filters.country.includes(bottle.country_name);
-        // const typeMatch =
-        //     filters.type.length === 0 || filters.type.includes(bottle.type.types);
-        // const ratingsMatch =
-        //     filters.ratings.length === 0 ||
-        //     filters.ratings.includes(bottle.rating);
-
-        // return nameMatch && countryMatch && typeMatch && ratingsMatch;
-        return nameMatch && countryMatch;
-    });
+    }, [filters, searchValue]);
 
     //retirer la bouteille du cellier de l'usager
     const removeFromCellar = (id) => {
@@ -102,10 +90,10 @@ export default function Cellar() {
         <div className="flex flex-col gap-2">
             <FilterPanel filters={filters} setFilters={setFilters} />
             {loading ? (
-                <p>Loading...</p>
+                <p>Chargement...</p>
             ) : (
                 <ul className="flex flex-col gap-2">
-                    {filteredBottles.map((bottle) => (
+                    {bottles.map((bottle) => (
                         <li key={bottle.id}>
                             <ProductCard
                                 bottle={bottle.bottle}

@@ -10,6 +10,8 @@ class TypeController extends Controller
 {
     public function index()
     {
-        return response()->json(\App\Models\Type::all());
+        $types = Type::all();
+        \Log::info('Types:', ['data' => $types]);
+        return response()->json($types);
     }
 }

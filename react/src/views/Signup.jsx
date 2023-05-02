@@ -45,7 +45,7 @@ export default function Signup() {
                     onSubmit={onSubmit}
                 >
                     <h1 className="text-4xl text-center mt-vh-2">
-                        Soyez des nôtres!
+                        Bienvenue!
                     </h1>
                     {/* À changer le titre */}
                     <label htmlFor="first-name" className="mt-vh-5 ml-2">
@@ -60,7 +60,7 @@ export default function Signup() {
                         id="first-name"
                         ref={firstNameRef}
                         type="text"
-                        placeholder="Gandalf"
+                        placeholder="Jon"
                         className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
                     />
                     <label htmlFor="last-name" className="mt-vh-2 ml-2">
@@ -75,7 +75,7 @@ export default function Signup() {
                         id="last-name"
                         ref={lastNameRef}
                         type="text"
-                        placeholder="Le gris"
+                        placeholder="Snow"
                         className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
                     />
                     <label htmlFor="email" className="mt-vh-2 ml-2">
@@ -90,7 +90,7 @@ export default function Signup() {
                         id="email"
                         ref={emailRef}
                         type="email"
-                        placeholder="gandalf_grey123@sympatico.com"
+                        placeholder="king@north.com"
                         className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
                     />
                     <label htmlFor="password" className="mt-vh-2 ml-2">
@@ -121,7 +121,7 @@ export default function Signup() {
                         placeholder="********"
                         className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset mt-2"
                     />
-                    <button className="btn btn-block mt-8 bg-red-900 rounded-md text-white h-8 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover">
+                    <button className="btn btn-block mt-8 bg-red-900 rounded-md text-white h-8 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover active:bg-red-hover active:shadow-none">
                         L'aventure commence!
                     </button>
                     <p className="text-center absolute bottom-20 left-1/2 transform -translate-x-1/2 w-10/12">
