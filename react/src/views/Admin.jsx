@@ -33,78 +33,81 @@ const Admin = () => {
         }));
     };
 
-// Fonction pour récupérer les produits depuis l'API
-const fetchProducts = () => {
-    // Afficher la barre de progression
-    setShowProgressBar(true);
-    // Mesurer le temps d'exécution de la requête
-    const t0 = performance.now();
-    // Créer un flux d'événements pour suivre la progression
-    const eventSource = new EventSource(`${baseURL}/fetch`);
+    // Fonction pour récupérer les produits depuis l'API
+    const fetchProducts = () => {
+        // Afficher la barre de progression
+        setShowProgressBar(true);
+        // Mesurer le temps d'exécution de la requête
+        const t0 = performance.now();
+        // Créer un flux d'événements pour suivre la progression
+        const eventSource = new EventSource(`${baseURL}/fetch`);
 
-    // Traitement des messages reçus depuis le flux d'événements
-    eventSource.onmessage = (event) => {
-        const data = JSON.parse(event.data);
+        // Traitement des messages reçus depuis le flux d'événements
+        eventSource.onmessage = (event) => {
+            const data = JSON.parse(event.data);
 
-        // Mettre à jour la progression si une valeur de pourcentage est disponible
-        if (data.progressPercentage) {
-            setProgress(data.progressPercentage);
-        }
-        // Si les données sont complètes, traiter et afficher les produits
-        else if (data.done) {
-            const parsedProducts = parseProductData(data.produits);
-            setProducts(parsedProducts);
+            // Mettre à jour la progression si une valeur de pourcentage est disponible
+            if (data.progressPercentage) {
+                setProgress(data.progressPercentage);
+            }
+            // Si les données sont complètes, traiter et afficher les produits
+            else if (data.done) {
+                const parsedProducts = parseProductData(data.produits);
+                setProducts(parsedProducts);
 
-            // Calculer et afficher le temps d'exécution de la requête
-            const t1 = performance.now();
-            const timeDiff = t1 - t0;
-            console.log(
-                `FetchProducts prend ${timeDiff} millisecondes (${(
-                    timeDiff / 1000
-                ).toFixed(2)} secondes ou ${(timeDiff / 60000).toFixed(2)} minutes)`
-            );
+                // Calculer et afficher le temps d'exécution de la requête
+                const t1 = performance.now();
+                const timeDiff = t1 - t0;
+                console.log(
+                    `FetchProducts prend ${timeDiff} millisecondes (${(
+                        timeDiff / 1000
+                    ).toFixed(2)} secondes ou ${(timeDiff / 60000).toFixed(
+                        2
+                    )} minutes)`
+                );
 
-            // Fermer le flux d'événements et masquer la barre de progression
-            eventSource.close();
-            setShowProgressBar(false);
-        }
+                // Fermer le flux d'événements et masquer la barre de progression
+                eventSource.close();
+                setShowProgressBar(false);
+            }
+        };
     };
-};
 
-// Gestionnaire pour confirmer la récupération des produits
-const handleConfirm = () => {
-    // Fermer la fenêtre modale et masquer le bouton
-    setShowModal(false);
-    setShowButton(false);
-    // Lancer la récupération des produits
-    fetchProducts();
-};
+    // Gestionnaire pour confirmer la récupération des produits
+    const handleConfirm = () => {
+        // Fermer la fenêtre modale et masquer le bouton
+        setShowModal(false);
+        setShowButton(false);
+        // Lancer la récupération des produits
+        fetchProducts();
+    };
 
-// Gestionnaire pour annuler la récupération des produits
-const handleCancel = () => {
-    // Fermer la fenêtre modale
-    setShowModal(false);
-};
-
+    // Gestionnaire pour annuler la récupération des produits
+    const handleCancel = () => {
+        // Fermer la fenêtre modale
+        setShowModal(false);
+    };
 
     return (
         /* retour de la section qui affichera les produis */
         <div className="flex flex-col items-center bg-red-50">
-             {/* ajout et logique du Progress bar */}
-{showProgressBar && (
-        <div className="w-full bg-gray-300 rounded relative h-6">
-        <div className={`absolute top-0 left-0 w-full h-full bg-red-900 ${progress === 0 ? "opacity-0" : "opacity-100"}`} style={{ width: `${progress}%` }}>
-            <span className="absolute top-0 left-0 w-full text-center h-full flex items-center justify-center text-white">
-                {progress.toFixed(2)}%
-            </span>
-        </div>
-    </div>
-
-
-
-)}
-           {/* centrer et logique pour btn */}
-           {showButton && (
+            {/* ajout et logique du Progress bar */}
+            {showProgressBar && (
+                <div className="w-full bg-gray-300 rounded relative h-6">
+                    <div
+                        className={`absolute top-0 left-0 w-full h-full bg-red-900 ${
+                            progress === 0 ? "opacity-0" : "opacity-100"
+                        }`}
+                        style={{ width: `${progress}%` }}
+                    >
+                        <span className="absolute top-0 left-1/2 w-full text-center h-full flex items-center justify-center text-white">
+                            {progress.toFixed(2)}%
+                        </span>
+                    </div>
+                </div>
+            )}
+            {/* centrer et logique pour btn */}
+            {showButton && (
                 <div className="flex items-center justify-center h-full w-full absolute inset-0">
                     <button
                         onClick={() => setShowModal(true)}
@@ -115,12 +118,17 @@ const handleCancel = () => {
                 </div>
             )}
 
-                {/* ajout et logique du mdodal */}
+            {/* ajout et logique du mdodal */}
             {showModal && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">
                     <div className="bg-white p-8 rounded-lg shadow-md">
-                        <h2 className="text-xl font-semibold mb-4">Confirmation</h2>
-                        <p>Le processus peut être long. Souhaitez-vous poursuivre ?</p>
+                        <h2 className="text-xl font-semibold mb-4">
+                            Confirmation
+                        </h2>
+                        <p>
+                            Le processus peut être long. Souhaitez-vous
+                            poursuivre ?
+                        </p>
                         <div className="flex justify-end mt-6">
                             <button
                                 onClick={handleCancel}

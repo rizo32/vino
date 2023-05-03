@@ -20,8 +20,12 @@ const MobileNavbar = () => {
             }
         } else {
             setSearchBarOpen(false);
+            setSearchValue("");
+            if (searchInputRef.current) {
+                searchInputRef.current.value = ""; // Clear input field value directly
+            }
         }
-    }, [location]);
+    }, [location, setSearchValue]);
 
     // Add an event handler for input changes
     const handleSearchInputChange = (e) => {
@@ -86,10 +90,7 @@ const MobileNavbar = () => {
                     </button>
                 </div>
 
-                {/* ATTENTION
-CECI EST LE MENU BURGER
-IL SERA PEUT-ÊTRE UTILE D'ICI LA FIN DU PROJET
-SVP LAISSEZ COMMENTÉ JUSQU'À NOUVEL AVIS */}
+                {/* MENU BURGER SI NECESSAIRE */}
 
                 {/* Hamburger menu icon */}
                 {/* <button className="text-gray-600 focus:outline-none ml-12">

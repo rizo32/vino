@@ -33,20 +33,21 @@ export default function Catalog() {
 
         const filterParams = new URLSearchParams();
 
-        // Change la requête selon recherche/filtre
+        // Change la requête selon filtre country
         if (filters.country.length > 0) {
             filterParams.append("country", filters.country.join(","));
         }
 
-        // Change la requête selon recherche/filtre
+        // Change la requête selon filtre type
         if (filters.type.length > 0) {
             filterParams.append("type", filters.type.join(","));
         }
 
+        // Change la requête selon recherche
         if (searchValue) {
             filterParams.append("search", searchValue);
         }
-        // autres filtres
+
 
         // si on ajoute la bouteille au cellier, refleter la nouvelle quantite sans devoir fetch toutes les bouteilles a nouveau
         if(bottleUpdt){
@@ -58,11 +59,12 @@ export default function Catalog() {
                     quantity: 1
                   };
                 }else if (bottle.id === bottleUpdt.id && bottle.quantity) {
+
                     //augmenter la quantite si elle existe
                     return {
                         ...bottle,
-                        quantity: bottle.quantity + 1
-                      };
+                        quantity: bottle.quantity + 1,
+                    };
                 }
                 // garder meme bouteille et proprietes si rien change
                 return bottle;
@@ -85,11 +87,13 @@ export default function Catalog() {
         axiosClient
             .get(`/bottles?${filterParams.toString()}&page=${page}`)
             .then(({ data }) => {
+
                 if(page == 1){
                     //si on est a la page 1, on veut repartir a neuf et enlever les autres resultats de la page
                     setBottles(data.data)
                 }else{
                     //si on va vers la prochaine page, on veut seulement ajouter les resultats a ceux qui sont deja la
+
                     setBottles([...bottles, ...data.data]);
                 }
                 //sauvegarder le compte de resultats presents sur la page
@@ -115,9 +119,15 @@ export default function Catalog() {
         }
     };
 
-    // executer fonction
+    // Fetch bouteille seulement lors de la recherche
     useEffect(() => {
-        getBottles();
+        if (
+            searchValue ||
+            filters.type.length > 0 ||
+            filters.country.length > 0
+        ) {
+            getBottles();
+        }
     }, [filters, searchValue]);
 
     //sentinel observer pour la pagination scroll
@@ -143,8 +153,11 @@ export default function Catalog() {
 
     return (
         <div className="flex flex-col gap-2 mb-[100px]" ref={containerRef}>
-            <FilterPanel filters={filters} setFilters={setFilters} />
-            {loading ? (
+            {/* Désactivation du filtre dans le catalogue avant l'implantation d'une liste d'achat qui justifierait une recherche plus appronfondie */}
+            {/* <FilterPanel filters={filters} setFilters={setFilters} /> */}
+
+            {/* Loading state n'est pas nécéssaire dans l'état actuel des choses mais pourrait le devenir */}
+            {/* {loading ? (
                 <p>Chargement...</p>
             ) : (
                 <>
@@ -167,6 +180,7 @@ export default function Catalog() {
                     </ul>
                 </>
             )}
+
         </div>
     );
 }

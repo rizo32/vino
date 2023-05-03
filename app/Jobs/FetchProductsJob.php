@@ -22,7 +22,7 @@ class FetchProductsJob implements ShouldQueue
     public function handle()
     {
         $SaqCatalogueController = new SaqCatalogueController();
-        $totalPages = 342; 
+        $totalPages = 100; 
         for ($i = 1; $i <= $totalPages; $i++) {
             $SaqCatalogueController->getProduits(24,$i);
         }

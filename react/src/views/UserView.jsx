@@ -13,21 +13,8 @@ function UserView() {
     const { setToken } = useStateContext();
     const navigate = useNavigate();
 
-    // fonction Log out
-    const onLogout = (ev) => {
-        ev.preventDefault();
-
-        axiosClient.post("/logout").then(() => {
-            setToken(null);
-            setUser({});
-            navigate("/login", { replace: true });
-        });
-    };
-
     // Va chercher l'information et le met dans le state
     useEffect(() => {
-        // if (!id) return; // check if id exists
-        // if (user && user.id === id) return; // check if user already exists
         axiosClient.get(`/users/${id}`).then((response) => {
             setUser(response.data);
         });
@@ -36,6 +23,14 @@ function UserView() {
     if (!user) {
         return <div>Chargement...</div>;
     }
+
+    // fonction Log out
+    const onLogout = (ev) => {
+        axiosClient.post("/logout").then(() => {
+            setToken(null);
+            setUser({});
+        });
+    };
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
