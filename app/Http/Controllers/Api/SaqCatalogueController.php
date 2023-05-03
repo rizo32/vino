@@ -282,7 +282,7 @@ class SaqCatalogueController extends Controller
     {
         ini_set('max_execution_time', 0); // Cette fonction peut rouler infiniment
 
-        $totalPages = 342;  // Set the total number of pages you want to fetch
+        $totalPages = 5;  // Set the total number of pages you want to fetch
 
         $response = new StreamedResponse(function () use ($totalPages) {
             $produits = []; // Tableau qui contiendra les produits
