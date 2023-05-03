@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from "react";
 
 const StateContext = createContext({
-    // valeurs par défaut
+    // Valeurs pour l'authentification
     user: null,
     token: null,
     setUser: () => {},
