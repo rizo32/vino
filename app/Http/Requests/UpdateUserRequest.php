@@ -40,11 +40,9 @@ class UpdateUserRequest extends FormRequest
       'password' => [
         'confirmed',
         'nullable',
-        // DÉSACTIVATION DES RÈGLES POUR LE DÉVELOPPEMENT 
-
-        // Password::min(8)
-        // ->letters()
-        // ->symbols()
+        Password::min(8)
+        ->letters()
+        ->symbols()
       ]
     ];
   }
