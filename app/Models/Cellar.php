@@ -15,4 +15,9 @@ class Cellar extends Model
         'name',
         'user_id',
     ];
+
+    public function user()
+    {
+      return $this->hasOne(User::class);
+    }
 }
