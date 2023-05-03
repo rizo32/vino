@@ -52,7 +52,7 @@ export default function Catalog() {
         if(bottleUpdt){
             const updatedBottles = bottles.map(bottle => {
                 if (bottle.id === bottleUpdt.id && !bottle.quantity) {
-                  // ajouter la propriete quantite sans recharcher toutes les bouteilles
+                  // ajouter la propriete quantite sans recharger toutes les bouteilles
                   return {
                     ...bottle,
                     quantity: 1
@@ -151,7 +151,7 @@ export default function Catalog() {
                     { total && total != 1 ?
                     <span>{total} résultats</span>
                     : total == 1 ? <span>1 résultat</span>
-                    : <span>Aucun résultats</span>}
+                    : <span>Aucun résultats, modifier vos filtres ou effectuez une nouvelle recherche</span>}
 
                     <ul className="flex flex-col gap-2">
                         {bottles.map((bottle) => (
@@ -162,7 +162,7 @@ export default function Catalog() {
                             </li>
                         ))}
                         
-                        <div ref={(el) => (sentinelRef.current = el)} id="sentinel" className="h-[100px] opacity-0">sentinel</div>
+                        <div ref={(el) => (sentinelRef.current = el)} id="sentinel" className="opacity-0">sentinel</div>
 
                     </ul>
                 </>

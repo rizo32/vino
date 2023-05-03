@@ -144,6 +144,6 @@ class CellarHasBottleController extends Controller
         //enlever la bouteille du cellier
         $cellarHasBottle->delete();
 
-        return response("", 204);
+        return new CellarHasBottleResource($cellarHasBottle);
     }
 }
