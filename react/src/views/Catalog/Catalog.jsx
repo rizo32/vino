@@ -47,20 +47,20 @@ export default function Catalog() {
         }
         // autres filtres
 
-        if(bottleUpdt){
-            const updatedBottles = bottles.map(bottle => {
+        if (bottleUpdt) {
+            const updatedBottles = bottles.map((bottle) => {
                 if (bottle.id === bottleUpdt.id && !bottle.quantity) {
-                  // ajouter la propriete quantite sans recharcher toutes les bouteilles
-                  return {
-                    ...bottle,
-                    quantity: 1
-                  };
-                }else if (bottle.id === bottleUpdt.id && bottle.quantity) {
+                    // ajouter la propriete quantite sans recharcher toutes les bouteilles
+                    return {
+                        ...bottle,
+                        quantity: 1,
+                    };
+                } else if (bottle.id === bottleUpdt.id && bottle.quantity) {
                     //augmenter la quantite si elle existe
                     return {
                         ...bottle,
-                        quantity: bottle.quantity + 1
-                      };
+                        quantity: bottle.quantity + 1,
+                    };
                 }
                 // garder meme bouteille et proprietes si rien change
                 return bottle;
@@ -70,19 +70,20 @@ export default function Catalog() {
             return;
         }
 
-        if(oldFilters != filters || oldSearch != searchValue){
+        if (oldFilters != filters || oldSearch != searchValue) {
             setPage(1);
             setScrollPosition(0);
-        }else{
-            setPage(page + 1)
+        } else {
+            setPage(page + 1);
         }
 
         axiosClient
             .get(`/bottles?${filterParams.toString()}&page=${page}`)
             .then(({ data }) => {
-                if(page == 1){
-                    setBottles(data.data)
-                }else{
+                console.log(data);
+                if (page == 1) {
+                    setBottles(data.data);
+                } else {
                     setBottles([...bottles, ...data.data]);
                 }
                 setOnPage(data.meta.to);
@@ -141,10 +142,17 @@ export default function Catalog() {
                             <li key={bottle.id}>
                                 <ProductCard
                                     bottle={bottle}
-                                    getBottles={getBottles} />
+                                    getBottles={getBottles}
+                                />
                             </li>
                         ))}
-                        <div ref={(el) => (sentinelRef.current = el)} id="sentinel" className="h-[100px] bg-transparent">test</div>
+                        <div
+                            ref={(el) => (sentinelRef.current = el)}
+                            id="sentinel"
+                            className="h-[100px] bg-transparent"
+                        >
+                            test
+                        </div>
                     </ul>
                 </>
             )}

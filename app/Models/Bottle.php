@@ -47,6 +47,17 @@ class Bottle extends Model
   {
     return $this->belongsTo(Country::class);
   }
+  public function region()
+  {
+    return $this->belongsTo(Region::class);
+  }
+
+  public function cepage()
+  {
+    return $this->belongsTo(Cepage::class);
+  }
+
+
 
   public function type()
   {

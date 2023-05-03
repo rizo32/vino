@@ -75,9 +75,11 @@ export default function Cellar() {
     const updateBottleQty = (id, data) => {
         axiosClient
             .put(
-                `${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles/${id}`,
+                `${
+                    import.meta.env.VITE_API_BASE_URL
+                }/api/cellarHasBottles/${id}`,
                 data
-                )
+            )
             .then(() => {
                 getBottles();
             })

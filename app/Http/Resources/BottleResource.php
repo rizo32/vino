@@ -18,7 +18,7 @@ class BottleResource extends JsonResource
     public function toArray($request)
     {
        //charger les tables reliées et avoir les données au lieu d'une clé étrangère
-        $this->load(['format', 'country', 'type']);
+        $this->load(['format', 'country', 'type','cepage','region']);
 
         $data = [
             'id' => $this->id,
@@ -26,6 +26,7 @@ class BottleResource extends JsonResource
             'image_path' => $this->image_path,
             'code_saq' => $this->code_saq,
             'description' => $this->description,
+            'cepage_name'=> $this->cepage,
             'price_saq' => $this->price_saq,
             'url_saq' => $this->url_saq,
             'image_url' => $this->image_url,
@@ -34,9 +35,10 @@ class BottleResource extends JsonResource
             'format_name' => $this->format->name,
             'country_name' => $this->country->name,
             'country_id' => $this->country_id,
+            'region_name' => $this->region->name,
             'milesime' => $this->milesime,
             'rating_saq' => $this->rating_saq,
-            'num_comments' => $this->num_comments
+            'num_comments' => $this->num_comments,
         ];
 
         if ($this->relationLoaded('cellarHasBottle')) {
