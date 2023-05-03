@@ -14,7 +14,6 @@ export default function Catalog() {
     const [page, setPage] = useState(1);
     const containerRef = useRef(null);
     const sentinelRef = useRef();
-    const [hasMoreResults, setHasMoreResults] = useState(true);
 
     const [filters, setFilters] = useState({
         type: [],
@@ -51,19 +50,13 @@ export default function Catalog() {
         if (bottleUpdt) {
             const updatedBottles = bottles.map((bottle) => {
                 if (bottle.id === bottleUpdt.id && !bottle.quantity) {
-
-                  // ajouter la propriete quantite sans recharcher toutes les bouteilles
-                  return {
-                    ...bottle,
-                    quantity: 1
-                  };
-                }else if (bottle.id === bottleUpdt.id && bottle.quantity) {
-                    //augmenter la quantite si elle existe
+                    // ajouter la propriete quantite sans recharcher toutes les bouteilles
                     return {
                         ...bottle,
                         quantity: 1,
                     };
                 } else if (bottle.id === bottleUpdt.id && bottle.quantity) {
+                    //augmenter la quantite si elle existe
                     return {
                         ...bottle,
                         quantity: bottle.quantity + 1,
@@ -77,20 +70,19 @@ export default function Catalog() {
             return;
         }
 
-
-        if(oldFilters != filters || oldSearch != searchValue){
+        if (oldFilters != filters || oldSearch != searchValue) {
             setPage(1);
             setScrollPosition(0);
-        }else{
-            setPage(page + 1)
+        } else {
+            setPage(page + 1);
         }
 
         axiosClient
             .get(`/bottles?${filterParams.toString()}&page=${page}`)
             .then(({ data }) => {
-                if(page == 1){
-                    setBottles(data.data)
-                }else{
+                if (page == 1) {
+                    setBottles(data.data);
+                } else {
                     setBottles([...bottles, ...data.data]);
                 }
                 setOnPage(data.meta.to);
@@ -114,11 +106,12 @@ export default function Catalog() {
 
     // Fetch bouteille seulement lors de la recherche
     useEffect(() => {
-        if ((searchValue || filters.type.length > 0 || filters.country.length > 0) && hasMoreResults) {
-
-            setPage(1); // Devrait reset la page à 1 à chaque changement de searchValue mais ne semble pas fonctionner...
-            console.log('page ', page);
-        getBottles();
+        if (
+            searchValue ||
+            filters.type.length > 0 ||
+            filters.country.length > 0
+        ) {
+            getBottles();
         } else {
             setBottles([]);
         }
@@ -152,29 +145,26 @@ export default function Catalog() {
             {/* {loading ? (
                 <p>Chargement...</p>
             ) : ( */}
-            <ul className="flex flex-col gap-2">
-                {bottles.map((bottle) => (
-                    <li key={bottle.id}>
-                        <ProductCard bottle={bottle} getBottles={getBottles} />
-                    </li>
-                ))}
-                {/* <div ref={(el) => (sentinelRef.current = el)}>test</div> */}
-            </ul>
-            {/* )} */}
-            {/* ) : ( */}
-                <>
-                    <span>{total} résultats</span>
-                    <ul className="flex flex-col gap-2">
-                        {bottles.map((bottle) => (
-                            <li key={bottle.id}>
-                                <ProductCard
-                                    bottle={bottle}
-                                    getBottles={getBottles} />
-                            </li>
-                        ))}
-                        <div ref={(el) => (sentinelRef.current = el)} id="sentinel" className="h-[100px] bg-transparent">test</div>
-                    </ul>
-                </>
+            <>
+                <span>{total} résultats</span>
+                <ul className="flex flex-col gap-2">
+                    {bottles.map((bottle) => (
+                        <li key={bottle.id}>
+                            <ProductCard
+                                bottle={bottle}
+                                getBottles={getBottles}
+                            />
+                        </li>
+                    ))}
+                    <div
+                        ref={(el) => (sentinelRef.current = el)}
+                        id="sentinel"
+                        className="h-[100px] bg-transparent"
+                    >
+                        
+                    </div>
+                </ul>
+            </>
             {/* )} */}
         </div>
     );
