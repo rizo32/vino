@@ -134,17 +134,19 @@ export default function Catalog() {
             {loading ? (
                 <p>Chargement...</p>
             ) : (
-                <ul className="flex flex-col gap-2">
-                    {bottles.map((bottle) => (
-                        <li key={bottle.id}>
-                            <ProductCard
-                                bottle={bottle}
-                                getBottles={getBottles}
-                            />
-                        </li>
-                    ))}
-                    <div ref={(el) => (sentinelRef.current = el)} id="sentinel" className="h-[100px] bg-transparent">test</div>
-                </ul>
+                <>
+                    <span>{total} résultats</span>
+                    <ul className="flex flex-col gap-2">
+                        {bottles.map((bottle) => (
+                            <li key={bottle.id}>
+                                <ProductCard
+                                    bottle={bottle}
+                                    getBottles={getBottles} />
+                            </li>
+                        ))}
+                        <div ref={(el) => (sentinelRef.current = el)} id="sentinel" className="h-[100px] bg-transparent">test</div>
+                    </ul>
+                </>
             )}
         </div>
     );
