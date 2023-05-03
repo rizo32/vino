@@ -72,6 +72,7 @@ export default function Catalog() {
 
         if(oldFilters != filters || oldSearch != searchValue){
             setPage(1);
+            setScrollPosition(0);
         }else{
             setPage(page + 1)
         }
