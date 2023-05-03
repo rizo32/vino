@@ -140,13 +140,13 @@ const FilterPanel = ({ filters, setFilters }) => {
 
     return (
         <div
-            /* List des catégories de filtre */
             className={` ${
                 isAtTop ? "z-20" : "z-10"
             } relative transition-all duration-200 ease-in-out overflow-hidden shadow-shadow-tiny bg-white ${
                 showCategories ? "max-h-[100px]" : "max-h-0"
             }`}
         >
+            {/* Bouton pour ouvrir les filtres */}
             <button
                 onClick={() => {
                     setShowCategories(true);
@@ -170,8 +170,9 @@ const FilterPanel = ({ filters, setFilters }) => {
                 </svg>
             </button>
 
+            {/* List des catégories de filtre */}
             <div
-                className={`relative overflow-x-auto scrollbar-hide left-0 top-full flex gap-4 p-2 transition-all duration-300 ease-in-out transform ${
+                className={`overflow-x-auto scrollbar-hide left-0 top-full flex gap-4 p-2 transition-all duration-300 ease-in-out transform ${
                     showCategories
                         ? "translate-y-0 opacity-100 visible bg-white"
                         : "-translate-y-full opacity-0 invisible"
@@ -183,8 +184,8 @@ const FilterPanel = ({ filters, setFilters }) => {
                         className={`${
                             categoryIsActive(category.internalName)
                                 ? "text-white bg-red-900 shadow-shadow-tiny"
-                                : "text-black bg-gray-200 shadow-shadow-tiny-inset"
-                        } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px] shadow-shadow-tiny-inset hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
+                                : "text-black bg-gray-200"
+                        } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px] hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
                         onClick={() => handleCategoryClick(category.internalName)}
                     >
                         <FontAwesomeIcon
