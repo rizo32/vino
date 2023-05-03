@@ -17,7 +17,7 @@ return new class extends Migration {
 
     Schema::create('bottles', function (Blueprint $table) {
       $table->id();
-      $table->string('name', 90);
+      $table->string('name', 255);
       $table->string('code_saq', 255);
       $table->decimal('price_saq', 8, 2);
       $table->string('image_url', 255)->nullable();
