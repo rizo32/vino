@@ -31,17 +31,17 @@ export default function DefaultLayout() {
         updateViewName();
     }, [location, user]);
 
-    // un utilisateur non connecté n'a pas accès aux vues enfants de DefaultLayout
-    if (!token) {
-        return <Navigate to="/login" />;
-    }
-
     // aller chercher les informations de l'user lorsque quelqu'un est connecté
     useEffect(() => {
         axiosClient.get("/user").then(({ data }) => {
             setUser(data);
         });
     }, []);
+
+    // un utilisateur non connecté n'a pas accès aux vues enfants de DefaultLayout
+    if (!token) {
+        return <Navigate to="/login" />;
+    }
 
     return (
         <div id="defaultLayout">
