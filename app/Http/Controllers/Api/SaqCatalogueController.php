@@ -236,8 +236,8 @@ class SaqCatalogueController extends Controller
         if (!$existingBottle) { /* si la bouteille n'existe pas deja */
             /* creation d'une instance de la class bottle */
             $newBottle = new Bottle();
-            /* assignation des valeurs */
-            $newBottle->name = $bte->nom;
+            /* assignation des valeurs */ 
+            $newBottle->name = substr($bte->nom, 0, 191);
             $newBottle->code_saq = $bte->desc->code_SAQ;
             $newBottle->price_saq = round(floatval($bte->prix), 2);
             $newBottle->url_saq = $bte->url;
@@ -282,7 +282,7 @@ class SaqCatalogueController extends Controller
     {
         ini_set('max_execution_time', 0); // Cette fonction peut rouler infiniment
 
-        $totalPages = 5;  // Set the total number of pages you want to fetch
+        $totalPages = 30;  // Set the total number of pages you want to fetch
 
         $response = new StreamedResponse(function () use ($totalPages) {
             $produits = []; // Tableau qui contiendra les produits
