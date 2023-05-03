@@ -23,14 +23,17 @@ class SaqProductController extends Controller
 {
     public function getItem()
     {
+        $startTime = microtime(true);
+        log::info('starting fetching products');
         ini_set('max_execution_time', 0);
-
+        $counter = 0;
         $codes_saq = Bottle::orderBy('code_saq', 'ASC')->pluck('code_saq')->toArray();
         $allProductDetails = [];
+        log::info('number of products to fetch: ' . count($codes_saq) . ' products');
 
         foreach ($codes_saq as $code_saq) {
             $url = "https://www.saq.com/" . $code_saq;
-
+            log::info('fetching product: ' . $url);
             /* initialise le cURL et configure les options */
             $ch = curl_init();
 
@@ -88,11 +91,15 @@ class SaqProductController extends Controller
             $allProductDetails[$code_saq] = $productDetails;
             $response = response()->json($productDetails);
             $this->updateProduit($productDetails, $code_saq);
+            $counter++;
+            log::info('product ' . $counter . ' fetched');
         }
-
-        return view('saq', [
+        $endTime = microtime(true);
+        log::info('all products fetched');
+        log::info('time taken: ' . ($endTime - $startTime)/60 . ' minutes');
+       /*  return view('saq', [
             'allProductDetails' => $response->getContent(),
-        ]);
+        ]); */
     }
 
     public function updateProduit($productDetails, $code_saq)
