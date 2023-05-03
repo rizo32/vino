@@ -155,7 +155,7 @@ export default function Catalog() {
             {/* Loading state n'est pas nécéssaire dans l'état actuel des choses mais pourrait le devenir */}
             {/* {loading ? (
                 <p>Chargement...</p>
-            ) : (
+            ) : ( */}
                 <>
                     { total && total != 1 ?
                     <span>{total} résultats</span>
@@ -175,7 +175,7 @@ export default function Catalog() {
 
                     </ul>
                 </>
-            )}
+            {/* )} */}
         </div>
     );
 }
