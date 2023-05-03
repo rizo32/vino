@@ -112,8 +112,6 @@ export default function Catalog() {
             filters.country.length > 0
         ) {
             getBottles();
-        } else {
-            setBottles([]);
         }
     }, [filters, searchValue]);
 
