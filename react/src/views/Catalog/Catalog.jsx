@@ -123,6 +123,8 @@ export default function Catalog() {
             filters.country.length > 0
         ) {
             getBottles();
+        }else{
+            setLoading(false);
         }
     }, [filters, searchValue]);
 
@@ -153,14 +155,14 @@ export default function Catalog() {
             {/* <FilterPanel filters={filters} setFilters={setFilters} /> */}
 
             {/* Loading state n'est pas nécéssaire dans l'état actuel des choses mais pourrait le devenir */}
-            {/* {loading ? (
+            {loading ? (
                 <p>Chargement...</p>
-            ) : ( */}
+            ) : (
                 <>
                     { total && total != 1 ?
                     <span>{total} résultats</span>
                     : total == 1 ? <span>1 résultat</span>
-                    : <span>Aucun résultats, modifier vos filtres ou effectuez une nouvelle recherche</span>}
+                    : searchValue ? <span>Aucun résultats, modifier vos filtres ou effectuez une nouvelle recherche</span> :null}
 
                     <ul className="flex flex-col gap-2">
                         {bottles.map((bottle) => (
@@ -175,7 +177,7 @@ export default function Catalog() {
 
                     </ul>
                 </>
-            {/* )} */}
+            )}
         </div>
     );
 }

@@ -185,9 +185,9 @@ export default function Cellar() {
                 </div>
               </div>
             : null}
-            {/* {loading ? (
+            {loading ? (
                 <p>Chargement...</p>
-            ) : ( */}
+            ) : (
                 <ul className="flex flex-col gap-2">
                     {bottles.map((bottle) => (
                         <li key={bottle.id}>
@@ -205,7 +205,7 @@ export default function Cellar() {
                     <div ref={(el) => (sentinelRef.current = el)} id="sentinel" className="opacity-0">sentinel</div>
 
                 </ul>
-            {/* )} */}
+            )}
         </div>
     );
 }
