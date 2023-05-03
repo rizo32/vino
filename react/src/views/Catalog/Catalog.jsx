@@ -48,7 +48,6 @@ export default function Catalog() {
             filterParams.append("search", searchValue);
         }
 
-
         // si on ajoute la bouteille au cellier, refleter la nouvelle quantite sans devoir fetch toutes les bouteilles a nouveau
         if(bottleUpdt){
             const updatedBottles = bottles.map(bottle => {
@@ -59,7 +58,6 @@ export default function Catalog() {
                     quantity: 1
                   };
                 }else if (bottle.id === bottleUpdt.id && bottle.quantity) {
-
                     //augmenter la quantite si elle existe
                     return {
                         ...bottle,
@@ -87,13 +85,11 @@ export default function Catalog() {
         axiosClient
             .get(`/bottles?${filterParams.toString()}&page=${page}`)
             .then(({ data }) => {
-
                 if(page == 1){
                     //si on est a la page 1, on veut repartir a neuf et enlever les autres resultats de la page
                     setBottles(data.data)
                 }else{
                     //si on va vers la prochaine page, on veut seulement ajouter les resultats a ceux qui sont deja la
-
                     setBottles([...bottles, ...data.data]);
                 }
                 //sauvegarder le compte de resultats presents sur la page
@@ -180,7 +176,6 @@ export default function Catalog() {
                     </ul>
                 </>
             )}
-
         </div>
     );
 }
