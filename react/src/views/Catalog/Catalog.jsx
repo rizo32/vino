@@ -135,7 +135,10 @@ export default function Catalog() {
                 <p>Chargement...</p>
             ) : (
                 <>
+                    { total && total != 1 ?
                     <span>{total} résultats</span>
+                    : total == 1 ? <span>1 résultat</span>
+                    : <span>Aucun résultats</span>}
                     <ul className="flex flex-col gap-2">
                         {bottles.map((bottle) => (
                             <li key={bottle.id}>
@@ -144,7 +147,7 @@ export default function Catalog() {
                                     getBottles={getBottles} />
                             </li>
                         ))}
-                        <div ref={(el) => (sentinelRef.current = el)} id="sentinel" className="h-[100px] bg-transparent">test</div>
+                        <div ref={(el) => (sentinelRef.current = el)} id="sentinel" className="h-[100px] bg-transparent opacity-0">test</div>
                     </ul>
                 </>
             )}
