@@ -98,7 +98,7 @@ export default function Catalog() {
 
     //lorsque le sentinel entre en vue, charger la prochaine page
     const handleIntersection = (entries) => {
-        if (entries[0].isIntersecting && onPage == 10 && total > 10) {
+        if (entries[0].isIntersecting && !(onPage % 10) && total > 10) {
             getBottles();
         }
     };
@@ -142,7 +142,7 @@ export default function Catalog() {
                             />
                         </li>
                     ))}
-                    <div ref={(el) => (sentinelRef.current = el)} id="sentinel">test</div>
+                    <div ref={(el) => (sentinelRef.current = el)} id="sentinel" className="h-[100px] bg-transparent">test</div>
                 </ul>
             )}
         </div>
