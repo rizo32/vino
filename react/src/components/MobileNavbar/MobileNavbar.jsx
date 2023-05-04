@@ -41,10 +41,17 @@ const MobileNavbar = () => {
     };
 
     const toggleSearchBar = () => {
-        if (!searchBarOpen) {
-            searchInputRef.current.focus();
+        if (searchBarOpen && searchInputRef.current.value.trim() !== "") {
+            // If the search bar is open and not empty, perform the search instead of closing the bar
+            if (location.pathname !== '/cellar') {
+                navigate("/catalog");
+            }
+        } else {
+            if (!searchBarOpen) {
+                searchInputRef.current.focus();
+            }
+            setSearchBarOpen(!searchBarOpen);
         }
-        setSearchBarOpen(!searchBarOpen);
     };
 
     return (
