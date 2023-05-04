@@ -45,6 +45,7 @@ class Bottle extends Model
   {
     return $this->belongsTo(Country::class);
   }
+
   public function region()
   {
     return $this->belongsTo(Region::class);
@@ -53,6 +54,36 @@ class Bottle extends Model
   public function cepage()
   {
     return $this->belongsTo(Cepage::class);
+  }
+
+  public function producteur()
+  {
+    return $this->belongsTo(Producteur::class);
+  }
+
+  public function aroma()
+  {
+    return $this->belongsTo(Aroma::class);
+  }
+
+  public function temperatureService()
+  {
+    return $this->belongsTo(TemperatureService::class);
+  }
+
+  public function tauxSucre()
+  {
+    return $this->belongsTo(TauxSucre::class);
+  }
+
+  public function tauxAlcool()
+  {
+    return $this->belongsTo(TauxAlcool::class);
+  }
+
+  public function designationReglemente()
+  {
+    return $this->belongsTo(DesignationReglemente::class);
   }
 
   public function type()
