@@ -33,7 +33,6 @@ const MobileNavbar = () => {
 
     // Add an event listener for the "keypress" event on the search input field
     const handleSearchInputKeyDown = (e) => {
-        console.log(location.pathname);
         if (e.key === "Enter" && location.pathname !== '/cellar' ) {
             // If the pressed key is "Enter", navigate to the /catalog route
             navigate("/catalog");
