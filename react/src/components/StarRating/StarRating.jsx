@@ -29,7 +29,7 @@ const StarRating = ({ note }) => {
     // Ajoute les étoiles vides pour atteindre le maximum
     while (stars.length < maxStars) {
         stars.push(
-            <FontAwesomeIcon key={stars.length} icon={faStar} opacity="0.3" />
+            <FontAwesomeIcon key={stars.length} icon={faStar} opacity="0.1" />
         );
     }
 
