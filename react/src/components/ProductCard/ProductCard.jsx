@@ -62,23 +62,30 @@ export default function ProductCard({
                 <section className="flex flex-col justify-start items-start gap-3 flex-grow w-[60%]">
                     <h2 className="font-bold">{bottle.name}</h2>
                     <div className="flex gap-3">
-                        <p className="font-light">{bottle.type_name}</p>{" "}
-                        <span className="font-light">|</span>{" "}
-                        <p className="font-light">{bottle.format_name}</p>
+                        <p className="font-light">{bottle.type_name}</p>
+                        {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information */}
+                        {bottle.format_name ? (
+                            <div className="flex gap-3">
+                                <span className="font-light">|</span>
+                                <p className="font-light">
+                                    {bottle.format_name}
+                                </p>
+                            </div>
+                        ) : null}
                     </div>
                     <div className="flex gap-1">
                         <p className="font-light">{bottle.country_name}</p>
                         {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information */}
-                        {bottle.cepage_name ? (
+                        {bottle.region_name ? (
                             <p className="font-light">, {bottle.region_name}</p>
                         ) : null}
                     </div>
-                    <div className="flex gap-4">
+                    <div className="flex gap-3">
                         <StarRating note={bottle.rating_saq} />
                         {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information */}
                         {bottle.num_comments ? (
-                            <div className="flex gap-4">
-                                <span>|</span>
+                            <div className="flex gap-3">
+                                <span className="font-light">|</span>
                                 <p className="font-light">
                                     {bottle.num_comments} avis
                                 </p>
