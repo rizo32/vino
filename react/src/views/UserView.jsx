@@ -21,7 +21,7 @@ function UserView() {
     }, [id]);
 
     if (!user) {
-        return <div>Chargement...</div>;
+        return <div className="ml-2 mt-4">Chargement...</div>;
     }
 
     // fonction Log out
