@@ -8,7 +8,7 @@ export default function ProductView(props) {
     const location = useLocation();
     const navigate = useNavigate();
     const handleRetour = () => {
-        navigate(location.state?.from || "/");
+        navigate(-1);
     };
 
     // Récupère les informations de bottle passées depuis la page précédente
@@ -44,7 +44,7 @@ export default function ProductView(props) {
             <ImageOnImage src={bottle.image_url} alt={bottle.name} type={bottle.type_name} />
 
             {/* Zone sous image */}
-            <section className="w-full flex flex-col justify-start items-start gap-3 p-6 bg-white ">
+            <section className="w-full flex flex-col justify-start items-start gap-4 p-6 bg-white ">
                 <h1 className="font-bold">
                     {bottle.name.charAt(0).toUpperCase() + bottle.name.slice(1)}
                 </h1>
