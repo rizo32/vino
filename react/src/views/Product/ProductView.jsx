@@ -41,14 +41,13 @@ export default function ProductView(props) {
                 <h1 className="font-bold">
                     {bottle.name.charAt(0).toUpperCase() + bottle.name.slice(1)}
                 </h1>
-                <div className="flex gap-1">
-                    {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information 
-                    Commentaire valable pour toutes les informations de cette DIV */}
-                    {bottle.type_name ? (
-                        <p className="font-light">{bottle.type_name}</p>
-                    ) : null}
+                <div className="flex gap-3">
+                    <p className="font-light">{bottle.type_name}</p>{" "}
                     {bottle.format_name ? (
-                        <p className="font-light">| {bottle.format_name}</p>
+                        <div className="flex gap-3">
+                            <span className="font-light">|</span>
+                            <p className="font-light">{bottle.format_name}</p>
+                        </div>
                     ) : null}
                 </div>
                 <div className="flex gap-1">
@@ -58,13 +57,16 @@ export default function ProductView(props) {
                         <p className="font-light">, {bottle.region_name}</p>
                     ) : null}
                 </div>
-                <div className="flex gap-1">
+                <div className="flex gap-3">
                     <StarRating note={bottle.rating_saq} />
                     {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information */}
                     {bottle.num_comments ? (
-                        <p className="font-light">
-                            | {bottle.num_comments} avis
-                        </p>
+                        <div className="flex gap-3">
+                            <span className="font-light">|</span>
+                            <p className="font-light">
+                                {bottle.num_comments} avis
+                            </p>
+                        </div>
                     ) : null}
                 </div>
             </section>
@@ -136,6 +138,29 @@ export default function ProductView(props) {
             </section>
             {/* Zone dégustation */}
             {/* Si il n'y a pas LES DEUX VALEURS dans l'objet, on n'affiche pas les informations */}
+            {bottle.arome || bottle.temperature_service ? (
+                <section className="w-full border border-t-black-50 bg-white ">
+                    <h2 className="pt-9 pb-3 px-6 text-2xl bg-red-50">
+                        Dégustation
+                    </h2>
+                    <div className="flex flex-col gap-6 p-6">
+                        {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information 
+                        Commentaire valable pour toutes les informations de cette DIV */}
+                        {bottle.arome ? (
+                            <div>
+                                <p>Arômes</p>
+                                <strong>{bottle.arome}</strong>
+                            </div>
+                        ) : null}
+                        {bottle.temperature_service ? (
+                            <div>
+                                <p>Température de service</p>
+                                <strong>{bottle.temperature_service}</strong>
+                            </div>
+                        ) : null}
+                    </div>
+                </section>
+            ) : null}
         </div>
     );
 }
