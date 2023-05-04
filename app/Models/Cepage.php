@@ -14,4 +14,9 @@ class Cepage extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function bottles()
+    {
+        return $this->hasMany(Bottle::class);
+    }
 }
