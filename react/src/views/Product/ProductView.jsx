@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import StarRating from "../../components/StarRating/StarRating.jsx";
 import ImageOnImage from "../../components/ImageOnImage/ImageOnImage.jsx";
 
-
 export default function ProductView(props) {
     const location = useLocation();
     const navigate = useNavigate();
@@ -17,31 +16,35 @@ export default function ProductView(props) {
     return (
         <div className="flex flex-col justify-center items-center pb-32">
             <div className="absolute top-20 left-5 flex flex-row z-30">
-                    {" "}
-                    <button
-                        onClick={handleRetour}
-                        className="flex flex-row items-center justify-center gap-1 text-white"
+                {" "}
+                <button
+                    onClick={handleRetour}
+                    className="flex flex-row items-center justify-center gap-1 text-white"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={2}
+                        stroke="currentColor"
+                        className="w-4 h-4"
                     >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={2}
-                            stroke="currentColor"
-                            className="w-4 h-4"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-                            />
-                        </svg>
-                        Retour
-                    </button>
-                </div>
-                
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                        />
+                    </svg>
+                    Retour
+                </button>
+            </div>
+
             {/* Zone image */}
-            <ImageOnImage src={bottle.image_url} alt={bottle.name} type={bottle.type_name} />
+            <ImageOnImage
+                src={bottle.image_url}
+                alt={bottle.name}
+                type={bottle.type_name}
+            />
 
             {/* Zone sous image */}
             <section className="w-full flex flex-col justify-start items-start gap-4 p-6 bg-white ">
@@ -58,11 +61,16 @@ export default function ProductView(props) {
                     ) : null}
                 </div>
                 <div className="flex gap-1">
-                    <p className="font-light">{bottle.country_name}</p>
-                    {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information */}
-                    {bottle.region_name ? (
-                        <p className="font-light">, {bottle.region_name}</p>
-                    ) : null}
+                    <p className="font-light">
+                        {bottle.country_name}
+                        {" ,"}
+                        {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information */}
+                        {bottle.region_name ? (
+                            <span className="font-light">
+                                {bottle.region_name}
+                            </span>
+                        ) : null}
+                    </p>
                 </div>
                 <div className="flex gap-3">
                     <StarRating note={bottle.rating_saq} />

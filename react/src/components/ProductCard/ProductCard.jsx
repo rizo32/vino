@@ -64,6 +64,7 @@ export default function ProductCard({
                     <div className="flex gap-3">
                         <p className="font-light">{bottle.type_name}</p>
                         {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information */}
+
                         {bottle.format_name ? (
                             <div className="flex gap-3">
                                 <span className="font-light">|</span>
@@ -74,11 +75,16 @@ export default function ProductCard({
                         ) : null}
                     </div>
                     <div className="flex gap-1">
-                        <p className="font-light">{bottle.country_name}</p>
-                        {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information */}
-                        {bottle.region_name ? (
-                            <p className="font-light">, {bottle.region_name}</p>
-                        ) : null}
+                        <p className="font-light">
+                            {bottle.country_name}
+                            {" ,"}
+                            {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information */}
+                            {bottle.region_name ? (
+                                <span className="font-light">
+                                    {bottle.region_name}
+                                </span>
+                            ) : null}
+                        </p>
                     </div>
                     <div className="flex gap-3">
                         <StarRating note={bottle.rating_saq} />
