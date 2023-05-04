@@ -90,8 +90,8 @@ function UserForm({ user, onChange, onSubmit, onReturn, message, setMessage }) {
                 Enregistrer
             </button>
             <div className="text-center absolute bottom-20 left-1/2 transform -translate-x-1/2 w-10/12">
-                <p className="cursor-pointer" onClick={onReturn}>
-                    {"<"} Retour
+                <p className="cursor-pointer underline" onClick={onReturn}>
+                    Retour
                 </p>
             </div>
         </form>

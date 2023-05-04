@@ -182,11 +182,11 @@ export default function Cellar() {
     }, [bottles]);
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col mt-4">
             <FilterPanel filters={filters} setFilters={setFilters} />
-            
+
             {loading ? (
-                <p>Chargement...</p>
+                <p className="ml-2 mb-1">Chargement...</p>
             ) : (
                 <ul className="flex flex-col gap-2">
                     {bottles.map((bottle) => (
@@ -202,19 +202,26 @@ export default function Cellar() {
                         </li>
                     ))}
 
-                    <div ref={(el) => (sentinelRef.current = el)} id="sentinel" className="opacity-0">sentinel</div>
-
-                    {bottles.length == 0 ? 
-                    <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
-                      <div className="mx-auto">
-                        Votre cellier semble vide...
-                      </div>
-                      <div className="mx-auto mt-2">
-                        Ajoutez vos bouteilles à l'aide<br />du "+" dans la barre de navigation
-                      </div>
+                    <div
+                        ref={(el) => (sentinelRef.current = el)}
+                        id="sentinel"
+                        className="opacity-0"
+                    >
+                        sentinel
                     </div>
-                    : null}
 
+                    {bottles.length == 0 ? (
+                        <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
+                            <div className="mx-auto">
+                                Votre cellier semble vide...
+                            </div>
+                            <div className="mx-auto mt-2">
+                                Ajoutez vos bouteilles à l'aide
+                                <br />
+                                du "+" dans la barre de navigation
+                            </div>
+                        </div>
+                    ) : null}
                 </ul>
             )}
         </div>

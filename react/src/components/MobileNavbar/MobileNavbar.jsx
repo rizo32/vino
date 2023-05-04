@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useContext } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import logoShort from "./img/Cthick.png";
 import { useStateContext } from "../../contexts/ContextProvider";
 
@@ -8,17 +8,16 @@ const MobileNavbar = () => {
     const location = useLocation();
     const searchInputRef = useRef(null);
     const { searchValue, setSearchValue } = useStateContext();
+    const navigate = useNavigate();
 
     // La barre de recherche deviens active (ouvre le clavier sur mobile) dès l'ouverture de la page Catalogue afin d'aider les usagers à trouver la bouteille rapidement
     useEffect(() => {
-        if (
-            location.pathname === "/catalog"
-        ) {
+        if (location.pathname === "/catalog") {
             setSearchBarOpen(true);
             if (searchInputRef.current) {
                 searchInputRef.current.focus();
             }
-        } else {
+        } else if (!location.pathname.includes("/product/")) {
             setSearchBarOpen(false);
             setSearchValue("");
             if (searchInputRef.current) {
@@ -30,6 +29,14 @@ const MobileNavbar = () => {
     // Add an event handler for input changes
     const handleSearchInputChange = (e) => {
         setSearchValue(e.target.value);
+    };
+
+    // Add an event listener for the "keypress" event on the search input field
+    const handleSearchInputKeyDown = (e) => {
+        if (e.key === "Enter" && location.pathname.includes("/users/")) {
+            // If the pressed key is "Enter", navigate to the /catalog route
+            navigate("/catalog");
+        }
     };
 
     const toggleSearchBar = () => {
@@ -62,6 +69,7 @@ const MobileNavbar = () => {
                         className="shadow-shadow-tiny-inset bg-gray-100 rounded-lg py-1 px-4 w-full h-9 placeholder-gray-500"
                         placeholder="Trouvez votre bouteille"
                         onChange={handleSearchInputChange}
+                        onKeyDown={handleSearchInputKeyDown}
                     />
                 </div>
 
