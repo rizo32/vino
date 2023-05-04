@@ -23,13 +23,15 @@ class CellarHasBottleController extends Controller
      */
     public function index(Request $request)
     {
-        // Le join ici est nécéssaire pour ordonner par 'name'. Le loading dans CellarHasBottleResource ne le permet pas.
-        $query = CellarHasBottle::with(['bottle' => function ($q) {
-            $q->orderBy('name', 'asc');
-        }, 'cellar'])
-        ->whereHas('cellar', function ($q) {
-            $q->where('user_id', Auth::id());
-        });
+        $query = CellarHasBottle::with([
+            'bottle' => function ($q) {
+                $q->orderBy('name', 'asc');
+            },
+            'cellar'
+        ])
+            ->whereHas('cellar', function ($q) {
+                $q->where('user_id', Auth::id());
+            });
 
         // Recherche dans le NOM
         if ($request->has('search')) {
@@ -72,12 +74,17 @@ class CellarHasBottleController extends Controller
      * @param  \App\Http\Requests\StoreCellarHasBottleRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCellarHasBottleRequest $request)
+    public function store(Request $request)
     {
+        // Get the authenticated user
+        $user = auth()->user();
+
+        // \Log::info($user->cellar->id);
+        // \Log::info(['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
+
         //ajouter une bouteille au cellier d'un id donné
 
         $request->validate([
-            // à mettre dans StoreCellarHasBottleRequest
             // 'cellar_id' => 'required|integer',
             'id' => 'required|integer',
         ]);
@@ -94,10 +101,11 @@ class CellarHasBottleController extends Controller
 
         $cellarHasBottle = new CellarHasBottle([
             // 'cellar_id' => $request->input('cellar_id'),
-            'cellar_id' => 1,
+            'cellar_id' => $user->cellar->id,
             'bottle_id' => $request->input('id'),
             'quantity' => 1,
         ]);
+
 
         $cellarHasBottle->save();
 
@@ -106,6 +114,12 @@ class CellarHasBottleController extends Controller
         );
     }
 
+    // $query = CellarHasBottle::with(['bottle' => function ($q) {
+    //     $q->orderBy('name', 'asc');
+    // }, 'cellar'])
+    // ->whereHas('cellar', function ($q) {
+    //     $q->where('user_id', Auth::id());
+    // });
     /**
      * Display the specified resource.
      *
@@ -126,7 +140,7 @@ class CellarHasBottleController extends Controller
      * @param  \App\Models\CellarHasBottle  $cellarHasBottle
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCellarHasBottleRequest $request, CellarHasBottle $cellarHasBottle)
+    public function update(Request $request, CellarHasBottle $cellarHasBottle)
     {
         $cellarHasBottle->update(['quantity' => $request->input('quantity')]);
 
@@ -144,6 +158,6 @@ class CellarHasBottleController extends Controller
         //enlever la bouteille du cellier
         $cellarHasBottle->delete();
 
-        return response("", 204);
+        return new CellarHasBottleResource($cellarHasBottle);
     }
 }

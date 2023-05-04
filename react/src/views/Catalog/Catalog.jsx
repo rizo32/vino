@@ -24,33 +24,35 @@ export default function Catalog() {
     const [oldFilters, setOldFilters] = useState();
     const [oldSearch, setOldSearch] = useState();
 
-    // Elodie
+    // Elodie + Gabriel
     // aller chercher les bouteilles dans la base de données et les mettre dans le state
     const getBottles = (bottleUpdt) => {
         setLoading(true); // à mettre en place (eg Gif)
+        //sauvegarder la position avant de fetch les prochaines bouteilles
         setScrollPosition(window.pageYOffset);
 
         const filterParams = new URLSearchParams();
 
-        // Change la requête selon recherche/filtre
+        // Change la requête selon filtre country
         if (filters.country.length > 0) {
             filterParams.append("country", filters.country.join(","));
         }
 
-        // Change la requête selon recherche/filtre
+        // Change la requête selon filtre type
         if (filters.type.length > 0) {
             filterParams.append("type", filters.type.join(","));
         }
 
+        // Change la requête selon recherche
         if (searchValue) {
             filterParams.append("search", searchValue);
         }
-        // autres filtres
 
+        // si on ajoute la bouteille au cellier, refleter la nouvelle quantite sans devoir fetch toutes les bouteilles a nouveau
         if (bottleUpdt) {
             const updatedBottles = bottles.map((bottle) => {
                 if (bottle.id === bottleUpdt.id && !bottle.quantity) {
-                    // ajouter la propriete quantite sans recharcher toutes les bouteilles
+                    // ajouter la propriete quantite sans recharger toutes les bouteilles
                     return {
                         ...bottle,
                         quantity: 1,
@@ -67,28 +69,35 @@ export default function Catalog() {
             });
             setBottles(updatedBottles);
             setLoading(false);
+            //arreter la fonction
             return;
         }
 
+        //verifier si une recherche a ete effectuee ou un filre choisi/enlever pour repartir a page 1 et enlever les anciens resultats
         if (oldFilters != filters || oldSearch != searchValue) {
             setPage(1);
             setScrollPosition(0);
         } else {
+            //si on est encore avec les memes filtres et recherche, ca veut dire qu'on scroll vers la nouvelle page donc on augmente le compte vers la prochaine page
             setPage(page + 1);
         }
 
         axiosClient
             .get(`/bottles?${filterParams.toString()}&page=${page}`)
             .then(({ data }) => {
-                console.log(data);
                 if (page == 1) {
+                    //si on est a la page 1, on veut repartir a neuf et enlever les autres resultats de la page
                     setBottles(data.data);
                 } else {
+                    //si on va vers la prochaine page, on veut seulement ajouter les resultats a ceux qui sont deja la
                     setBottles([...bottles, ...data.data]);
                 }
+                //sauvegarder le compte de resultats presents sur la page
                 setOnPage(data.meta.to);
+                //sauvegarder le nombre de resultats total
                 setTotal(data.meta.total);
                 setLoading(false);
+                //mettre a jour les filtres et recherche 'anciens' pour faire la comparaison dans la prochaine loop
                 setOldFilters(filters);
                 setOldSearch(searchValue);
             })
@@ -100,14 +109,28 @@ export default function Catalog() {
 
     //lorsque le sentinel entre en vue, charger la prochaine page
     const handleIntersection = (entries) => {
-        if (entries[0].isIntersecting && !(onPage % 10) && total > 10) {
+        //declencher le fetch seulement si les resultats sont plus grand que 10 (prochaine page existe) et seulement si nous ne sommes pas a la derniere page
+        if (
+            entries[0].isIntersecting &&
+            !(onPage % 10) &&
+            total > 10 &&
+            onPage != total
+        ) {
             getBottles();
         }
     };
 
-    // executer fonction
+    // Fetch bouteille seulement lors de la recherche
     useEffect(() => {
-        getBottles();
+        if (
+            searchValue ||
+            filters.type.length > 0 ||
+            filters.country.length > 0
+        ) {
+            getBottles();
+        } else {
+            setLoading(false);
+        }
     }, [filters, searchValue]);
 
     //sentinel observer pour la pagination scroll
@@ -118,6 +141,7 @@ export default function Catalog() {
             threshold: 1.0,
         });
 
+        //s'assurer que la ref existe
         if (sentinelRef.current) {
             observer.observe(sentinelRef.current);
         }
@@ -125,18 +149,44 @@ export default function Catalog() {
         return () => observer.disconnect();
     }, [sentinelRef.current]);
 
+    //lorsque que le state bottles est mis a jour, on scroll a la position sauvegardée
     useEffect(() => {
         window.scrollTo(0, scrollPosition);
     }, [bottles]);
 
     return (
         <div className="flex flex-col gap-2 mb-[100px]" ref={containerRef}>
-            <FilterPanel filters={filters} setFilters={setFilters} />
+            {/* Désactivation du filtre dans le catalogue avant l'implantation d'une liste d'achat qui justifierait une recherche plus appronfondie */}
+            {/* <FilterPanel filters={filters} setFilters={setFilters} /> */}
+            {searchValue ? null : (
+                <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
+                    <div className="mx-auto">
+                        Utilisez la barre de recherche
+                        <br />
+                        pour trouver votre bouteille
+                    </div>
+                    <div className="mx-auto mt-2"></div>
+                </div>
+            )}
+            {/* Loading state n'est pas nécéssaire dans l'état actuel des choses mais pourrait le devenir */}
             {loading ? (
                 <p>Chargement...</p>
             ) : (
                 <>
-                    <span>{total} résultats</span>
+                    {total && total != 1 ? (
+                        <span>{total} résultats</span>
+                    ) : total == 1 ? (
+                        <span>1 résultat</span>
+                    ) : searchValue ? (
+                        <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
+                            <div class="mx-auto">
+                                Aucun résultats, modifier vos filtres
+                                <br />
+                                ou effectuez une nouvelle recherche
+                            </div>
+                        </div>
+                    ) : null}
+
                     <ul className="flex flex-col gap-2">
                         {bottles.map((bottle) => (
                             <li key={bottle.id}>
@@ -146,12 +196,13 @@ export default function Catalog() {
                                 />
                             </li>
                         ))}
+
                         <div
                             ref={(el) => (sentinelRef.current = el)}
                             id="sentinel"
-                            className="h-[100px] bg-transparent"
+                            className="opacity-0"
                         >
-                            test
+                            sentinel
                         </div>
                     </ul>
                 </>

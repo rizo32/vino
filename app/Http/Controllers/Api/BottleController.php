@@ -32,14 +32,12 @@ class BottleController extends Controller
         if ($request->has('country')) {
             $countries = explode(',', $request->country);
             $query->whereIn('country_id', $countries);
-            // \Log::info(['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
         }
 
         // Filtre TYPE
         if ($request->has('type')) {
             $types = explode(',', $request->type);
             $query->whereIn('type_id', $types);
-            // \Log::info(['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
         }
 
         // Apply filters across different categories with 'AND'
@@ -57,7 +55,7 @@ class BottleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBottleRequest $request)
+    public function store(Request $request)
     {
         //ajoute bouteille, non-utilisé pour l'instant
         $data = $request->validated(); //fichier request a faire
