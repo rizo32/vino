@@ -33,6 +33,7 @@ class BottleResource extends JsonResource
             'producteur_name' => $this->producteur ? $this->producteur->name : null,
             'temperature_service' => $this->temperatureService ? $this->temperatureService->name : null,
             'format_name' => $this->format ? $this->format->name : null,
+            'country_id' => $this->country_id,
             'country_name' => $this->country ? $this->country->name : null,
             'region_name' => $this->region ? $this->region->name : null,
             'rating_saq' => $this->rating_saq,
@@ -42,7 +43,6 @@ class BottleResource extends JsonResource
         /* Si besoin d'informations en plus
             'code_saq' => $this->code_saq,
             'type_id' => $this->type_id,
-            'country_id' => $this->country_id,
             'image_path' => $this->image_path,
             'description' => $this->description,
             'price_saq' => $this->price_saq,
