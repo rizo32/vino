@@ -21,19 +21,21 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SaqProductController extends Controller
 {
+   /*  Récupère les informations supplementaire dans la page produuits et met a jour la base de données */
     public function getItem()
     {
         $startTime = microtime(true);
-        log::info('starting fetching products');
+        log::info('Début du fetch des produits');
         ini_set('max_execution_time', 0);
         $counter = 0;
+        /* Recupere tout les code_saq de la BD en ordre ASC */
         $codes_saq = Bottle::orderBy('code_saq', 'ASC')->pluck('code_saq')->toArray();
         $allProductDetails = [];
-        log::info('number of products to fetch: ' . count($codes_saq) . ' products');
+        log::info('Nombre de produits a fetch : ' . count($codes_saq) . ' produits');
 
         foreach ($codes_saq as $code_saq) {
-            $url = "https://www.saq.com/" . $code_saq;
-            log::info('fetching product: ' . $url);
+            $url = "https://www.saq.com/" . $code_saq; /* entre dans chaque page lier au code_saq (pagesproduit) */
+            log::info('Fetch : ' . $url);
             /* initialise le cURL et configure les options */
             $ch = curl_init();
 
@@ -62,6 +64,7 @@ class SaqProductController extends Controller
 
             $xpath = new \DOMXPath($doc);
             $productDetails = [];
+            /* Creation des regles/pattern de recuperations */
             $elements = $xpath->query("//ul[contains(@class, 'list-attributs')]/li");
             $tempService = $xpath->query("//div[contains(@class, 'additional-attributes-wrapper')]//ul[contains(@class, 'tasting-container')]//li//span[contains(text(), 'Température de service')]/following-sibling::strong");
             $aromes = $xpath->query("//div[contains(@class, 'additional-attributes-wrapper')]//ul[contains(@class, 'tasting-container')]//li//span[contains(text(), 'Arômes')]/following-sibling::strong");
@@ -87,16 +90,17 @@ class SaqProductController extends Controller
                     /* echo $key . " : " . $value . "<br>"; */
                 }
             }
-
+            /* Ajout des informations supplementaire dans le tableau $allProductDetails */
             $allProductDetails[$code_saq] = $productDetails;
             $response = response()->json($productDetails);
-            $this->updateProduit($productDetails, $code_saq);
+            /* mis a jour des produits  */
+            $this->updateProduit($productDetails, $code_saq); /* A VOIR -> ajout par batch ?? */
             $counter++;
-            log::info('product ' . $counter . ' fetched');
+            log::info('nombre de produits ' . $counter . ' fetche');
         }
         $endTime = microtime(true);
-        log::info('all products fetched');
-        log::info('time taken: ' . ($endTime - $startTime)/60 . ' minutes');
+        log::info('tout les produits ont ete fetch');
+        log::info('Temps: ' . ($endTime - $startTime)/60 . ' minutes');
        /*  return view('saq', [
             'allProductDetails' => $response->getContent(),
         ]); */
@@ -104,12 +108,7 @@ class SaqProductController extends Controller
 
     public function updateProduit($productDetails, $code_saq)
     {
-        /*   echo "updateProduit called with code_saq: {$code_saq}<br>";
-        echo "Received product details for code_saq {$code_saq}:<br>";
-       */
-        /* print_r($productDetails);
-        echo "<br><br>";
-        die(); */
+       
         $existingBottle = Bottle::where('code_saq', $code_saq)->first();
 
 
@@ -118,7 +117,7 @@ class SaqProductController extends Controller
             die(); */
             $updateData = [];
 
-            // Check if the key exists in $productDetails before adding it to $updateData
+            // Verifier si la clef existe avant l'ajout --fix pour les produits sans clef valeur
             if (array_key_exists('Région', $productDetails)) {
                 $updateData['region_id'] = $this->get_id('Region', $this->nettoyerEspace($productDetails['Région']));
             }
@@ -147,23 +146,12 @@ class SaqProductController extends Controller
             $updateData['aroma_id'] = $this->get_id('Aroma', $this->nettoyerEspace($productDetails['Arômes']));
             }
 
-            // ... (add more fields if needed)
+           
 
-            // Only update if there's at least one field to update
+            // lancement de sequence seulement si des donnees sont a mettre a jour
             if (!empty($updateData)) {
-                /*  echo "Updating bottle with code_saq: {$code_saq}<br>";
-                die(); */
-
-
                 $existingBottle->update($updateData);
-            } else {
-                /*   echo "No data to update for code_saq: {$code_saq}<br>";
-                die(); */
-            }
-        } else {
-            /*   echo "No existing bottle found for code_saq: {$code_saq}<br>";
-            die(); */
-        }
+            } }
     }
 
     private function nettoyerEspace($chaine) /* nettoie les espaces indesirables d'une chaine de caracteres */
@@ -172,7 +160,9 @@ class SaqProductController extends Controller
     }
 
     private function get_id($model, $name)
+    /* Va chercher les id et peuplement dynamique des tables */
 {
+  /* liste des models voulue et de leurs attributs */
     $models = [
         'Region' => ['class' => Region::class, 'attribute' => 'name'],
         'Cepage' => ['class' => Cepage::class, 'attribute' => 'name'],
@@ -183,26 +173,27 @@ class SaqProductController extends Controller
         'TemperatureService' => ['class' => TemperatureService::class, 'attribute' => 'name'],
         'Aroma' => ['class' => Aroma::class, 'attribute' => 'name'],
     ];
-
+    /* recupere la classe du modele et l'attribut correspondant */
     $modelClass = $models[$model]['class'] ?? null;
-    $attribute = $models[$model]['attribute'] ?? null;
+    $attribute = $models[$model]['attribute'] ?? null; /* Ternaire -> si faux -> null */
 
+    /* si aucune instance -> retourne null */
     if (!$modelClass || !$attribute) {
         return null;
     }
 
-    $instance = $modelClass::where($attribute, $name)->first();
+    $instance = $modelClass::where($attribute, $name)->first(); /* si l'instance existe attribution a $instance  */
 
     if ($instance) {
-        return $instance->id;
+        return $instance->id; /* si la variable est initier retourne id correspondant */
     }
 
-    // Create a new instance if not found
+    /* sinon creation de l'instance -> peuplement dynamique */
     $newInstance = new $modelClass();
     $newInstance->$attribute = $name;
     $newInstance->save();
 
-    return $newInstance->id;
+    return $newInstance->id; /* retourne l'id  */
 }
 
 }
