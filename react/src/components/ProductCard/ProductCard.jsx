@@ -3,7 +3,14 @@ import axiosClient from "../../axios-client";
 import EditQuantityModal from "../EditQuantityModal/EditQuantityModal";
 import { useState, useEffect } from "react";
 
-export default function ProductCard({ bottle, quantity, getBottles, removeFromCellar, cellarHasBottleId, updateBottleQty }) {
+export default function ProductCard({
+    bottle,
+    quantity,
+    getBottles,
+    removeFromCellar,
+    cellarHasBottleId,
+    updateBottleQty,
+}) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -26,7 +33,7 @@ export default function ProductCard({ bottle, quantity, getBottles, removeFromCe
     return (
         <article
             id="ProductCard"
-            className="relative flex flex-row justify-start py-2 bg-white shadow-shadow-tiny hover:shadow-none active:shadow-none hover:bg-gray-50 active:shadow-none"
+            className="relative flex flex-row justify-start py-2 bg-white shadow-shadow-tiny hover:shadow-none active:shadow-none hover:bg-gray-50"
         >
             <Link
                 to={`/product/${bottle.id}`}
@@ -58,8 +65,12 @@ export default function ProductCard({ bottle, quantity, getBottles, removeFromCe
                         <span className="font-light">|</span>{" "}
                         <p className="font-light">{bottle.format_name}</p>
                     </div>
-                    <p className="font-light">{bottle.country_name}</p>
-
+                    <div className="flex gap-1">
+                        <p className="font-light">{bottle.country_name}</p>
+                        {bottle.cepage_name ? (
+                            <p className="font-light">, {bottle.region_name}</p>
+                        ) : null}
+                    </div>
                     <div className="flex gap-4">
                         <span className="flex">
                             <svg
