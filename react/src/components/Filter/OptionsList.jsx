@@ -16,7 +16,7 @@ const OptionsList = React.memo(({
     }
 
     return (
-        <div className="options-list bg-red-50 rounded-lg py-4 h-3/4 xs-h:h-2/3 overflow-y-auto shadow-shadow-tiny-inset">
+        <div className="options-list bg-red-50 rounded-lg py-4 h-2/3 xs-h:h-3/5 overflow-y-auto shadow-shadow-tiny-inset">
             {currentCategory.options.map((option, index) => (
                 <Option
                     key={option.id}

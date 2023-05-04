@@ -155,7 +155,7 @@ export default function Catalog() {
     }, [bottles]);
 
     return (
-        <div className="flex flex-col gap-2" ref={containerRef}>
+        <div className="flex flex-col" ref={containerRef}>
             {/* Désactivation du filtre dans le catalogue avant l'implantation d'une liste d'achat qui justifierait une recherche plus appronfondie */}
             {/* <FilterPanel filters={filters} setFilters={setFilters} /> */}
             {searchValue ? null : (
@@ -170,13 +170,13 @@ export default function Catalog() {
             )}
             {/* Loading state n'est pas nécéssaire dans l'état actuel des choses mais pourrait le devenir */}
             {loading ? (
-                <p>Chargement...</p>
+                <p className="ml-2 mb-1 mt-4">Chargement...</p>
             ) : (
                 <>
                     {total && total != 1 ? (
-                        <span>{total} résultats</span>
+                        <p className="ml-2 mb-1 mt-4">{total} résultats</p>
                     ) : total == 1 ? (
-                        <span>1 résultat</span>
+                        <span className="ml-2 mb-1 mt-4">1 résultat</span>
                     ) : searchValue ? (
                         <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
                             <div className="mx-auto">
