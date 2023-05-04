@@ -279,38 +279,23 @@ class SaqCatalogueController extends Controller
 
 
     public function fetchProduits()
-    {
-        ini_set('max_execution_time', 0); // Cette fonction peut rouler infiniment
+{
+    ini_set('max_execution_time', 0); // Cette fonction peut rouler infiniment
 
-        $totalPages = 300;  // Set the total number of pages you want to fetch
+    $totalPages = 300;  // Set the total number of pages you want to fetch
 
-        $response = new StreamedResponse(function () use ($totalPages) {
-            $produits = []; // Tableau qui contiendra les produits
+    $produits = []; // Tableau qui contiendra les produits
 
-            for ($i = 1; $i <= $totalPages; $i++) {
-                $response = $this->getProduits(24, $i);
-                $data = $response->getData();
-                $produits = array_merge($produits, $data);
-
-                $progressPercentage = ($i / $totalPages) * 100;
-                echo "data: " . json_encode(['progressPercentage' => $progressPercentage]) . "\n\n";
-                ob_flush();
-                flush();
-            }
-            $moreProduits = new SaqProductController;
-            $moreProduits->getItem();
-            
-            echo "data: " . json_encode(['done' => true, 'produits' => $produits]) . "\n\n";
-            ob_flush();
-            flush();
-        });
-
-        $response->headers->set('Content-Type', 'text/event-stream');
-        $response->headers->set('Cache-Control', 'no-cache');
-        $response->headers->set('Connection', 'keep-alive');
-        $response->headers->set('X-Accel-Buffering', 'no');
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+    for ($i = 1; $i <= $totalPages; $i++) {
+        $response = $this->getProduits(24, $i);
+        $data = $response->getData();
+        $produits = array_merge($produits, $data);
     }
+
+    $moreProduits = new SaqProductController;
+    $moreProduits->getItem();
+
+    return response()->json(['done' => true, 'produits' => $produits]);
+}
+
 }
