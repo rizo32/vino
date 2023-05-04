@@ -172,8 +172,13 @@ export default function Catalog() {
                 <>
                     { total && total != 1 ?
                     <span>{total} résultats</span>
-                    : total == 1 ? <span>1 résultat</span>
-                    : searchValue ? <span>Aucun résultats, modifier vos filtres ou effectuez une nouvelle recherche</span> :null}
+                    : total == 1 ? 
+                    <span>1 résultat</span>
+                    : searchValue ? 
+                    <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
+                    <div class="mx-auto">Aucun résultats, modifier vos filtres<br />ou effectuez une nouvelle recherche</div> 
+                    </div>
+                    :null}
 
                     <ul className="flex flex-col gap-2">
                         {bottles.map((bottle) => (
