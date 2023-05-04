@@ -55,7 +55,7 @@ class BottleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBottleRequest $request)
+    public function store(Request $request)
     {
         //ajoute bouteille, non-utilisé pour l'instant
         $data = $request->validated(); //fichier request a faire

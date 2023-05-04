@@ -123,6 +123,8 @@ export default function Catalog() {
             filters.country.length > 0
         ) {
             getBottles();
+        }else{
+            setLoading(false);
         }
     }, [filters, searchValue]);
 
@@ -151,16 +153,27 @@ export default function Catalog() {
         <div className="flex flex-col gap-2 mb-[100px]" ref={containerRef}>
             {/* Désactivation du filtre dans le catalogue avant l'implantation d'une liste d'achat qui justifierait une recherche plus appronfondie */}
             {/* <FilterPanel filters={filters} setFilters={setFilters} /> */}
-
+            {searchValue ?
+            null
+            :
+            <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
+                <div className="mx-auto">
+                  Utilisez la barre de recherche<br />pour trouver votre bouteille
+                </div>
+                <div className="mx-auto mt-2">
+                  
+                </div>
+            </div>
+            }
             {/* Loading state n'est pas nécéssaire dans l'état actuel des choses mais pourrait le devenir */}
-            {/* {loading ? (
+            {loading ? (
                 <p>Chargement...</p>
-            ) : ( */}
+            ) : (
                 <>
                     { total && total != 1 ?
                     <span>{total} résultats</span>
                     : total == 1 ? <span>1 résultat</span>
-                    : <span>Aucun résultats, modifier vos filtres ou effectuez une nouvelle recherche</span>}
+                    : searchValue ? <span>Aucun résultats, modifier vos filtres ou effectuez une nouvelle recherche</span> :null}
 
                     <ul className="flex flex-col gap-2">
                         {bottles.map((bottle) => (
@@ -175,7 +188,7 @@ export default function Catalog() {
 
                     </ul>
                 </>
-            {/* )} */}
+            )}
         </div>
     );
 }
