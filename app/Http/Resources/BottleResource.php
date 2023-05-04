@@ -23,7 +23,7 @@ class BottleResource extends JsonResource
         $data = [
             'id' => $this->id,
             'name' => $this->name,
-            'cepage'=> $this->cepage,
+            'cepage_name'=> $this->cepage->name,
             'taux_sucre' => $this->tauxSucre,
             'taux_alcool' => $this->tauxAlcool,
             'designation_reglemente' => $this->designationReglemente,

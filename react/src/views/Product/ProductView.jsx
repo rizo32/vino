@@ -82,10 +82,10 @@ export default function ProductView(props) {
                             <strong>{bottle.type_name}</strong>
                         </div>
                     ) : null}
-                    {bottle.cepage ? (
+                    {bottle.cepage_name ? (
                         <div>
                             <p>Cépage</p>
-                            <strong>{bottle.cepage.name}</strong>
+                            <strong>{bottle.cepage_name}</strong>
                         </div>
                     ) : null}
                     {bottle.country_name ? (
