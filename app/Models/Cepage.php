@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Cepage extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'id';
+    protected $fillable = [
+        'name',
+    ];
+
+    public function bottles()
+    {
+        return $this->hasMany(Bottle::class);
+    }
 }
