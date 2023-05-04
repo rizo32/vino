@@ -185,7 +185,7 @@ export default function Cellar() {
         <div className="flex flex-col gap-2">
             <FilterPanel filters={filters} setFilters={setFilters} />
             {bottles.length == 0 ? (
-                <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
+                <div className="flex flex-col h-[76vh] place-content-center text-center text-gray-500">
                     <div className="mx-auto">Votre cellier semble vide...</div>
                     <div className="mx-auto mt-2">
                         Ajoutez vos bouteilles à l'aide
