@@ -184,7 +184,19 @@ export default function Cellar() {
     return (
         <div className="flex flex-col">
             <FilterPanel filters={filters} setFilters={setFilters} />
-
+            {total && total != 1 && searchValue ? (
+                        <p className="ml-2 mb-1 mt-4">{total} résultats</p>
+                    ) : total == 1 && searchValue ? (
+                        <span className="ml-2 mb-1 mt-4">1 résultat</span>
+                    ) : total == 0 && searchValue ? (
+                        <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
+                            <div className="mx-auto">
+                                Aucun résultats, modifier vos filtres
+                                <br />
+                                ou effectuez une nouvelle recherche
+                            </div>
+                        </div>
+            ) : null}
             {loading ? (
                 <p className="ml-2 mb-1 mt-4">Chargement...</p>
             ) : (
@@ -210,8 +222,8 @@ export default function Cellar() {
                         sentinel
                     </div>
 
-                    {bottles.length == 0 ? (
-                        <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
+                    {bottles.length == 0 && searchValue == "" ? (
+                        <div className="flex flex-col h-[70vh] place-content-center text-center text-gray-500">
                             <div className="mx-auto">
                                 Votre cellier semble vide...
                             </div>
@@ -222,6 +234,7 @@ export default function Cellar() {
                             </div>
                         </div>
                     ) : null}
+
                 </ul>
             )}
         </div>
