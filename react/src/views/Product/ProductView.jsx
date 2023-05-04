@@ -1,41 +1,48 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import StarRating from "../../components/StarRating/StarRating.jsx";
-import bgImgRedWine from "./img/bgImgRedWine.png";
-import bgImgWhiteWine from "./img/bgImgWhiteWine.png";
-import bgImgDefault from "./img/bgImgWhiteWine.png";
+import ImageOnImage from "../../components/ImageOnImage/ImageOnImage.jsx";
+
 
 export default function ProductView(props) {
     const location = useLocation();
+    const navigate = useNavigate();
+    const handleRetour = () => {
+        navigate(location.state?.from || "/");
+    };
 
     // Récupère les informations de bottle passées depuis la page précédente
     const bottle = location.state.bottle;
-    console.log("bottle:", bottle);
-
-    let imageSrc;
-    if (bottle.type === "Vin rouge") {
-        imageSrc = bgImgRedWine;
-    } else if (bottle.type === "Vin blanc") {
-        imageSrc = bgImgWhiteWine;
-    } else {
-        imageSrc = bgImgDefault;
-    }
 
     return (
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center pb-32">
+            <div className="absolute top-20 left-5 flex flex-row z-30">
+                    {" "}
+                    <button
+                        onClick={handleRetour}
+                        className="flex flex-row items-center justify-center gap-1 text-white"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={2}
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                            />
+                        </svg>
+                        Retour
+                    </button>
+                </div>
+                
             {/* Zone image */}
-            <section
-                className="w-full flex justify-center items-center pt-6 bg-no-repeat bg-cover bg-blend-overlay bg-black/70"
-                style={{
-                    backgroundImage: `url(${imageSrc})`,
-                }}
-            >
-                <img
-                    className="h-72 object-contain"
-                    src={bottle.image_url}
-                    alt={bottle.name}
-                />
-            </section>
+            <ImageOnImage src={bottle.image_url} alt={bottle.name} type={bottle.type_name} />
+
             {/* Zone sous image */}
             <section className="w-full flex flex-col justify-start items-start gap-3 p-6 bg-white ">
                 <h1 className="font-bold">
