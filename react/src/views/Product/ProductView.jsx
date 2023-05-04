@@ -22,7 +22,7 @@ export default function ProductView(props) {
     }
 
     return (
-        <div className="flex flex-col justify-center items-center pb-32">
+        <div className="flex flex-col justify-center items-center">
             {/* Zone image */}
             <section
                 className="w-full flex justify-center items-center pt-6 bg-no-repeat bg-cover bg-blend-overlay bg-black/70"
