@@ -205,7 +205,7 @@ export default function Cellar() {
                     <div ref={(el) => (sentinelRef.current = el)} id="sentinel" className="opacity-0">sentinel</div>
 
                     {bottles.length == 0 ? 
-                    <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
+                    <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500 overflow-hidden">
                       <div className="mx-auto">
                         Votre cellier semble vide...
                       </div>
