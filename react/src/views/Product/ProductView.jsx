@@ -105,27 +105,25 @@ export default function ProductView(props) {
                     {bottle.producteur_name ? (
                         <div>
                             <p>Producteur</p>
-                            <strong>{bottle.producteur_name.name}</strong>
+                            <strong>{bottle.producteur_name}</strong>
                         </div>
                     ) : null}
                     {bottle.designation_reglemente ? (
                         <div>
                             <p>Désignation réglementée</p>
-                            <strong>
-                                {bottle.designation_reglemente.name}
-                            </strong>
+                            <strong>{bottle.designation_reglemente}</strong>
                         </div>
                     ) : null}
                     {bottle.taux_alcool ? (
                         <div>
                             <p>Degré d'alcool</p>
-                            <strong>{bottle.taux_alcool.name}</strong>
+                            <strong>{bottle.taux_alcool}</strong>
                         </div>
                     ) : null}
                     {bottle.taux_sucre ? (
                         <div>
                             <p>Taux de sucre</p>
-                            <strong>{bottle.taux_sucre.name}</strong>
+                            <strong>{bottle.taux_sucre}</strong>
                         </div>
                     ) : null}
                     {bottle.format_name ? (
