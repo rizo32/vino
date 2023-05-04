@@ -23,3 +23,7 @@
 .brightness-90 {
   filter: brightness(90%);
 }
+
+#shit {
+    clip: rect(0px,60px,200px,0px);
+}

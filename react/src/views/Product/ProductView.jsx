@@ -1,9 +1,8 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import StarRating from "../../components/StarRating/StarRating.jsx";
-import bgImgRedWine from "./img/bgImgRedWine.png";
-import bgImgWhiteWine from "./img/bgImgWhiteWine.png";
-import bgImgDefault from "./img/bgImgWhiteWine.png";
+import ImageOnImage from "../../components/TextOnImage/ImageOnImage.jsx";
+
 
 export default function ProductView(props) {
     const location = useLocation();
@@ -12,30 +11,34 @@ export default function ProductView(props) {
     const bottle = location.state.bottle;
     console.log("bottle:", bottle);
 
-    let imageSrc;
-    if (bottle.type === "Vin rouge") {
-        imageSrc = bgImgRedWine;
-    } else if (bottle.type === "Vin blanc") {
-        imageSrc = bgImgWhiteWine;
-    } else {
-        imageSrc = bgImgDefault;
-    }
+    // let imageSrc;
+    // if (bottle.type === "Vin rouge") {
+    //     imageSrc = bgImgRedWine;
+    // } else if (bottle.type === "Vin blanc") {
+    //     imageSrc = bgImgWhiteWine;
+    // } else {
+    //     imageSrc = bgImgDefault;
+    // }
 
     return (
         <div className="flex flex-col justify-center items-center pb-32">
             {/* Zone image */}
-            <section
-                className="w-full flex justify-center items-center pt-6 bg-no-repeat bg-cover bg-blend-overlay bg-black/70"
-                style={{
-                    backgroundImage: `url(${imageSrc})`,
-                }}
-            >
+            <ImageOnImage src={bottle.image_url} alt={bottle.name} type={bottle.type_name} />
+
+
+            {/* <section className="flex justify-center items-center pt-6 h-72 w-full">
+                <div
+                    className="bg-no-repeat bg-cover bg-blend-overlay blur-xl w-full h-full"
+                    style={{
+                        backgroundImage: `url(${imageSrc})`,
+                    }}
+                ></div>
                 <img
-                    className="h-72 object-contain"
+                    className="h-72"
                     src={bottle.image_url}
                     alt={bottle.name}
                 />
-            </section>
+            </section> */}
             {/* Zone sous image */}
             <section className="w-full flex flex-col justify-start items-start gap-3 p-6 bg-white ">
                 <h1 className="font-bold">
