@@ -40,10 +40,13 @@ export default function ProductView(props) {
                 <h1 className="font-bold">
                     {bottle.name.charAt(0).toUpperCase() + bottle.name.slice(1)}
                 </h1>
-                <div className="flex gap-3">
-                    <p className="font-light">{bottle.type}</p>{" "}
-                    <span className="font-light">|</span>{" "}
-                    <p className="font-light">{bottle.format}</p>
+                <div className="flex gap-1">
+                    {bottle.type_name ? (
+                        <p className="font-light">{bottle.type_name}</p>
+                    ) : null}
+                    {bottle.format_name ? (
+                        <p className="font-light">| {bottle.format_name}</p>
+                    ) : null}
                 </div>
                 <div className="flex gap-1">
                     <p className="font-light">{bottle.country_name}</p>
@@ -51,7 +54,7 @@ export default function ProductView(props) {
                         <p className="font-light">, {bottle.region_name}</p>
                     ) : null}
                 </div>
-                <div className="flex gap-4">
+                <div className="flex gap-1">
                     <span className="flex">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -110,20 +113,25 @@ export default function ProductView(props) {
                         </svg>
                     </span>
                     {/* Propriété à venir?: {bottle.numberOfReview????} */}
-                    <span className="font-light">|</span>{" "}
-                    <p className="font-light">? avis</p>
+                    {bottle.num_comments ? (
+                        <p className="font-light">
+                            | {bottle.num_comments} avis
+                        </p>
+                    ) : null}
                 </div>
             </section>
             {/* Zone informations détaillées */}
-            <section className="w-full border border-t-black-50 bg-white ">
+            <section className="w-full border border-t-black-50 bg-white pb-10">
                 <h2 className="pt-9 pb-3 px-6 bg-red-50">
                     Informations détaillées
                 </h2>
                 <div className="flex flex-col gap-6 p-6">
-                    <div>
-                        <p>Pays</p>
-                        <strong>{bottle.country_name}</strong>
-                    </div>
+                    {bottle.country_name ? (
+                        <div>
+                            <p>Pays</p>
+                            <strong>{bottle.country_name}</strong>
+                        </div>
+                    ) : null}
                     <div>
                         <p>Désignation réglementée</p>
                         <strong>À venir</strong>
@@ -148,10 +156,10 @@ export default function ProductView(props) {
                     </div>
                 </div>
             </section>
-            {/* Zone dégustation */}
-            <section className="w-full border border-t-black-50 bg-white ">
+            {/* Zone dégustation A VENIR */}
+            {/*             <section className="w-full border border-t-black-50 bg-white ">
                 <h2 className="pt-9 pb-3 px-6 bg-red-50">Dégustation</h2>
-            </section>
+            </section> */}
         </div>
     );
 }
