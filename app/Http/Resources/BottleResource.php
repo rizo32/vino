@@ -18,26 +18,36 @@ class BottleResource extends JsonResource
     public function toArray($request)
     {
        //charger les tables reliées et avoir les données au lieu d'une clé étrangère
-        $this->load(['format', 'country', 'type']);
+        $this->load(['format', 'country', 'type', 'cepage', 'region','tauxSucre','tauxAlcool','producteur','aroma','temperatureService']);
 
         $data = [
             'id' => $this->id,
             'name' => $this->name,
-            'image_path' => $this->image_path,
+            'cepage_name'=> $this->cepage->name,
+            'taux_sucre' => $this->tauxSucre,
+            'taux_alcool' => $this->tauxAlcool,
+            'designation_reglemente' => $this->designationReglemente,
+            'image_url' => $this->image_url,
+            'type_name' => $this->type->name,
+            'arome' => $this->aroma,
+            'producteur_name' => $this->producteur,
+            'temperature_service' => $this->temperatureService,
+            'format_name' => $this->format->name,
+            'country_name' => $this->country->name,
+            'region_name' => $this->region->name,
+            'rating_saq' => $this->rating_saq,
+            'num_comments' => $this->num_comments,
+        ];
+
+        /* Si besoin d'informations en plus
             'code_saq' => $this->code_saq,
+            'type_id' => $this->type_id,
+            'country_id' => $this->country_id,
+            'image_path' => $this->image_path,
             'description' => $this->description,
             'price_saq' => $this->price_saq,
             'url_saq' => $this->url_saq,
-            'image_url' => $this->image_url,
-            'type_name' => $this->type->name,
-            'type_id' => $this->type_id,
-            'format_name' => $this->format->name,
-            'country_name' => $this->country->name,
-            'country_id' => $this->country_id,
-            'milesime' => $this->milesime,
-            'rating_saq' => $this->rating_saq,
-            'num_comments' => $this->num_comments
-        ];
+        */
 
         if ($this->relationLoaded('cellarHasBottle')) {
             $data['quantity'] = $this->cellarHasBottle->first()->quantity ?? 0;

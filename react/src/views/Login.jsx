@@ -49,7 +49,7 @@ export default function Login() {
                         id="email"
                         ref={emailRef}
                         type="email"
-                        placeholder="g.harvey@caramail.com"
+                        placeholder="johndoe@cmaisonneuve.qc.ca"
                         className="rounded-lg bg-white h-12 pl-2 shadow-shadow-tiny-inset"
                     />
                     {message.password && (
@@ -71,8 +71,10 @@ export default function Login() {
                         Connexion
                     </button>
                 </form>
-                <p className="text-center absolute bottom-20 left-1/2 transform -translate-x-1/2 w-10/12">
-                    <Link to="/signup">Créer un nouveau compte {">"}</Link>
+                <p className="text-center mt-6 underline">
+                    <Link to="/signup">
+                        Créer un nouveau compte
+                    </Link>
                 </p>
             </div>
         </div>

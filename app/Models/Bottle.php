@@ -26,15 +26,13 @@ class Bottle extends Model
     'cepage_id',
     'region_id',
     'designation_reglemente_id',
-    'taux_alcool_id',
+    'taux_alcool_name',
+    'taux_alcool',
     'taux_sucre_id',
     'producteur_id',
     'code_cup',
     'aroma_id',
     'temperature_service_id',
-    
-
-    
 
   ];
 
@@ -46,6 +44,46 @@ class Bottle extends Model
   public function country()
   {
     return $this->belongsTo(Country::class);
+  }
+
+  public function region()
+  {
+    return $this->belongsTo(Region::class);
+  }
+
+  public function cepage()
+  {
+    return $this->belongsTo(Cepage::class);
+  }
+
+  public function producteur()
+  {
+    return $this->belongsTo(Producteur::class);
+  }
+
+  public function aroma()
+  {
+    return $this->belongsTo(Aroma::class);
+  }
+
+  public function temperatureService()
+  {
+    return $this->belongsTo(TemperatureService::class);
+  }
+
+  public function tauxSucre()
+  {
+    return $this->belongsTo(TauxSucre::class);
+  }
+
+  public function tauxAlcool()
+  {
+    return $this->belongsTo(TauxAlcool::class);
+  }
+
+  public function designationReglemente()
+  {
+    return $this->belongsTo(DesignationReglemente::class);
   }
 
   public function type()

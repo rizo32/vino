@@ -49,15 +49,15 @@ export default function Catalog() {
         }
 
         // si on ajoute la bouteille au cellier, refleter la nouvelle quantite sans devoir fetch toutes les bouteilles a nouveau
-        if(bottleUpdt){
-            const updatedBottles = bottles.map(bottle => {
+        if (bottleUpdt) {
+            const updatedBottles = bottles.map((bottle) => {
                 if (bottle.id === bottleUpdt.id && !bottle.quantity) {
-                  // ajouter la propriete quantite sans recharger toutes les bouteilles
-                  return {
-                    ...bottle,
-                    quantity: 1
-                  };
-                }else if (bottle.id === bottleUpdt.id && bottle.quantity) {
+                    // ajouter la propriete quantite sans recharger toutes les bouteilles
+                    return {
+                        ...bottle,
+                        quantity: 1,
+                    };
+                } else if (bottle.id === bottleUpdt.id && bottle.quantity) {
                     //augmenter la quantite si elle existe
                     return {
                         ...bottle,
@@ -74,21 +74,21 @@ export default function Catalog() {
         }
 
         //verifier si une recherche a ete effectuee ou un filre choisi/enlever pour repartir a page 1 et enlever les anciens resultats
-        if(oldFilters != filters || oldSearch != searchValue){
+        if (oldFilters != filters || oldSearch != searchValue) {
             setPage(1);
             setScrollPosition(0);
-        }else{
+        } else {
             //si on est encore avec les memes filtres et recherche, ca veut dire qu'on scroll vers la nouvelle page donc on augmente le compte vers la prochaine page
-            setPage(page + 1)
+            setPage(page + 1);
         }
 
         axiosClient
             .get(`/bottles?${filterParams.toString()}&page=${page}`)
             .then(({ data }) => {
-                if(page == 1){
+                if (page == 1) {
                     //si on est a la page 1, on veut repartir a neuf et enlever les autres resultats de la page
-                    setBottles(data.data)
-                }else{
+                    setBottles(data.data);
+                } else {
                     //si on va vers la prochaine page, on veut seulement ajouter les resultats a ceux qui sont deja la
                     setBottles([...bottles, ...data.data]);
                 }
@@ -110,7 +110,12 @@ export default function Catalog() {
     //lorsque le sentinel entre en vue, charger la prochaine page
     const handleIntersection = (entries) => {
         //declencher le fetch seulement si les resultats sont plus grand que 10 (prochaine page existe) et seulement si nous ne sommes pas a la derniere page
-        if (entries[0].isIntersecting && !(onPage % 10) && total > 10 && onPage != total) {
+        if (
+            entries[0].isIntersecting &&
+            !(onPage % 10) &&
+            total > 10 &&
+            onPage != total
+        ) {
             getBottles();
         }
     };
@@ -123,7 +128,7 @@ export default function Catalog() {
             filters.country.length > 0
         ) {
             getBottles();
-        }else{
+        } else {
             setLoading(false);
         }
     }, [filters, searchValue]);
@@ -150,47 +155,55 @@ export default function Catalog() {
     }, [bottles]);
 
     return (
-        <div className="flex flex-col gap-2 mb-[100px]" ref={containerRef}>
+        <div className="flex flex-col gap-2" ref={containerRef}>
             {/* Désactivation du filtre dans le catalogue avant l'implantation d'une liste d'achat qui justifierait une recherche plus appronfondie */}
             {/* <FilterPanel filters={filters} setFilters={setFilters} /> */}
-            {searchValue ?
-            null
-            :
-            <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
-                <div className="mx-auto">
-                  Utilisez la barre de recherche<br />pour trouver votre bouteille
+            {searchValue ? null : (
+                <div className="flex flex-col h-[76vh] place-content-center text-center text-gray-500">
+                    <div className="mx-auto">
+                        Utilisez la barre de recherche
+                        <br />
+                        pour trouver votre bouteille
+                    </div>
+                    <div className="mx-auto mt-2"></div>
                 </div>
-                <div className="mx-auto mt-2">
-                  
-                </div>
-            </div>
-            }
+            )}
             {/* Loading state n'est pas nécéssaire dans l'état actuel des choses mais pourrait le devenir */}
             {loading ? (
                 <p>Chargement...</p>
             ) : (
                 <>
-                    { total && total != 1 ?
-                    <span>{total} résultats</span>
-                    : total == 1 ? 
-                    <span>1 résultat</span>
-                    : searchValue ? 
-                    <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
-                    <div className="mx-auto">Aucun résultats, modifier vos filtres<br />ou effectuez une nouvelle recherche</div> 
-                    </div>
-                    :null}
+                    {total && total != 1 ? (
+                        <span>{total} résultats</span>
+                    ) : total == 1 ? (
+                        <span>1 résultat</span>
+                    ) : searchValue ? (
+                        <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
+                            <div className="mx-auto">
+                                Aucun résultats, modifier vos filtres
+                                <br />
+                                ou effectuez une nouvelle recherche
+                            </div>
+                        </div>
+                    ) : null}
 
                     <ul className="flex flex-col gap-2">
                         {bottles.map((bottle) => (
                             <li key={bottle.id}>
                                 <ProductCard
                                     bottle={bottle}
-                                    getBottles={getBottles} />
+                                    getBottles={getBottles}
+                                />
                             </li>
                         ))}
-                        
-                        <div ref={(el) => (sentinelRef.current = el)} id="sentinel" className="opacity-0">sentinel</div>
 
+                        <div
+                            ref={(el) => (sentinelRef.current = el)}
+                            id="sentinel"
+                            className="opacity-0"
+                        >
+                            sentinel
+                        </div>
                     </ul>
                 </>
             )}

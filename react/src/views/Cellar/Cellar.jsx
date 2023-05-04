@@ -47,50 +47,52 @@ export default function Cellar() {
             filterParams.append("search", searchValue);
         }
         // autres filtres
-        
+
         // si on ajoute la bouteille au cellier, refleter la nouvelle quantite sans devoir fetch toutes les bouteilles a nouveau
-        if(dataUpdt){
-          const updatedBottles = bottles.map(bottle => {
-              if (bottle.bottle.id === dataUpdt.bottle.id) {
-                // ajouter la propriete quantite sans recharger toutes les bouteilles
-                return {
-                  ...bottle,
-                  quantity: dataUpdt.quantity
-                };
-              }
-              // garder meme bouteille et proprietes si rien change
-              return bottle;
-          });
-          setBottles(updatedBottles);
-          setLoading(false);
-          //arreter la fonction
-          return;
-        }else if(bottleRmv){
-          const updatedBottles = bottles.filter(bottle => bottle.bottle.id != bottleRmv.bottle.id);
-          setBottles(updatedBottles);
-          setLoading(false);
-          //arreter la fonction
-          return;
+        if (dataUpdt) {
+            const updatedBottles = bottles.map((bottle) => {
+                if (bottle.bottle.id === dataUpdt.bottle.id) {
+                    // ajouter la propriete quantite sans recharger toutes les bouteilles
+                    return {
+                        ...bottle,
+                        quantity: dataUpdt.quantity,
+                    };
+                }
+                // garder meme bouteille et proprietes si rien change
+                return bottle;
+            });
+            setBottles(updatedBottles);
+            setLoading(false);
+            //arreter la fonction
+            return;
+        } else if (bottleRmv) {
+            const updatedBottles = bottles.filter(
+                (bottle) => bottle.bottle.id != bottleRmv.bottle.id
+            );
+            setBottles(updatedBottles);
+            setLoading(false);
+            //arreter la fonction
+            return;
         }
 
         //verifier si une recherche a ete effectuee ou un filre choisi/enlever pour repartir a page 1 et enlever les anciens resultats
-        if(oldFilters != filters || oldSearch != searchValue){
-          setPage(1);
-          setScrollPosition(0);
-        }else{
-          //si on est encore avec les memes filtres et recherche, ca veut dire qu'on scroll vers la nouvelle page donc on augmente le compte vers la prochaine page
-          setPage(page + 1)
+        if (oldFilters != filters || oldSearch != searchValue) {
+            setPage(1);
+            setScrollPosition(0);
+        } else {
+            //si on est encore avec les memes filtres et recherche, ca veut dire qu'on scroll vers la nouvelle page donc on augmente le compte vers la prochaine page
+            setPage(page + 1);
         }
 
         axiosClient
             .get(`/cellarHasBottles?${filterParams.toString()}&page=${page}`)
             .then(({ data }) => {
-                if(page == 1){
-                //si on est a la page 1, on veut repartir a neuf et enlever les autres resultats de la page
-                setBottles(data.data)
-                }else{
-                //si on va vers la prochaine page, on veut seulement ajouter les resultats a ceux qui sont deja la
-                setBottles([...bottles, ...data.data]);
+                if (page == 1) {
+                    //si on est a la page 1, on veut repartir a neuf et enlever les autres resultats de la page
+                    setBottles(data.data);
+                } else {
+                    //si on va vers la prochaine page, on veut seulement ajouter les resultats a ceux qui sont deja la
+                    setBottles([...bottles, ...data.data]);
                 }
                 //sauvegarder le compte de resultats presents sur la page
                 setOnPage(data.meta.to);
@@ -109,10 +111,15 @@ export default function Cellar() {
 
     //lorsque le sentinel entre en vue, charger la prochaine page
     const handleIntersection = (entries) => {
-      //declencher le fetch seulement si les resultats sont plus grand que 10 (prochaine page existe) et seulement si nous ne sommes pas a la derniere page
-      if (entries[0].isIntersecting && !(onPage % 10) && total > 10 && onPage != total) {
-          getBottles();
-      }
+        //declencher le fetch seulement si les resultats sont plus grand que 10 (prochaine page existe) et seulement si nous ne sommes pas a la derniere page
+        if (
+            entries[0].isIntersecting &&
+            !(onPage % 10) &&
+            total > 10 &&
+            onPage != total
+        ) {
+            getBottles();
+        }
     };
 
     //executer la fonction
@@ -122,18 +129,18 @@ export default function Cellar() {
 
     //sentinel observer pour la pagination scroll
     useEffect(() => {
-      const observer = new IntersectionObserver(handleIntersection, {
-          root: null,
-          rootMargin: "0px",
-          threshold: 1.0,
-      });
+        const observer = new IntersectionObserver(handleIntersection, {
+            root: null,
+            rootMargin: "0px",
+            threshold: 1.0,
+        });
 
-      //s'assurer que la ref existe
-      if (sentinelRef.current) {
-          observer.observe(sentinelRef.current);
-      }
+        //s'assurer que la ref existe
+        if (sentinelRef.current) {
+            observer.observe(sentinelRef.current);
+        }
 
-      return () => observer.disconnect();
+        return () => observer.disconnect();
     }, [sentinelRef.current]);
 
     //retirer la bouteille du cellier de l'usager
@@ -144,7 +151,7 @@ export default function Cellar() {
                     import.meta.env.VITE_API_BASE_URL
                 }/api/cellarHasBottles/${id}`
             )
-            .then(({data}) => {
+            .then(({ data }) => {
                 getBottles(false, data.data);
             })
             .catch((err) => {
@@ -156,10 +163,12 @@ export default function Cellar() {
     const updateBottleQty = (id, dataUpdt) => {
         axiosClient
             .put(
-                `${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles/${id}`,
+                `${
+                    import.meta.env.VITE_API_BASE_URL
+                }/api/cellarHasBottles/${id}`,
                 dataUpdt
-                )
-            .then(({data}) => {
+            )
+            .then(({ data }) => {
                 getBottles(data.data, false);
             })
             .catch((err) => {
@@ -169,7 +178,7 @@ export default function Cellar() {
 
     //lorsque que le state bottles est mis a jour, on scroll a la position sauvegardée
     useEffect(() => {
-      window.scrollTo(0, scrollPosition);
+        window.scrollTo(0, scrollPosition);
     }, [bottles]);
 
     return (

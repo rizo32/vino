@@ -198,7 +198,7 @@ const FilterPanel = ({ filters, setFilters }) => {
 
             {/* la taille du navbar */}
             <div
-                className={`fixed inset-0 bg-white p-8 top-16 transition-all duration-300 ease-in-out ${
+                className={`fixed inset-0 bg-white p-8 top-16 transition-all duration-300 ease-in-out z-20 ${
                     optionsVisible ? "translate-x-0" : "translate-x-full"
                 }`}
             >
@@ -217,12 +217,12 @@ const FilterPanel = ({ filters, setFilters }) => {
                     >
                         Confirmation
                     </button>
-                    <div className="text-center absolute bottom-20 left-1/2 transform -translate-x-1/2 w-10/12">
+                    <div className="text-center mt-6 underline">
                         <p
-                            className="cursor-pointer"
+                            className="cursor-pointer underline"
                             onClick={clearSelectedFilters}
                         >
-                            {"<"} Retirer les filtres
+                            Retirer les filtres
                         </p>
                     </div>
                 </div>

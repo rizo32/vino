@@ -41,7 +41,7 @@ export default function ({ cellarId, bottleId, quantity, handleClose, removeFrom
     }
 
     return (
-        <div className="flex edit-modal items-center justify-center backdrop-blur-xl p-[15px] absolute w-full h-full left-0 top-0 z-10">
+        <div className="flex edit-modal items-center justify-center backdrop-blur-xl p-[15px] absolute w-full h-full left-0 top-0 z-20">
             <span className="close-btn text-center w-[30px] h-[30px] absolute right-[10px] top-[10px] cursor-pointer" onClick={handleClose}>
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Menu / Close_MD"> <path id="Vector" d="M18 18L12 12M12 12L6 6M12 12L18 6M12 12L6 18" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g> </g></svg>
             </span>
