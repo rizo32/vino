@@ -98,6 +98,7 @@ class SaqCatalogueController extends Controller
 
     private function get_id($model, $name)
     {
+        /* definitiosn des models et attributs correspondant */
         $models = [
             'Type' => ['class' => Type::class, 'attribute' => 'name'],
             'Format' => ['class' => Format::class, 'attribute' => 'name'],
@@ -106,22 +107,22 @@ class SaqCatalogueController extends Controller
 
         $modelClass = $models[$model]['class'] ?? null;
         $attribute = $models[$model]['attribute'] ?? null;
-
+        /* si la classe ou l'attribut existe pas -> retourne null */
         if (!$modelClass || !$attribute) {
             return null;
         }
-
+        /* si une instance existe -> retourne l'id */
         $instance = $modelClass::where($attribute, $name)->first();
 
         if ($instance) {
             return $instance->id;
         }
 
-        // Create a new instance if not found
+        /* si aucune instance est trouver -> creation de l'instance (peuplement dynamique) */
         $newInstance = new $modelClass();
         $newInstance->$attribute = $name;
         $newInstance->save();
-
+        /* ensuite -> retourne l'id */
         return $newInstance->id;
     }
 
@@ -247,6 +248,7 @@ class SaqCatalogueController extends Controller
             $newBottle->type_id = $bte->desc->type_id;
             $newBottle->rating_saq = $bte->rating;
             $newBottle->num_comments = $bte->num_comments;
+            /* attribution d'id attribut si elle existe sinon -> Null -> fixe pour contraintre de valeur par default  */
             $newBottle->region_id = isset($bte->desc->region_id) ? $bte->desc->region_id : NULL;
             $newBottle->cepage_id = isset($bte->desc->cepage_id) ? $bte->desc->cepage_id : NULL;
             $newBottle->designation_reglemente_id = isset($bte->desc->designation_reglemente_id) ? $bte->desc->designation_reglemente_id : NULL;
@@ -279,38 +281,25 @@ class SaqCatalogueController extends Controller
 
 
     public function fetchProduits()
-    {
-        ini_set('max_execution_time', 0); // Cette fonction peut rouler infiniment
+{
+    ini_set('max_execution_time', 0); // Cette fonction peut rouler infiniment /* a ajuster lorsque tout les test seront terminer  */
 
-        $totalPages = 300;  // Set the total number of pages you want to fetch
+    $totalPages = 300;  // nombre de pages voulues -> max 342; /* a ajuster lorsque tout les test seront terminer  */
 
-        $response = new StreamedResponse(function () use ($totalPages) {
-            $produits = []; // Tableau qui contiendra les produits
+    $produits = []; // Tableau qui contiendra les produits
 
-            for ($i = 1; $i <= $totalPages; $i++) {
-                $response = $this->getProduits(24, $i);
-                $data = $response->getData();
-                $produits = array_merge($produits, $data);
-
-                $progressPercentage = ($i / $totalPages) * 100;
-                echo "data: " . json_encode(['progressPercentage' => $progressPercentage]) . "\n\n";
-                ob_flush();
-                flush();
-            }
-            $moreProduits = new SaqProductController;
-            $moreProduits->getItem();
-            
-            echo "data: " . json_encode(['done' => true, 'produits' => $produits]) . "\n\n";
-            ob_flush();
-            flush();
-        });
-
-        $response->headers->set('Content-Type', 'text/event-stream');
-        $response->headers->set('Cache-Control', 'no-cache');
-        $response->headers->set('Connection', 'keep-alive');
-        $response->headers->set('X-Accel-Buffering', 'no');
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+    /* parcourir chaque pages */
+    for ($i = 1; $i <= $totalPages; $i++) {
+        $response = $this->getProduits(24, $i);
+        $data = $response->getData();
+        /* creation d'un tableaux de produits */
+        $produits = array_merge($produits, $data);
     }
+    /* ajout d'autres informations avec le 2e crawler */
+    $moreProduits = new SaqProductController;
+    $moreProduits->getItem();
+
+    return response()->json(['done' => true, 'produits' => $produits]); /* retour desuets -> a modifier apres les test */
+}
+
 }
