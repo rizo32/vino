@@ -33,17 +33,24 @@ const MobileNavbar = () => {
 
     // Add an event listener for the "keypress" event on the search input field
     const handleSearchInputKeyDown = (e) => {
-        if (e.key === "Enter" && location.pathname.includes("/users/")) {
+        if (e.key === "Enter" && location.pathname !== '/cellar' ) {
             // If the pressed key is "Enter", navigate to the /catalog route
             navigate("/catalog");
         }
     };
 
     const toggleSearchBar = () => {
-        if (!searchBarOpen) {
-            searchInputRef.current.focus();
+        if (searchBarOpen && searchInputRef.current.value.trim() !== "") {
+            // If the search bar is open and not empty, perform the search instead of closing the bar
+            if (location.pathname !== '/cellar') {
+                navigate("/catalog");
+            }
+        } else {
+            if (!searchBarOpen) {
+                searchInputRef.current.focus();
+            }
+            setSearchBarOpen(!searchBarOpen);
         }
-        setSearchBarOpen(!searchBarOpen);
     };
 
     return (

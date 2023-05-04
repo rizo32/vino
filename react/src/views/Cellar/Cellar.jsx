@@ -182,13 +182,13 @@ export default function Cellar() {
     }, [bottles]);
 
     return (
-        <div className="flex flex-col mt-4">
+        <div className="flex flex-col">
             <FilterPanel filters={filters} setFilters={setFilters} />
 
             {loading ? (
-                <p className="ml-2 mb-1">Chargement...</p>
+                <p className="ml-2 mb-1 mt-4">Chargement...</p>
             ) : (
-                <ul className="flex flex-col gap-2">
+                <ul className="flex flex-col gap-2 mt-4">
                     {bottles.map((bottle) => (
                         <li key={bottle.id}>
                             <ProductCard

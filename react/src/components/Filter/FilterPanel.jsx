@@ -119,7 +119,6 @@ const FilterPanel = ({ filters, setFilters }) => {
                         filterCategory
                     ].filter((item) => item !== value);
                 }
-                console.log(newFilters);
                 return newFilters;
             });
 
@@ -185,7 +184,9 @@ const FilterPanel = ({ filters, setFilters }) => {
                             categoryIsActive(category.internalName)
                                 ? "text-white bg-red-900 shadow-shadow-tiny"
                                 : "text-black bg-gray-200"
-                        } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px] hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
+                        } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[48%] hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
+                        // Si on ajoute des catégories: w-[25%] max-w-[200px]
+
                         onClick={() => handleCategoryClick(category.internalName)}
                     >
                         <FontAwesomeIcon
@@ -196,7 +197,7 @@ const FilterPanel = ({ filters, setFilters }) => {
                 ))}
             </div>
 
-            {/* la taille du navbar */}
+            {/* Page d'options */}
             <div
                 className={`fixed inset-0 bg-white p-8 top-16 transition-all duration-300 ease-in-out z-20 ${
                     optionsVisible ? "translate-x-0" : "translate-x-full"
@@ -209,11 +210,10 @@ const FilterPanel = ({ filters, setFilters }) => {
                     checkedItems={checkedItems}
                     handleFilterChange={handleFilterChange}
                 />
-                <div className="flex justify-center">
+                <div className="flex flex-col justify-center">
                     <button
                         onClick={() => setOptionsVisible(false)}
-                        // className="btn btn-block mt-12 bg-red-900 rounded-md text-white h-12 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover w-10/12 mx-auto"
-                        className="btn btn-block bottom-32 left-1/2 transform absolute -translate-x-1/2 bg-red-900 rounded-md text-white h-12 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover   active:bg-red-hover active:shadow-none w-10/12"
+                        className="btn btn-block mt-6 bg-red-900 rounded-md text-white h-12 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover w-10/12 mx-auto"
                     >
                         Confirmation
                     </button>
