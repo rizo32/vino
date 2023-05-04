@@ -44,11 +44,11 @@ export default function Signup() {
                     className="flex flex-col w-10/12 ml-auto mr-auto"
                     onSubmit={onSubmit}
                 >
-                    <h1 className="text-4xl text-center mt-vh-2">
+                    <h1 className="text-4xl text-center mt-vh-5 xs-h:mt-0">
                         Bienvenue!
                     </h1>
                     {/* À changer le titre */}
-                    <label htmlFor="first-name" className="mt-vh-5 ml-2">
+                    <label htmlFor="first-name" className="mt-vh-5 ml-2 xs-h:mt-vh-2">
                         Prénom
                         {message.first_name && (
                             <span className="text-red-900 text-sm pl-2">
@@ -60,7 +60,7 @@ export default function Signup() {
                         id="first-name"
                         ref={firstNameRef}
                         type="text"
-                        placeholder="Jon"
+                        placeholder="John"
                         className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
                     />
                     <label htmlFor="last-name" className="mt-vh-2 ml-2">
@@ -75,7 +75,7 @@ export default function Signup() {
                         id="last-name"
                         ref={lastNameRef}
                         type="text"
-                        placeholder="Snow"
+                        placeholder="Doe"
                         className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
                     />
                     <label htmlFor="email" className="mt-vh-2 ml-2">
@@ -90,7 +90,7 @@ export default function Signup() {
                         id="email"
                         ref={emailRef}
                         type="email"
-                        placeholder="king@north.com"
+                        placeholder="johndoe@cmaisonneuve.qc.ca"
                         className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
                     />
                     <label htmlFor="password" className="mt-vh-2 ml-2">
@@ -124,8 +124,9 @@ export default function Signup() {
                     <button className="btn btn-block mt-8 bg-red-900 rounded-md text-white h-8 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover active:bg-red-hover active:shadow-none">
                         L'aventure commence!
                     </button>
-                    <p className="text-center absolute bottom-20 left-1/2 transform -translate-x-1/2 w-10/12">
-                        <Link to="/login">Vous avez un compte? {">"}</Link>
+                    {/* <p className="text-center absolute bottom-20 left-1/2 transform -translate-x-1/2 w-10/12 underline"> */}
+                    <p className="text-center mt-6 underline">
+                        <Link to="/login">Vous avez un compte?</Link>
                     </p>
                 </form>
             </div>
