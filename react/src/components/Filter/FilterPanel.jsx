@@ -184,7 +184,9 @@ const FilterPanel = ({ filters, setFilters }) => {
                             categoryIsActive(category.internalName)
                                 ? "text-white bg-red-900 shadow-shadow-tiny"
                                 : "text-black bg-gray-200"
-                        } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[25%] max-w-[200px] hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
+                        } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[48%] hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
+                        // Si on ajoute des catégories: w-[25%] max-w-[200px]
+
                         onClick={() => handleCategoryClick(category.internalName)}
                     >
                         <FontAwesomeIcon
