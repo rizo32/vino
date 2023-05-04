@@ -155,11 +155,11 @@ export default function Catalog() {
     }, [bottles]);
 
     return (
-        <div className="flex flex-col gap-2 mb-[100px]" ref={containerRef}>
+        <div className="flex flex-col gap-2" ref={containerRef}>
             {/* Désactivation du filtre dans le catalogue avant l'implantation d'une liste d'achat qui justifierait une recherche plus appronfondie */}
             {/* <FilterPanel filters={filters} setFilters={setFilters} /> */}
             {searchValue ? null : (
-                <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
+                <div className="flex flex-col h-[76vh] place-content-center text-center text-gray-500">
                     <div className="mx-auto">
                         Utilisez la barre de recherche
                         <br />
@@ -179,7 +179,7 @@ export default function Catalog() {
                         <span>1 résultat</span>
                     ) : searchValue ? (
                         <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
-                            <div class="mx-auto">
+                            <div className="mx-auto">
                                 Aucun résultats, modifier vos filtres
                                 <br />
                                 ou effectuez une nouvelle recherche

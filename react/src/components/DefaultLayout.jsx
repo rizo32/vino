@@ -51,7 +51,7 @@ export default function DefaultLayout() {
             <header>
                 <MobileNavbar />
             </header>
-            <main className="bg-red-50 pt-16 min-h-screen">
+            <main className="bg-red-50 pt-16 pb-16 min-h-screen">
                 {/* Outlet va aller chercher la vue appropriée dans le router */}
                 <Outlet />
 
