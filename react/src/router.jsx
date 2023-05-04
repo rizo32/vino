@@ -40,10 +40,6 @@ const router = createBrowserRouter([
                 path: "/users/:id",
                 element: <UserView />,
             },
-            {
-                path: "/admin",
-                element: <Admin />,
-            },
         ],
     },
     {
