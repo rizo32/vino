@@ -175,16 +175,7 @@ export default function Cellar() {
     return (
         <div className="flex flex-col gap-2">
             <FilterPanel filters={filters} setFilters={setFilters} />
-            {bottles.length == 0 ? 
-              <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
-                <div className="mx-auto">
-                  Votre cellier semble vide...
-                </div>
-                <div className="mx-auto mt-2">
-                  Ajoutez vos bouteilles à l'aide<br />du "+" dans la barre de navigation
-                </div>
-              </div>
-            : null}
+            
             {loading ? (
                 <p>Chargement...</p>
             ) : (
@@ -203,6 +194,17 @@ export default function Cellar() {
                     ))}
 
                     <div ref={(el) => (sentinelRef.current = el)} id="sentinel" className="opacity-0">sentinel</div>
+
+                    {bottles.length == 0 ? 
+                    <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
+                      <div className="mx-auto">
+                        Votre cellier semble vide...
+                      </div>
+                      <div className="mx-auto mt-2">
+                        Ajoutez vos bouteilles à l'aide<br />du "+" dans la barre de navigation
+                      </div>
+                    </div>
+                    : null}
 
                 </ul>
             )}
