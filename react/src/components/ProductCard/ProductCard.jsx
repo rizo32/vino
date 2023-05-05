@@ -23,7 +23,7 @@ export default function ProductCard({
                 `${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles`,
                 bottle
             )
-            .then(() => {
+            .then(({data}) => {
                 getBottles(bottle);
             })
             .catch((err) => {

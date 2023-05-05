@@ -84,7 +84,7 @@ class CellarHasBottleController extends Controller
             'id' => 'required|integer',
         ]);
 
-        $bottleInCellar = CellarHasBottle::query()->where('bottle_id', '=', $request->input('id'))->first();
+        $bottleInCellar = CellarHasBottle::query()->where('bottle_id', '=', $request->input('id'))->where('cellar_id', '=', $user->cellar->id)->first();
 
         if ($bottleInCellar) {
             $data = ['quantity' => $bottleInCellar->quantity + 1];
@@ -104,9 +104,7 @@ class CellarHasBottleController extends Controller
 
         $cellarHasBottle->save();
 
-        return BottleResource::collection(
-            Bottle::with('cellarHasBottle')->orderBy('id', 'desc')->paginate(10)
-        );
+        return 'test';
     }
 
     // $query = CellarHasBottle::with(['bottle' => function ($q) {

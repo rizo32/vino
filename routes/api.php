@@ -45,6 +45,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // gestion de cellier
     Route::apiResource('/cellarHasBottles', CellarHasBottleController::class);
 
+    // Gestion des bouteilles
+    Route::apiResource('/bottles', BottleController::class);
+
 });
 
 /* <YG */
@@ -59,9 +62,6 @@ Route::get('/saq/fetch', [SaqCatalogueController::class, 'fetchProduits'])->name
 
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
-
-// Gestion des bouteilles
-Route::apiResource('/bottles', BottleController::class);
 
 // Va chercher les options pour les filtres
 Route::get('/countries', [CountryController::class, 'index']);
