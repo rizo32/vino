@@ -16,7 +16,7 @@ export default function ProductView(props) {
     window.scrollTo(0,0);
 
     return (
-        <div className="flex flex-col justify-center items-center pb-32">
+        <div className="flex flex-col justify-center items-center">
             <div className="absolute top-20 left-5 flex flex-row z-30">
                 {" "}
                 <button
