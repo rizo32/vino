@@ -24,7 +24,6 @@ export default function ProductCard({
                 bottle
             )
             .then(({data}) => {
-                console.log(bottle);
                 getBottles(bottle);
             })
             .catch((err) => {

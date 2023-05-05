@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBottleRequest;
 use App\Models\Bottle;
+use App\Models\Cellar;
 use Illuminate\Http\Request;
 use App\Http\Resources\BottleResource;
+use Illuminate\Support\Facades\Auth;
 
 // Elodie
 
@@ -19,10 +21,12 @@ class BottleController extends Controller
      */
     public function index(Request $request)
     {
-        
+        $user = auth()->user();
 
         // \Log::info([$request->all()]);
-        $query = Bottle::with('cellarHasBottle')->orderBy('name', 'asc');
+        $query = Bottle::with(['cellarHasBottle' => function ($query) use ($user) {
+            $query->where('cellar_id', '=', $user->cellar->id);
+        }])->orderBy('name', 'asc');
 
         // Recherche dans le NOM
         if ($request->has('search')) {
