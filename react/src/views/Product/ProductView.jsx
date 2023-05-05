@@ -13,6 +13,8 @@ export default function ProductView(props) {
     // Récupère les informations de bottle passées depuis la page précédente
     const bottle = location.state.bottle;
 
+    window.scrollTo(0,0);
+
     return (
         <div className="flex flex-col justify-center items-center pb-32">
             <div className="absolute top-20 left-5 flex flex-row z-30">

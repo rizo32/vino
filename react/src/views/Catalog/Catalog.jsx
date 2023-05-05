@@ -171,13 +171,13 @@ export default function Catalog() {
             {/* Loading state n'est pas nécéssaire dans l'état actuel des choses mais pourrait le devenir */}
             {loading ? (
                 <p className="ml-2 mb-1 mt-4">Chargement...</p>
-            ) : (
+            ) : searchValue ? (
                 <>
                     {total && total != 1 ? (
                         <p className="ml-2 mb-1 mt-4">{total} résultats</p>
                     ) : total == 1 ? (
                         <span className="ml-2 mb-1 mt-4">1 résultat</span>
-                    ) : searchValue ? (
+                    ) : total == 0 && searchValue ? (
                         <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
                             <div className="mx-auto">
                                 Aucun résultats, modifier vos filtres
@@ -206,7 +206,7 @@ export default function Catalog() {
                         </div>
                     </ul>
                 </>
-            )}
+            ): null}
         </div>
     );
 }
