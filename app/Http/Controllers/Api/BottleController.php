@@ -7,7 +7,6 @@ use App\Http\Requests\StoreBottleRequest;
 use App\Models\Bottle;
 use Illuminate\Http\Request;
 use App\Http\Resources\BottleResource;
-use Illuminate\Support\Facades\Auth;
 
 // Elodie
 
@@ -20,10 +19,10 @@ class BottleController extends Controller
      */
     public function index(Request $request)
     {
+        
+
         // \Log::info([$request->all()]);
-        $query = Bottle::with(['cellarHasBottle' => function ($query) {
-            $query->where('cellar_id', Auth::id());
-        }])->orderBy('name', 'asc');
+        $query = Bottle::with('cellarHasBottle')->orderBy('name', 'asc');
 
         // Recherche dans le NOM
         if ($request->has('search')) {
