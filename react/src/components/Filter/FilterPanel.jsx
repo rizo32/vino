@@ -4,7 +4,7 @@ import OptionsList from "./OptionsList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEarthAmericas, faWineBottle } from "@fortawesome/free-solid-svg-icons";
 
-const FilterPanel = ({ filters, setFilters }) => {
+const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [countries, setCountries] = useState([]);
     const [types, setTypes] = useState([]);
@@ -97,7 +97,8 @@ const FilterPanel = ({ filters, setFilters }) => {
             return newCheckedItems;
         });
         setOptionsVisible(false);
-    }, [selectedCategory, setFilters]);
+        onClearFilters();
+    }, [selectedCategory, setFilters, onClearFilters]);
 
     const handleFilterChange = useCallback(
         (e, filterCategory) => {

@@ -46,6 +46,7 @@ export default function Cellar() {
         if (searchValue) {
             filterParams.append("search", searchValue);
         }
+
         // autres filtres
 
         // si on ajoute la bouteille au cellier, refleter la nouvelle quantite sans devoir fetch toutes les bouteilles a nouveau
@@ -107,6 +108,15 @@ export default function Cellar() {
                 console.error(error);
                 setLoading(false);
             });
+    };
+
+    
+    const handleClearFilters = () => {
+        setFilters({
+            type: [],
+            country: [],
+            ratings: [],
+        });
     };
 
     //lorsque le sentinel entre en vue, charger la prochaine page
@@ -183,7 +193,7 @@ export default function Cellar() {
 
     return (
         <div className="flex flex-col">
-            <FilterPanel filters={filters} setFilters={setFilters} />
+            <FilterPanel filters={filters} setFilters={setFilters} onClearFilters={handleClearFilters} />
             {total && total != 1 && searchValue ? (
                         <p className="ml-2 mb-1 mt-4">{total} résultats</p>
                     ) : total == 1 && searchValue ? (
