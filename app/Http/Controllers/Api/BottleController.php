@@ -46,12 +46,6 @@ class BottleController extends Controller
             $query->whereIn('type_id', $types);
         }
 
-        // Apply filters across different categories with 'AND'
-        if ($request->has(['country', 'type'])) {
-            $query->whereIn('country_id', $countries)->whereIn('type_id', $types);
-        }
-
-
         return BottleResource::collection($query->paginate(10));
     }
 

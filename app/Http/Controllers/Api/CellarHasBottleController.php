@@ -59,11 +59,6 @@ class CellarHasBottleController extends Controller
             // \Log::info(['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
         }
 
-        // Apply filters across different categories with 'AND'
-        if ($request->has(['country', 'type'])) {
-            $query->whereIn('country_id', $countries)->whereIn('type_id', $types);
-        }
-
         //retourne les bouteilles d'un cellier donné (ici id 1) en format json
         return CellarHasBottleResource::collection($query->paginate(10));
     }
