@@ -3,8 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 
+// Composant fonctionnel représentant une option de filtre
 const Option = React.memo(({ option, category, checkedItems, handleFilterChange, index, currentCategory }) => {
     return (
+        // Nom de l'option
         <label
             key={option.id}
             className={`${
@@ -21,6 +23,7 @@ const Option = React.memo(({ option, category, checkedItems, handleFilterChange,
                 checked={checkedItems[category.internalName][option.id] || false}
                 onChange={(e) => handleFilterChange(e, category.internalName)}
             />
+            {/* Affichage de la coche si l'option est sélectionnée */}
             <span
                 className={`flex justify-center items-center inline-block w-5 h-5 rounded-full ml-3 ${
                     checkedItems[category.internalName][option.id]

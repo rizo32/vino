@@ -23,7 +23,7 @@ class BottleController extends Controller
     {
         $user = auth()->user();
 
-        // \Log::info([$request->all()]);
+        // fetch bouteilles et information du cellier de l'user connecté (pour afficher nombre de bouteilles déjà dans cellier)
         $query = Bottle::with(['cellarHasBottle' => function ($query) use ($user) {
             $query->where('cellar_id', '=', $user->cellar->id);
         }])->orderBy('name', 'asc');
@@ -58,7 +58,7 @@ class BottleController extends Controller
     public function store(Request $request)
     {
         //ajoute bouteille, non-utilisé pour l'instant
-        $data = $request->validated(); //fichier request a faire
+        $data = $request->validated();
         $bottle = Bottle::create($data);
 
         return response(new BottleResource($bottle), 201);
@@ -86,7 +86,7 @@ class BottleController extends Controller
     public function update(Request $request, Bottle $bottle)
     {
         //non utilise
-        $data = $request->validated(); // fichier request a faire
+        $data = $request->validated();
         $bottle->update($data);
     }
 

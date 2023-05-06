@@ -4,6 +4,8 @@ import bgImgWhiteWine from "../../assets/img/bgImgWhiteWineDark2.webp";
 import bgImgDefault from "../../assets/img/bgImgOtherWineDark2.webp";
 
 const ImageOnImage = ({ src, alt, type }) => {
+
+    // Image de fond différente selon le type de vin
     let imageSrc;
 
     if (type === "Vin rouge") {

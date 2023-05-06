@@ -55,15 +55,6 @@ export default function DefaultLayout() {
                 {/* Outlet va aller chercher la vue appropriée dans le router */}
                 <Outlet />
 
-                {/*
-
-                *** ATTENTION ***
-
-                Menu navigation devrait être une composante
-                - Gab 
-                
-                */}
-
                 <aside className="fixed bottom-0 w-full bg-white h-16 flex items-center justify-around z-20">
                     {/*                 <Link to="/wishlist">
                     <svg

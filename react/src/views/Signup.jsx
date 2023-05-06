@@ -3,8 +3,6 @@ import { useRef, useState } from "react";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../contexts/ContextProvider.jsx";
 
-// Gab
-// Je vais changer les dimensions selon la hauteur du
 export default function Signup() {
     const firstNameRef = useRef();
     const lastNameRef = useRef();
@@ -14,9 +12,11 @@ export default function Signup() {
     const [message, setMessage] = useState([]);
     const { setUser, setToken } = useStateContext();
 
+    // Soumission du formulaire
     const onSubmit = (ev) => {
         ev.preventDefault();
 
+        // Information à envoyer
         const payload = {
             first_name: firstNameRef.current.value,
             last_name: lastNameRef.current.value,
@@ -24,6 +24,8 @@ export default function Signup() {
             password: passwordRef.current.value,
             password_confirmation: passwordConfirmationRef.current.value,
         };
+
+        // Envois de la requête à l'API
         axiosClient
             .post("/signup", payload)
             .then(({ data }) => {
@@ -47,7 +49,6 @@ export default function Signup() {
                     <h1 className="text-4xl text-center mt-vh-5 xs-h:mt-0">
                         Bienvenue!
                     </h1>
-                    {/* À changer le titre */}
                     <label htmlFor="first-name" className="mt-vh-5 ml-2 xs-h:mt-vh-2">
                         Prénom
                         {message.first_name && (
@@ -124,7 +125,6 @@ export default function Signup() {
                     <button className="btn btn-block mt-8 bg-red-900 rounded-md text-white h-8 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover active:bg-red-hover active:shadow-none">
                         L'aventure commence!
                     </button>
-                    {/* <p className="text-center absolute bottom-20 left-1/2 transform -translate-x-1/2 w-10/12 underline"> */}
                     <p className="text-center mt-6 underline">
                         <Link to="/login">Vous avez un compte?</Link>
                     </p>
