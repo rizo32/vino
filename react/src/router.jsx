@@ -10,7 +10,6 @@ import Signup from "./views/Signup.jsx";
 import Cellar from "./views/Cellar/Cellar.jsx";
 import ProductView from "./views/Product/ProductView.jsx";
 import Catalog from "./views/Catalog/Catalog.jsx";
-import Home from "./views/Home.jsx";
 import UserView from "./views/UserView.jsx";
 import ErrorPage from "./views/ErrorPage.jsx";
 
@@ -48,7 +47,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Home />,
+                element: <Navigate to="/login" />,
             },
             {
                 path: "/login",
