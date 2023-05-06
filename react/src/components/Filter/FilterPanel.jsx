@@ -51,6 +51,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
         });
     }, []);
 
+    // Définition des catégories
     const getCategories = (countries, types) => [
         {
             internalName: 'type',
@@ -65,6 +66,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
         // ajouter d'autres catégories ici si nécessaire
     ];
     
+    // Fetch les icones des catégories
     const getCategoryIcon = (internalName) => {
         if (CATEGORIES.hasOwnProperty(internalName)) {
             return CATEGORIES[internalName].icon;
@@ -78,11 +80,13 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
         [countries, types]
     );
 
+    // Ouvre la page des options
     const handleCategoryClick = useCallback((category) => {
         setSelectedCategory(category);
         setOptionsVisible(true);
     }, []);
 
+    // supprime tous les filtres en cours
     const clearSelectedFilters = useCallback(() => {
         if (selectedCategory) {
             setFilters((prevFilters) => {
@@ -91,6 +95,8 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                 return newFilters;
             });
         }
+
+        // met à jour le UI
         setCheckedItems((prevCheckedItems) => {
             const newCheckedItems = { ...prevCheckedItems };
             newCheckedItems[selectedCategory] = {};
@@ -100,6 +106,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
         onClearFilters();
     }, [selectedCategory, setFilters, onClearFilters]);
 
+    // Nouveau fetch à chaque filtre
     const handleFilterChange = useCallback(
         (e, filterCategory) => {
             const value = e.target.value;
@@ -109,13 +116,13 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                 const newFilters = { ...prevFilters };
 
                 if (isChecked) {
-                    // Add the value to the filter category if it's checked
+                    // Ajoute le nouveau filtre à un tableau de filtres
                     newFilters[filterCategory] = [
                         ...prevFilters[filterCategory],
                         value,
                     ];
                 } else {
-                    // Remove the value from the filter category if it's unchecked
+                    // Enleve le filtre du tableau de filtre
                     newFilters[filterCategory] = prevFilters[
                         filterCategory
                     ].filter((item) => item !== value);
@@ -123,6 +130,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                 return newFilters;
             });
 
+            // Mise à jour de l'interface
             setCheckedItems((prevCheckedItems) => ({
                 ...prevCheckedItems,
                 [filterCategory]: {
@@ -134,6 +142,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
         [setFilters]
     );
 
+    // Defini si la catégorie de filtre est active (pour colorer)
     const categoryIsActive = (category) => {
         return filters[category] && filters[category].length > 0;
     };
@@ -170,7 +179,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                 </svg>
             </button>
 
-            {/* List des catégories de filtre */}
+            {/* Liste des catégories de filtre */}
             <div
                 className={`overflow-x-auto scrollbar-hide left-0 top-full flex gap-4 p-2 transition-all duration-300 ease-in-out transform ${
                     showCategories

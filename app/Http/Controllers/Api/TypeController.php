@@ -10,8 +10,8 @@ class TypeController extends Controller
 {
     public function index()
     {
+        // utilisé pour les options de filtrage
         $types = Type::all();
-        \Log::info('Types:', ['data' => $types]);
         return response()->json($types);
     }
 }

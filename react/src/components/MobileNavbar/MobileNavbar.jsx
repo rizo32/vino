@@ -10,43 +10,47 @@ const MobileNavbar = () => {
     const { searchValue, setSearchValue } = useStateContext();
     const navigate = useNavigate();
 
-    // La barre de recherche deviens active (ouvre le clavier sur mobile) dès l'ouverture de la page Catalogue afin d'aider les usagers à trouver la bouteille rapidement
+    // La barre de recherche deviens active (ouvre le clavier sur mobile) dès l'ouverture de la page Catalogue
+    // afin d'aider les usagers à trouver la bouteille rapidement
     useEffect(() => {
         if (location.pathname === "/catalog") {
             setSearchBarOpen(true);
             if (searchInputRef.current) {
                 searchInputRef.current.focus();
             }
+        // réinitialisation du contenu de la barre de recherche sauf dans la page produit
+        // afin de pouvoir revenir vers le retour de recherche intact
         } else if (!location.pathname.includes("/product/")) {
             setSearchBarOpen(false);
             setSearchValue("");
             if (searchInputRef.current) {
-                searchInputRef.current.value = ""; // Clear input field value directly
+                searchInputRef.current.value = "";
             }
         }
     }, [location, setSearchValue]);
 
-    // Add an event handler for input changes
+    // Update en temps réel de la barre de recherche
     const handleSearchInputChange = (e) => {
         setSearchValue(e.target.value);
     };
 
-    // Add an event listener for the "keypress" event on the search input field
+    // La barre de recherche navigue vers le cellier sauf si l'on part du catalogue
     const handleSearchInputKeyDown = (e) => {
-        if (e.key === "Enter" && location.pathname !== '/cellar' ) {
-            // If the pressed key is "Enter", navigate to the /catalog route
-            navigate("/catalog");
+        if (e.key === "Enter" && location.pathname !== '/catalog' ) {
+            navigate("/cellar");
         }
     };
 
+    // La barre de recherche est invisible par defaut pour simplifier la présentation
     const toggleSearchBar = () => {
         if (searchBarOpen && searchInputRef.current.value.trim() !== "") {
-            // If the search bar is open and not empty, perform the search instead of closing the bar
-            if (location.pathname !== '/cellar') {
-                navigate("/catalog");
+            // On peut refermer la barre si le contenu est vide, sinon la recherche s'enclenche
+            if (location.pathname !== '/catalog') {
+                navigate("/cellar");
             }
         } else {
             if (!searchBarOpen) {
+                // Ouverture du clavier lors de l'ouverture de la barre
                 searchInputRef.current.focus();
             }
             setSearchBarOpen(!searchBarOpen);
