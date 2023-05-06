@@ -61,7 +61,7 @@ export default function Catalog() {
                     //augmenter la quantite si elle existe
                     return {
                         ...bottle,
-                        quantity: bottle.quantity + 1,
+                        quantity: bottle.quantity + parseInt(1),
                     };
                 }
                 // garder meme bouteille et proprietes si rien change
