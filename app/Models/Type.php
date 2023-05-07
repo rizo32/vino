@@ -12,6 +12,11 @@ class Type extends Model
     protected $table = 'types';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'types',
+        'name',
     ];
+    
+    public function bottles()
+    {
+        return $this->hasMany(Bottle::class);
+    }
 }

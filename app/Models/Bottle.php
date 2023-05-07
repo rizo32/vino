@@ -13,28 +13,75 @@ class Bottle extends Model
   protected $primaryKey = 'id';
   protected $fillable = [
     'name',
-    'image_path',
     'code_saq',
-    'country_id',
-    'description',
     'price_saq',
-    'url_saq',
     'image_url',
+    'url_saq',
     'format_id',
+    'country_id',
+    'region_id',
+    'cepage_id',
+    'designation_reglemente_id',
+    'taux_alcool',
+    'taux_sucre_id',
+    'producteur_id',
+    'temperature_service_id',
+    'aroma_id',
     'type_id',
-    'milesime',
     'rating_saq',
+    'num_comments',
+    'code_cup',
+
   ];
 
-  // Désactivation puisque le cURL actual n'utilise pas la clé étrangère
-  // public function format()
-  // {
-  //   return $this->belongsTo(Format::class);
-  // }
+  public function format()
+  {
+    return $this->belongsTo(Format::class);
+  }
 
   public function country()
   {
     return $this->belongsTo(Country::class);
+  }
+
+  public function region()
+  {
+    return $this->belongsTo(Region::class);
+  }
+
+  public function cepage()
+  {
+    return $this->belongsTo(Cepage::class);
+  }
+
+  public function producteur()
+  {
+    return $this->belongsTo(Producteur::class);
+  }
+
+  public function aroma()
+  {
+    return $this->belongsTo(Aroma::class);
+  }
+
+  public function temperatureService()
+  {
+    return $this->belongsTo(TemperatureService::class);
+  }
+
+  public function tauxSucre()
+  {
+    return $this->belongsTo(TauxSucre::class);
+  }
+
+  public function tauxAlcool()
+  {
+    return $this->belongsTo(TauxAlcool::class);
+  }
+
+  public function designationReglemente()
+  {
+    return $this->belongsTo(DesignationReglemente::class);
   }
 
   public function type()
@@ -42,9 +89,8 @@ class Bottle extends Model
     return $this->belongsTo(Type::class);
   }
 
-  public function cellarHasBottles()
+  public function cellarHasBottle()
   {
     return $this->hasMany(CellarHasBottle::class);
   }
-
 }

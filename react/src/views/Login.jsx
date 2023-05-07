@@ -1,61 +1,82 @@
 import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import axiosClient from "../axios-client";
-import {useStateContext} from "../contexts/ContextProvider.jsx";
+import { useStateContext } from "../contexts/ContextProvider.jsx";
 
 export default function Login() {
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const { setUser, setToken } = useStateContext();
-  const [message, setMessage] = useState(null);
-  const [errors, setErrors] = useState(null);
+    const emailRef = useRef();
+    const passwordRef = useRef();
+    const { setUser, setToken } = useStateContext();
+    const [message, setMessage] = useState([]);
 
-  const onSubmit = (ev) => {
-    ev.preventDefault()
-    const payload = {
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
-    }
-    setErrors(null);
-    axiosClient.post("/login", payload).then(({ data }) => {
-      setUser(data.user);
-      setToken(data.token);
-    })
-    .catch(err => {
-      const response = err.response;
-      if(response && response.status === 422){
-        if (response.data.errors) {
-          setErrors(response.data.errors)
-        } else {
-          setErrors({
-            email: [response.data.message]
-          })
-        }
-        setErrors(response.data.errors);
-      }
-    })
-  }
+    const onSubmit = (ev) => {
+        ev.preventDefault();
 
- return (
-    <div className="w-full">
-      <div className="form w-64 mx-auto">
-        <form className="flex flex-col gap-5 border-2 my-5" onSubmit={onSubmit}>
-          <h1 className="title">Login into your account</h1>
+        const payload = {
+            email: emailRef.current.value,
+            password: passwordRef.current.value,
+        };
+        axiosClient
+            .post("/login", payload)
+            .then(({ data }) => {
+                setUser(data.user);
+                setToken(data.token);
+            })
+            .catch((err) => {
+                const response = err;
+                setMessage(response);
+            });
+    };
 
-          {message &&
-            <div className="text-red-900">
-              <p>{message}</p>
+    return (
+        <div className="w-full">
+            <div className="form w-full mx-auto">
+                <form
+                    className="flex flex-col w-10/12 ml-auto mr-auto"
+                    onSubmit={onSubmit}
+                >
+                    {/* Si quelqu'un a une meilleure traduction de 'welcome back', the floor is yours! */}
+                    <h1 className="text-4xl text-center mt-vh-5">Rebonjour!</h1>
+                    {message.email && (
+                        <div className="text-red-900 mt-vh-15 absolute w-full text-center left-1/2 transform -translate-x-1/2">
+                            <p>{message.email[0]}</p>
+                        </div>
+                    )}
+                    <label htmlFor="email" className="mt-vh-10 text-xl ml-2">
+                        Courriel
+                    </label>
+                    <input
+                        id="email"
+                        ref={emailRef}
+                        type="email"
+                        placeholder="johndoe@cmaisonneuve.qc.ca"
+                        className="rounded-lg bg-white h-12 pl-2 shadow-shadow-tiny-inset"
+                    />
+                    {message.password && (
+                        <div className="text-red-900 mt-vh-15 absolute w-full text-center left-1/2 transform -translate-x-1/2">
+                            <p>{message.password[0]}</p>
+                        </div>
+                    )}
+                    <label htmlFor="password" className="mt-5 text-xl ml-2">
+                        Mot de passe
+                    </label>
+                    <input
+                        id="password"
+                        ref={passwordRef}
+                        type="password"
+                        placeholder="********"
+                        className="rounded-lg bg-white h-12 pl-2 shadow-shadow-tiny-inset"
+                    />
+                    <button className="btn btn-block mt-12 bg-red-900 rounded-md text-white h-12 text-xl shadow-shadow-tiny hover:shadow-none hover:bg-red-hover active:bg-red-hover active:shadow-none">
+                        Connexion
+                    </button>
+                </form>
+                <p className="text-center mt-6 underline">
+                    <Link to="/signup">
+                        Créer un nouveau compte
+                    </Link>
+                </p>
             </div>
-          }
-
-          <input ref={emailRef} type="email" placeholder="Email"  className="border-2 mt-3" />
-          <input ref={passwordRef} type="password" placeholder="Password"  className="border-2 mt-3" />
-          <button className="btn btn-block">Login</button>
-          <p className="message">Not registered? <Link to="/signup">Create an account</Link></p>
-        </form>
-      </div>
-    </div>
-  )
+        </div>
+    );
 }
-
-

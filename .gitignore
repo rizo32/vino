@@ -19,3 +19,6 @@ yarn-error.log
 *.DS_Store
 .DS_Store
 .DS_Store
+server-vino-new.zip
+vino_2.sql
+.gitignore

@@ -17,20 +17,38 @@ return new class extends Migration {
 
     Schema::create('bottles', function (Blueprint $table) {
       $table->id();
-      $table->string('name', 90);
-      $table->string('image_path', 255);
+      $table->string('name', 255);
       $table->string('code_saq', 255);
-      $table->text('description');
       $table->decimal('price_saq', 8, 2);
       $table->string('image_url', 255)->nullable();
       $table->string('url_saq', 255)->nullable();
-      $table->string('format_id', 255)->nullable()->onDelete('cascade');
-      $table->string('country_id', 255)->nullable()->onDelete('cascade');
-      $table->string('type_id', 255)->nullable()->onDelete('cascade');
-      $table->integer('millesime')->nullable();
+      $table->unsignedBigInteger('format_id')->nullable();
+      $table->foreign('format_id')->references('id')->on('formats')->onDelete('cascade');
+      $table->unsignedBigInteger('country_id')->nullable();
+      $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
+      $table->unsignedBigInteger('region_id')->nullable();
+      $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade');
+      $table->unsignedBigInteger('cepage_id')->nullable();
+      $table->foreign('cepage_id')->references('id')->on('cepages')->onDelete('cascade');
+      $table->unsignedBigInteger('designation_reglemente_id')->nullable();
+      $table->foreign('designation_reglemente_id')->references('id')->on('designation_reglementes')->onDelete('cascade');
+      $table->unsignedBigInteger('taux_alcool_id')->nullable();
+      $table->foreign('taux_alcool_id')->references('id')->on('taux_alcools')->onDelete('cascade');
+      $table->unsignedBigInteger('taux_sucre_id')->nullable();
+      $table->foreign('taux_sucre_id')->references('id')->on('taux_sucres')->onDelete('cascade');
+      $table->unsignedBigInteger('producteur_id')->nullable();
+      $table->foreign('producteur_id')->references('id')->on('producteurs')->onDelete('cascade');
+      $table->unsignedBigInteger('temperature_service_id')->nullable();
+      $table->foreign('temperature_service_id')->references('id')->on('temperature_services')->onDelete('cascade');
+      $table->unsignedBigInteger('aroma_id')->nullable();
+      $table->foreign('aroma_id')->references('id')->on('aromas')->onDelete('cascade');
+      $table->unsignedBigInteger('type_id')->nullable();
+      $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');
       $table->float('rating_saq')->nullable();
+      $table->integer('num_comments')->nullable();
+      $table->string('code_cup')->nullable();
       $table->timestamps();
-    });
+  });
     
     DB::statement('SET FOREIGN_KEY_CHECKS=1;');
   }

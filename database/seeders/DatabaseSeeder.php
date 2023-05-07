@@ -1,6 +1,10 @@
 <?php
 
+
 namespace Database\Seeders;
+use App\Models\Country;
+use App\Models\Format;
+use App\Models\Type;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,5 +24,12 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        // Add countries
+        Country::factory()->count(33)->create();
+        Format::factory()->count(10)->create();
+        Type::factory()->count(3)->create();
     }
+
+    
 }
