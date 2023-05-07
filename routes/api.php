@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BottleController;
 use App\Http\Controllers\Api\CellarHasBottleController;
-use App\Http\Controllers\Api\SaqController;
+use App\Http\Controllers\Api\SaqCatalogueController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TypeController;
 use App\Http\Controllers\Api\CountryController;
@@ -28,30 +28,41 @@ Route::get('/csrf-token', function () {
 });
 // 
 
-Route::middleware('auth:sanctum')->group(function () {    
+// Protection des routes avec access token
+Route::middleware('auth:sanctum')->group(function () {
+
     // Opérations users
     Route::apiResource('/users', UserController::class);
+
     // Pour aller chercher l'user connecté
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+
+    // logout
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    // gestion de cellier
+    Route::apiResource('/cellarHasBottles', CellarHasBottleController::class);
+
+    // Gestion des bouteilles
+    Route::apiResource('/bottles', BottleController::class);
+
 });
-Route::post('/signup', [AuthController::class, 'signup']);
-Route::post('/login', [AuthController::class, 'login']);
-
-
-Route::apiResource('/bottles', BottleController::class);
-Route::apiResource('/cellarHasBottles', CellarHasBottleController::class);
-
-// Filtres
-Route::get('/countries', [CountryController::class, 'index']);
-Route::get('/types', [TypeController::class, 'index']);
 
 /* <YG */
 Route::apiResource('/admin', AdminController::class);
-Route::post('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
-Route::get('/saq/fetch', [SaqController::class, 'fetchProduits'])->name('saq.fetch');
-
-
+Route::post('/saq/fetch', [SaqCatalogueController::class, 'fetchProduits'])->name('saq.fetch');
+Route::get('/saq/fetch', [SaqCatalogueController::class, 'fetchProduits'])->name('saq.fetch');
 /* YG> */
+
+
+
+// Routes non protégées
+
+Route::post('/signup', [AuthController::class, 'signup']);
+Route::post('/login', [AuthController::class, 'login']);
+
+// Va chercher les options pour les filtres
+Route::get('/countries', [CountryController::class, 'index']);
+Route::get('/types', [TypeController::class, 'index']);

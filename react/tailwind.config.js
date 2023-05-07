@@ -3,6 +3,9 @@ export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
     theme: {
         extend: {
+            screens: {
+                'xs-h': {'raw': '(max-height: 699px)'}
+            },
             fontFamily: {
                 sans: ["Lato", "sans-serif"],
             },
@@ -25,6 +28,9 @@ export default {
                 // couleur fond base (bg-red-50): hsl(0, 85.7, 97.3)
                 "rose-hover": "hsl(0, 85.7%, 95%)",
             },
+            blur: {
+                "xs": "3px"
+            }
         },
     },
     corePlugins: {

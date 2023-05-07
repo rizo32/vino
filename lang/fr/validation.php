@@ -63,6 +63,12 @@ return array(
   ),
   "unique" => "La valeur du champ :attribute est déjà utilisée.",
   "url" => "Le format de l'URL de :attribute n'est pas valide.",
+      'password' => [
+        'letters' => 'Le :attribute doit contenir au moins une lettre.',
+        'mixed' => 'The :attribute must contain at least one uppercase and one lowercase letter.',
+        'numbers' => 'Le :attribute doit contenir au moins un chiffre.',
+        'symbols' => 'Le :attribute doit contenir au moins un symbole.',
+    ],
 
   /*
   |--------------------------------------------------------------------------
@@ -88,6 +94,11 @@ return array(
   |
   */
 
-  'attributes' => array(),
+  'attributes' => [
+    'first_name' => 'prénom',
+    'last_name' => 'nom',
+    'email' => 'courriel',
+    'password' => 'mot de passe',
+],
 
 );

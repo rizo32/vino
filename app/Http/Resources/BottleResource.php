@@ -18,23 +18,36 @@ class BottleResource extends JsonResource
     public function toArray($request)
     {
        //charger les tables reliées et avoir les données au lieu d'une clé étrangère
-        $this->load(['format', 'country', 'type']);
+        $this->load(['format', 'country', 'type', 'cepage', 'region','tauxSucre','tauxAlcool','producteur','aroma','temperatureService']);
 
         $data = [
             'id' => $this->id,
             'name' => $this->name,
-            'image_path' => $this->image_path,
+            'cepage_name'=> $this->cepage ? $this->cepage->name : null,
+            'taux_sucre' => $this->tauxSucre ? $this->tauxSucre->name : null,
+            'taux_alcool' => $this->tauxAlcool ? $this->tauxAlcool->name : null,
+            'designation_reglemente' => $this->designationReglemente ? $this->designationReglemente->name : null,
+            'image_url' => $this->image_url,
+            'type_name' => $this->type ? $this->type->name : null,
+            'arome' => $this->aroma ? $this->aroma->name : null,
+            'producteur_name' => $this->producteur ? $this->producteur->name : null,
+            'temperature_service' => $this->temperatureService ? $this->temperatureService->name : null,
+            'format_name' => $this->format ? $this->format->name : null,
+            'country_id' => $this->country_id,
+            'country_name' => $this->country ? $this->country->name : null,
+            'region_name' => $this->region ? $this->region->name : null,
+            'rating_saq' => $this->rating_saq,
+            'num_comments' => $this->num_comments,
+        ];
+
+        /* Si besoin d'informations en plus
             'code_saq' => $this->code_saq,
+            'type_id' => $this->type_id,
+            'image_path' => $this->image_path,
             'description' => $this->description,
             'price_saq' => $this->price_saq,
             'url_saq' => $this->url_saq,
-            'image_url' => $this->image_url,
-            'type' => $this->type->name,
-            'format' => $this->format->volume,
-            'country_name' => $this->country->name,
-            'milesime' => $this->milesime,
-            'rating_saq' => $this->rating_saq,
-        ];
+        */
 
         if ($this->relationLoaded('cellarHasBottle')) {
             $data['quantity'] = $this->cellarHasBottle->first()->quantity ?? 0;

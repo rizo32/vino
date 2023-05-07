@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from "react";
 
 const StateContext = createContext({
-    // valeurs par défaut
+    // Valeurs pour l'authentification
     user: null,
     token: null,
     setUser: () => {},
@@ -15,9 +15,8 @@ const StateContext = createContext({
 export const ContextProvider = ({ children }) => {
     const [user, setUser] = useState({});
     const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
+    // La barre de recherche peut conserver l'information à travers les pages de l'application
     const [searchValue, setSearchValue] = useState("");
-    // Utiliser la ligne suivante pour accéder aux vues protégées
-    // const [token, _setToken] = useState(124);
 
     const setToken = (token) => {
         _setToken(token);

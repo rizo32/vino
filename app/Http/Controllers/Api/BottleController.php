@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBottleRequest;
 use App\Models\Bottle;
+use App\Models\Cellar;
 use Illuminate\Http\Request;
 use App\Http\Resources\BottleResource;
+use Illuminate\Support\Facades\Auth;
 
 // Elodie
 
@@ -19,21 +21,30 @@ class BottleController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Bottle::with('cellarHasBottle')->orderBy('name', 'asc');
+        $user = auth()->user();
 
-        // Apply search filter
+        // fetch bouteilles et information du cellier de l'user connecté (pour afficher nombre de bouteilles déjà dans cellier)
+        $query = Bottle::with(['cellarHasBottle' => function ($query) use ($user) {
+            $query->where('cellar_id', '=', $user->cellar->id);
+        }])->orderBy('name', 'asc');
+
+        // Recherche dans le NOM
         if ($request->has('search')) {
             $search = $request->search;
             $query->where('name', 'LIKE', "%{$search}%");
         }
 
-        // Apply country filter
+        // Filtre PAYS
         if ($request->has('country')) {
             $countries = explode(',', $request->country);
-            $query->whereIn('country_name', $countries);
+            $query->whereIn('country_id', $countries);
         }
 
-        // Apply other filters similarly...
+        // Filtre TYPE
+        if ($request->has('type')) {
+            $types = explode(',', $request->type);
+            $query->whereIn('type_id', $types);
+        }
 
         return BottleResource::collection($query->paginate(10));
     }
@@ -44,10 +55,10 @@ class BottleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBottleRequest $request)
+    public function store(Request $request)
     {
         //ajoute bouteille, non-utilisé pour l'instant
-        $data = $request->validated(); //fichier request a faire
+        $data = $request->validated();
         $bottle = Bottle::create($data);
 
         return response(new BottleResource($bottle), 201);
@@ -75,7 +86,7 @@ class BottleController extends Controller
     public function update(Request $request, Bottle $bottle)
     {
         //non utilise
-        $data = $request->validated(); // fichier request a faire
+        $data = $request->validated();
         $bottle->update($data);
     }
 

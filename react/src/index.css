@@ -7,6 +7,13 @@
     display: none;
 }
 
+a.active {
+    color: #811d1d;
+}
+a.active svg {
+    fill: #811d1d;
+}
+
 /* Hide scrollbar for Firefox */
 scrollbar-width: none;
 

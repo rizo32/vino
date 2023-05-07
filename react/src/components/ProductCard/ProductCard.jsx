@@ -1,9 +1,17 @@
 import { Link } from "react-router-dom";
 import axiosClient from "../../axios-client";
 import EditQuantityModal from "../EditQuantityModal/EditQuantityModal";
+import StarRating from "../../components/StarRating/StarRating.jsx";
 import { useState, useEffect } from "react";
 
-export default function ProductCard({ bottle, quantity, setBottles, removeFromCellar, cellarHasBottleId, updateBottleQty }) {
+export default function ProductCard({
+    bottle,
+    quantity,
+    getBottles,
+    removeFromCellar,
+    cellarHasBottleId,
+    updateBottleQty,
+}) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -15,8 +23,8 @@ export default function ProductCard({ bottle, quantity, setBottles, removeFromCe
                 `${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles`,
                 bottle
             )
-            .then(({ data }) => {
-                setBottles(data.data);
+            .then(({data}) => {
+                getBottles(bottle);
             })
             .catch((err) => {
                 console.log(err.response);
@@ -26,12 +34,12 @@ export default function ProductCard({ bottle, quantity, setBottles, removeFromCe
     return (
         <article
             id="ProductCard"
-            className="relative flex flex-row justify-start py-2 bg-white"
+            className="relative flex flex-row justify-start py-2 bg-white shadow-shadow-tiny hover:shadow-none active:shadow-none hover:bg-gray-50"
         >
             <Link
                 to={`/product/${bottle.id}`}
                 state={{ bottle }}
-                className="w-full flex flex-row justify-between bg-white relative"
+                className="w-full flex flex-row justify-between relative"
             >
                 {location.pathname === "/cellar" ? (
                     <span className="absolute left-3 h-8 w-8 bg-red-900 text-white rounded-full flex items-center justify-center">
@@ -51,75 +59,44 @@ export default function ProductCard({ bottle, quantity, setBottles, removeFromCe
                     />
                 </section>
                 {/* Zone information */}
-                <section className="flex flex-col justify-start items-start gap-3 bg-white flex-grow w-[60%]">
+                <section className="flex flex-col justify-start items-start gap-3 flex-grow w-[60%]">
                     <h2 className="font-bold">{bottle.name}</h2>
                     <div className="flex gap-3">
-                        <p className="font-light">{bottle.type}</p>{" "}
-                        <span className="font-light">|</span>{" "}
-                        <p className="font-light">{bottle.format}</p>
-                    </div>
-                    <p className="font-light">{bottle.country_name}</p>
+                        <p className="font-light">{bottle.type_name}</p>
+                        {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information */}
 
-                    <div className="flex gap-4">
-                        <span className="flex">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                className="w-4 h-6 fill-black"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
-                                />
-                            </svg>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                className="w-4 h-6 fill-black"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
-                                />
-                            </svg>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                className="w-4 h-6 fill-black"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
-                                />
-                            </svg>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                className="w-4 h-6 fill-black"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
-                                />
-                            </svg>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                className="w-4 h-6 fill-gray-200"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
-                                />
-                            </svg>
-                        </span>
-                        {/* Propriété à venir?: {bottle.numberOfReview????} */}
-                        <p>{bottle.num_comments} avis</p>
+                        {bottle.format_name ? (
+                            <div className="flex gap-3">
+                                <span className="font-light">|</span>
+                                <p className="font-light">
+                                    {bottle.format_name}
+                                </p>
+                            </div>
+                        ) : null}
+                    </div>
+                    <div className="flex gap-1">
+                        <p className="font-light">
+                            {bottle.country_name}
+                            {" ,"}
+                            {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information */}
+                            {bottle.region_name ? (
+                                <span className="font-light">
+                                    {bottle.region_name}
+                                </span>
+                            ) : null}
+                        </p>
+                    </div>
+                    <div className="flex gap-3">
+                        <StarRating note={bottle.rating_saq} />
+                        {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information */}
+                        {bottle.num_comments ? (
+                            <div className="flex gap-3">
+                                <span className="font-light">|</span>
+                                <p className="font-light">
+                                    {bottle.num_comments} avis
+                                </p>
+                            </div>
+                        ) : null}
                     </div>
                 </section>
             </Link>

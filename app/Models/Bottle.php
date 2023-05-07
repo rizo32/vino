@@ -13,16 +13,25 @@ class Bottle extends Model
   protected $primaryKey = 'id';
   protected $fillable = [
     'name',
-    'image_path',
     'code_saq',
-    'country_id',
     'price_saq',
-    'url_saq',
     'image_url',
+    'url_saq',
     'format_id',
+    'country_id',
+    'region_id',
+    'cepage_id',
+    'designation_reglemente_id',
+    'taux_alcool',
+    'taux_sucre_id',
+    'producteur_id',
+    'temperature_service_id',
+    'aroma_id',
     'type_id',
     'rating_saq',
-    'num_comments'
+    'num_comments',
+    'code_cup',
+
   ];
 
   public function format()
@@ -33,6 +42,46 @@ class Bottle extends Model
   public function country()
   {
     return $this->belongsTo(Country::class);
+  }
+
+  public function region()
+  {
+    return $this->belongsTo(Region::class);
+  }
+
+  public function cepage()
+  {
+    return $this->belongsTo(Cepage::class);
+  }
+
+  public function producteur()
+  {
+    return $this->belongsTo(Producteur::class);
+  }
+
+  public function aroma()
+  {
+    return $this->belongsTo(Aroma::class);
+  }
+
+  public function temperatureService()
+  {
+    return $this->belongsTo(TemperatureService::class);
+  }
+
+  public function tauxSucre()
+  {
+    return $this->belongsTo(TauxSucre::class);
+  }
+
+  public function tauxAlcool()
+  {
+    return $this->belongsTo(TauxAlcool::class);
+  }
+
+  public function designationReglemente()
+  {
+    return $this->belongsTo(DesignationReglemente::class);
   }
 
   public function type()

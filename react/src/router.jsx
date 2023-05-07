@@ -1,16 +1,17 @@
 import { createBrowserRouter } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import GuestLayout from "./components/GuestLayout.jsx";
+import DefaultLayout from "./components/DefaultLayout.jsx";
+import ErrorLayout from "./components/ErrorLayout.jsx";
+
 import Login from "./views/Login.jsx";
 import Admin from "./views/Admin.jsx";
 import Signup from "./views/Signup.jsx";
 import Cellar from "./views/Cellar/Cellar.jsx";
 import ProductView from "./views/Product/ProductView.jsx";
 import Catalog from "./views/Catalog/Catalog.jsx";
-import Home from "./views/Home.jsx";
 import UserView from "./views/UserView.jsx";
-import NotFound from "./views/NotFound.jsx";
-import GuestLayout from "./components/GuestLayout.jsx";
-import DefaultLayout from "./components/DefaultLayout.jsx";
-import { Navigate } from "react-router-dom";
+import ErrorPage from "./views/ErrorPage.jsx";
 
 const router = createBrowserRouter([
     {
@@ -38,10 +39,6 @@ const router = createBrowserRouter([
                 path: "/users/:id",
                 element: <UserView />,
             },
-            {
-                path: "/admin",
-                element: <Admin />,
-            },
         ],
     },
     {
@@ -50,7 +47,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Home />,
+                element: <Navigate to="/login" />,
             },
             {
                 path: "/login",
@@ -62,10 +59,15 @@ const router = createBrowserRouter([
             },
         ],
     },
-
     {
         path: "*",
-        element: <NotFound />,
+        element: <ErrorLayout />,
+        children: [
+            {
+                path: "*",
+                element: <ErrorPage errorStatus={404} />,
+            },
+        ],
     },
 ]);
 
