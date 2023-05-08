@@ -18,7 +18,7 @@ class BottleResource extends JsonResource
     public function toArray($request)
     {
        //charger les tables reliées et avoir les données au lieu d'une clé étrangère
-        $this->load(['format', 'country', 'type', 'cepage', 'region','tauxSucre','tauxAlcool','producteur','aroma','temperatureService']);
+        $this->load(['format', 'cellarHasBottle', 'country', 'type', 'cepage', 'region','tauxSucre','tauxAlcool','producteur','aroma','temperatureService']);
 
         $data = [
             'id' => $this->id,
