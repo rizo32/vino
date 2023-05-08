@@ -60,7 +60,7 @@ class CellarHasBottleController extends Controller
             // \Log::info(['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
         }
 
-        //retourne les bouteilles d'un cellier donné (ici id 1) en format json
+        //retourne les bouteilles du cellier de l'user connecté en format json
         return CellarHasBottleResource::collection($query->paginate(10));
     }
 
