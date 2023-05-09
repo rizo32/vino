@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->string('profil_picture_path',255)->nullable();
+            $table->int('user_type_id')->nullable();
             $table->timestamps();
         });
     }
