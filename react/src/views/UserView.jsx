@@ -32,14 +32,15 @@ function UserView() {
         });
     };
 
+    // Mise à jour du formulaire
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setUser((prevUser) => ({ ...prevUser, [name]: value }));
     };
 
+    // Update des infos
     const handleSubmit = (event) => {
         event.preventDefault();
-        // Update
         axiosClient
             .put(`/users/${user.id}`, user)
             .then(() => {

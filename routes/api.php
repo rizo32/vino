@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BottleController;
+use App\Http\Controllers\Api\WishlistController;
 use App\Http\Controllers\Api\CellarHasBottleController;
 use App\Http\Controllers\Api\SaqCatalogueController;
 use App\Http\Controllers\Api\UserController;
@@ -44,6 +45,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // gestion de cellier
     Route::apiResource('/cellarHasBottles', CellarHasBottleController::class);
+
+    // gestion wishlist
+    Route::apiResource('/wishlist', WishlistController::class);
 
     // Gestion des bouteilles
     Route::apiResource('/bottles', BottleController::class);

@@ -95,6 +95,9 @@ return array(
   */
 
   'attributes' => [
+    'first_name' => 'prénom',
+    'last_name' => 'nom',
+    'email' => 'courriel',
     'password' => 'mot de passe',
 ],
 

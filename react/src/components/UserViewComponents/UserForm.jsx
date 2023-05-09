@@ -5,7 +5,7 @@ function UserForm({ user, onChange, onSubmit, onReturn, message, setMessage }) {
             className="flex flex-col w-10/12 ml-auto mr-auto"
             onSubmit={onSubmit}
         >
-            <label htmlFor="first-name" className="mt-vh-3 ml-2">
+            <label htmlFor="first-name" className="mt-vh-3 xs-h:mt-2 ml-2">
                 Prénom
                 {message.first_name && (
                     <span className="text-red-900 text-sm pl-2">
@@ -18,7 +18,7 @@ function UserForm({ user, onChange, onSubmit, onReturn, message, setMessage }) {
                 name="first_name"
                 value={user.first_name}
                 className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
-                placeholder="Jon"
+                placeholder="John"
                 onChange={onChange}
             />
             <label htmlFor="last-name" className="mt-vh-2 ml-2">
@@ -34,7 +34,7 @@ function UserForm({ user, onChange, onSubmit, onReturn, message, setMessage }) {
                 name="last_name"
                 value={user.last_name}
                 className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
-                placeholder="Snow"
+                placeholder="Doe"
                 onChange={onChange}
             />
             <label htmlFor="email" className="mt-vh-2 ml-2">
@@ -50,7 +50,7 @@ function UserForm({ user, onChange, onSubmit, onReturn, message, setMessage }) {
                 name="email"
                 value={user.email}
                 className="rounded-lg bg-white h-8 pl-2 shadow-shadow-tiny-inset"
-                placeholder="king@north.com"
+                placeholder="johndoe@cmaisonneuve.qc.ca"
                 onChange={onChange}
             />
             <label htmlFor="password" className="mt-vh-2 ml-2">
@@ -89,7 +89,7 @@ function UserForm({ user, onChange, onSubmit, onReturn, message, setMessage }) {
             >
                 Enregistrer
             </button>
-            <div className="text-center absolute bottom-20 left-1/2 transform -translate-x-1/2 w-10/12">
+            <div className="text-center mt-6 xs-h:mt-2">
                 <p className="cursor-pointer underline" onClick={onReturn}>
                     Retour
                 </p>

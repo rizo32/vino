@@ -29,16 +29,12 @@ export default function ({ cellarId, bottleId, quantity, handleClose, removeFrom
         }
     };
 
-
     function incrementCount() {
-        // a debugger --------------
         setCount(parseInt(count) + parseInt(1));
     }
-
+    
     function decrementCount() {
-        if (count > 0) {
-            setCount(count - 1);
-        }
+        setCount((count) => (count > 0 ? count - 1 : 0));
     }
 
     return (
@@ -60,7 +56,7 @@ export default function ({ cellarId, bottleId, quantity, handleClose, removeFrom
                         type="number"
                         className="quantity h-10 border-solid border-2 rounded border-red-900 m-2 bg-transparent text-red-900 text-center"
                         value={count}
-                        onChange={(e) => setCount(e.target.value)}
+                        onChange={(e) => setCount(e.target.value ? Number(e.target.value) : 0)}
                     />
                     <div
                         className="increment-btn border-solid border-2 rounded border-red-900 h-10 w-10 m-2 text-center cursor-pointer"

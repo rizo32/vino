@@ -23,6 +23,7 @@ class CellarHasBottleController extends Controller
      */
     public function index(Request $request)
     {
+        // ordonner bouteilles pour ordre alphabétique
         $query = CellarHasBottle::with([
             'bottle' => function ($q) {
                 $q->orderBy('name', 'asc');
@@ -59,12 +60,7 @@ class CellarHasBottleController extends Controller
             // \Log::info(['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
         }
 
-        // Apply filters across different categories with 'AND'
-        if ($request->has(['country', 'type'])) {
-            $query->whereIn('country_id', $countries)->whereIn('type_id', $types);
-        }
-
-        //retourne les bouteilles d'un cellier donné (ici id 1) en format json
+        //retourne les bouteilles du cellier de l'user connecté en format json
         return CellarHasBottleResource::collection($query->paginate(10));
     }
 
@@ -76,21 +72,17 @@ class CellarHasBottleController extends Controller
      */
     public function store(Request $request)
     {
-        // Get the authenticated user
+        // Utilisation connecté
         $user = auth()->user();
 
-        // \Log::info($user->cellar->id);
-        // \Log::info(['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
-
-        //ajouter une bouteille au cellier d'un id donné
-
         $request->validate([
-            // 'cellar_id' => 'required|integer',
             'id' => 'required|integer',
         ]);
 
+        //ajouter une bouteille au cellier de l'user connecté
         $bottleInCellar = CellarHasBottle::query()->where('bottle_id', '=', $request->input('id'))->where('cellar_id', '=', $user->cellar->id)->first();
 
+        // incrémentation du nombre de bouteilles dans cellier (pour la pastille colorée)
         if ($bottleInCellar) {
             $data = ['quantity' => $bottleInCellar->quantity + 1];
             $bottleInCellar->update($data);
@@ -100,7 +92,7 @@ class CellarHasBottleController extends Controller
         }
 
         $cellarHasBottle = new CellarHasBottle([
-            // 'cellar_id' => $request->input('cellar_id'),
+            //ajouter une bouteille au cellier de l'user connecté
             'cellar_id' => $user->cellar->id,
             'bottle_id' => $request->input('id'),
             'quantity' => 1,
@@ -127,7 +119,6 @@ class CellarHasBottleController extends Controller
     public function show(CellarHasBottle $cellarHasBottle)
     {
         //comment on utilise ca en parallele avec juste show une bouteille, vu que ici on a la donnée quantity ?
-
         return new CellarHasBottleResource($cellarHasBottle);
     }
 

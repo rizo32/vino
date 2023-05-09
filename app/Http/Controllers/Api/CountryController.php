@@ -10,7 +10,8 @@ class CountryController extends Controller
 {
     public function index()
     {
-        $countries = Country::all();
+        // utilisé pour les options de filtrage
+        $countries = Country::orderBy('name', 'asc')->get();
         return response()->json($countries);
     }
 }

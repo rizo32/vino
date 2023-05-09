@@ -9,7 +9,7 @@ const ErrorLayout = () => {
             </Helmet>
             <main className="pt-16 bg-red-50 min-h-screen">
                 
-                {/* Outlet will render the appropriate view from the router */}
+                {/* Outlet va aller chercher la vue appropriée dans le router */}
                 <Outlet />
             </main>
         </div>
