@@ -13,7 +13,14 @@ class UserTypesSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
-        //
-    }
+{
+    $userTypes = [
+        ['name' => 'Admin'],
+        ['name' => 'Employee'],
+        ['name' => 'User'],
+        ['name' => 'Banned'],
+    ];
+
+    DB::table('user_types')->insert($userTypes);
+}
 }
