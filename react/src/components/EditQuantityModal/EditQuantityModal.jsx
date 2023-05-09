@@ -31,7 +31,8 @@ export default function ({ cellarId, bottleId, quantity, handleClose, removeFrom
 
 
     function incrementCount() {
-        setCount(prevCount => prevCount + 1);
+        // a debugger --------------
+        setCount(parseInt(count) + parseInt(1));
     }
 
     function decrementCount() {

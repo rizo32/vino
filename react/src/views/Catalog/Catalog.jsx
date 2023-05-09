@@ -61,6 +61,7 @@ export default function Catalog() {
                     //augmenter la quantite si elle existe
                     return {
                         ...bottle,
+                        //a debugger ------
                         quantity: bottle.quantity + 1,
                     };
                 }
