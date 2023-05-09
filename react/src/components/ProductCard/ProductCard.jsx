@@ -16,21 +16,8 @@ export default function ProductCard({
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [inWishlist, setInWishlist] = useState(false);
+    const [inWishlist, setInWishlist] = useState(bottle.isInWishlist);
 
-    console.log(bottle);
-
-    useEffect(() => {
-        axiosClient
-            .get(`${import.meta.env.VITE_API_BASE_URL}/api/wishlist`)
-            .then(({ data }) => {
-                const wishlistItem = data.data.find((item) => item.bottle.id === bottle.id);
-                setInWishlist(!!wishlistItem);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, []);
 
     // fonction pour ajouter une bouteille au cellier
     const addToCellar = (bottle) => {
@@ -176,7 +163,7 @@ export default function ProductCard({
                     </svg>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        fill={inWishlist ? "currentColor" : "none"}
+                        fill={inWishlist ? "#7F1D1D" : "none"}
                         viewBox="0 0 24 24"
                         strokeWidth={2}
                         stroke="currentColor"
@@ -211,7 +198,7 @@ export default function ProductCard({
                     </svg>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        fill={inWishlist ? "currentColor" : "none"}
+                        fill={inWishlist ? "#7F1D1D" : "none"}
                         viewBox="0 0 24 24"
                         strokeWidth={2}
                         stroke="currentColor"
