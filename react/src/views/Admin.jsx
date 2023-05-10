@@ -38,6 +38,28 @@ const Admin = () => {
     setSelectedUser(null);
   };
 
+  const updateUser = () => {
+    axios
+      .put(`${baseURL}/${selectedUser.id}`, {
+        user_type_id: selectedUser.user_type_id, 
+      })
+      .then((response) => {
+        console.log(response);
+        closeModal();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  
+
+
+
+
+
+
+
+
   return (
     <div className="pt-4 container mx-auto">
       <h1 className="text-2xl flex justify-center font-bold mb-4">Modifications utilisateurs</h1>
@@ -76,20 +98,21 @@ const Admin = () => {
                 <p className="text-lg">User: {selectedUser.first_name}</p>
                 <p>Email: {selectedUser.email}</p>
                 <label htmlFor="userTypes">Type d'utilisateurs</label>
-                <select name="userTypes" id="userTypes">
-                    <option value="1">Admin</option>
-                    <option value="2">Employées</option>
-                    <option value="3">Utilisateurs</option>
-                    <option value="4">Bannir</option>
+                <select name="userTypes" id="userTypes" className="px-4 py-2 border border-gray-300 rounded-lg">
+                  <option value="1">Admin</option>
+                  <option value="2">Employées</option>
+                  <option value="3">Utilisateurs</option>
+                  <option value="4">Bannir</option>
                 </select>
-
-
               </div>
             )}
             <button className="px-4 py-2 bg-red-900 text-white rounded-lg mt-4" onClick={closeModal}>
               Fermer
             </button>
-          </div>
+            <button className="px-4 py-2 bg-red-900 text-white rounded-lg mt-4" onClick={updateUser}>
+                Sauvegarder
+            </button>
+         </div>
         </div>
       )}
     </div>
@@ -97,3 +120,4 @@ const Admin = () => {
 };
 
 export default Admin;
+
