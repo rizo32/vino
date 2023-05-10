@@ -49,4 +49,10 @@ class UserController extends Controller
 
         return response(compact('user'));
     }
+
+
+    public function userList(){
+        $users = User::all();
+        return response()->json($users);
+    }
 }
