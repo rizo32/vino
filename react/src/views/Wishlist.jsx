@@ -163,7 +163,6 @@ export default function Wishlist() {
 
     return (
         <div className="flex flex-col">
-            <FilterPanel filters={filters} setFilters={setFilters} onClearFilters={handleClearFilters} />
             {total && total != 1 && searchValue ? (
                         <p className="ml-2 mb-1 mt-4">{total} résultats</p>
                     ) : total == 1 && searchValue ? (
