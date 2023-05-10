@@ -17,7 +17,7 @@ const ErrorPage = ({ errorStatus }) => {
         case 666:
             return (
                 <div>
-                    <h1>Erreur: {errorStatus}</h1>
+                   
                     <p>
                         Hmmmm, vous n'avez rien a faire ici. Vous êtes un petit malin!
                     </p>

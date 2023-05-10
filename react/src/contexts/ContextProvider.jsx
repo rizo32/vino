@@ -9,6 +9,10 @@ const StateContext = createContext({
     // Pour la recherche
     searchBarOpen: false,
     setSearchBarOpen: () => {},
+    /* ajout pour user_types YG */
+    user_types_id: null,
+    setUserTypesId: () => {},
+    
 
 
     searchValue: "",
@@ -27,6 +31,8 @@ export const ContextProvider = ({ children }) => {
     const [searchBarOpen, setSearchBarOpen] = useState(false);
     const [searchValue, setSearchValue] = useState("");
     // const [showCategories, setShowCategories] = useState(false);
+        /* ajout pour user_types YG */
+    const [user_types_id, setUserTypesId] = useState(null);
 
     const setToken = (token) => {
         _setToken(token);
@@ -51,6 +57,8 @@ export const ContextProvider = ({ children }) => {
                 setSearchValue,
                 // showCategories,
                 // setShowCategories,
+                user_types_id,
+                setUserTypesId,
             }}
         >
             {children}
