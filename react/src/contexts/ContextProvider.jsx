@@ -32,7 +32,9 @@ export const ContextProvider = ({ children }) => {
     const [searchValue, setSearchValue] = useState("");
     // const [showCategories, setShowCategories] = useState(false);
         /* ajout pour user_types YG */
-    const [user_types_id, setUserTypesId] = useState(null);
+        const [user_types_id, _setUserTypesId] = useState(localStorage.getItem("USER_TYPES_ID"));
+
+
 
     const setToken = (token) => {
         _setToken(token);
@@ -43,6 +45,18 @@ export const ContextProvider = ({ children }) => {
             localStorage.removeItem("ACCESS_TOKEN");
         }
     };
+
+    /* ajout setUser en localstorage YG */
+    const setUserTypesId = (id) => {
+        _setUserTypesId(id);
+        if (id) {
+            localStorage.setItem("USER_TYPES_ID", id);
+        } else {
+            localStorage.removeItem("USER_TYPES_ID");
+        }
+       
+    }
+    
 
     return (
         <StateContext.Provider
