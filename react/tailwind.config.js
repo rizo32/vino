@@ -21,6 +21,7 @@ export default {
                 "vh-10": "10vh",
                 "vh-15": "15vh",
                 "vh-20": "20vh",
+                "22": "5.5rem",
                 "26": "6.5rem",
             },
             height: {
