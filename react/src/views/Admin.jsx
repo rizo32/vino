@@ -44,7 +44,7 @@ const Admin = () => {
   const updateUser = () => {
     axios
       .put(`${baseURL}/${selectedUser.id}`, {
-        user_type_id: selectedUser.user_type_id, 
+        user_type_id: document.getElementById("userTypes").value,
       })
       .then((response) => {
         console.log(response);
@@ -75,7 +75,6 @@ const Admin = () => {
       </div>
       {activeTab === "users" && (
         <div className="px-4">
-          <h1 className="text-2xl font-bold mb-4">Modifications utilisateurs</h1>
           <div className="flex justify-center mb-4">
             <input
               type="text"
@@ -99,16 +98,35 @@ const Admin = () => {
                 </div>
               ))
             ) : (
-              <p>No users found.</p>
+              <p>Aucun utilisateur correspondant.</p>
             )}
           </div>
           {showModal && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="bg-white p-8 max-w-md mx-auto rounded-lg shadow-lg">
-                {/* Existing code for the modal */}
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-white p-8 max-w-md mx-auto rounded-lg shadow-lg">
+            <h2 className="text-xl font-bold mb-4">Modifications utilisateur</h2>
+            {selectedUser && (
+              <div>
+                <p className="text-lg">User: {selectedUser.first_name}</p>
+                <p>Email: {selectedUser.email}</p>
+                <label htmlFor="userTypes">Type d'utilisateurs</label>
+                <select name="userTypes" id="userTypes" className="px-4 py-2 border border-gray-300 rounded-lg">
+                  <option value="1">Admin</option>
+                  <option value="2">Employées</option>
+                  <option value="3">Utilisateurs</option>
+                  <option value="4">Bannir</option>
+                </select>
               </div>
-            </div>
-          )}
+            )}
+            <button className="px-4 py-2 bg-red-900 text-white rounded-lg mt-4" onClick={closeModal}>
+              Fermer
+            </button>
+            <button className="px-4 py-2 bg-red-900 text-white rounded-lg mt-4" onClick={updateUser}>
+                Sauvegarder
+            </button>
+         </div>
+        </div>
+      )}
         </div>
       )}
       {activeTab === "stats" && (
