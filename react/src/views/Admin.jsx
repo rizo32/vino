@@ -28,24 +28,24 @@ const Admin = () => {
 
   return (
     <div className="pt-4 container mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Modifications utilisateurs</h1>
-      <div className="mb-4">
+      <h1 className="text-2xl flex justify-center font-bold mb-4">Modifications utilisateurs</h1>
+      <div className="flex justify-center mb-4">
         <input
           type="text"
-          placeholder="Rechercher par Prenom"
+          placeholder="Rechercher par Prénom"
           value={searchTerm}
           onChange={handleSearch}
           className="px-4 py-2 border border-gray-300 rounded-lg"
         />
       </div>
-      <ul className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         {filteredUsers.map((user) => (
-          <li key={user.id} className="bg-gray-200 p-4 rounded-lg shadow">
+          <div key={user.id} className="bg-gray-200 p-4 rounded-lg shadow">
             <p className="text-lg font-bold">{user.first_name}</p>
             <p>{user.email}</p>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
