@@ -24,9 +24,7 @@ class BottleController extends Controller
         $user = auth()->user();
 
         // fetch bouteilles et information du cellier de l'user connecté (pour afficher nombre de bouteilles déjà dans cellier)
-        $query = Bottle::with(['cellarHasBottle' => function ($query) use ($user) {
-            $query->where('cellar_id', '=', $user->cellar->id);
-        }])->orderBy('name', 'asc');
+        $query = Bottle::with('cellarHasBottle')->orderBy('name', 'asc');
 
         // Recherche dans le NOM
         if ($request->has('search')) {
