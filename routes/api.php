@@ -59,6 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/saq/fetch', [SaqCatalogueController::class, 'fetchProduits'])->name('saq.fetch');
 Route::get('/saq/fetch', [SaqCatalogueController::class, 'fetchProduits'])->name('saq.fetch');
 Route::get('/admin', [UserController::class, 'userList'])->name('admin');
+Route::put('/admin/{id}', [UserController::class, 'userUpdate'])->name('user.update');
 /* YG> */
 
 
