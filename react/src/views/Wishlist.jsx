@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from "react";
-import ProductCard from "../../components/ProductCard/ProductCard";
-import axiosClient from "../../axios-client";
-import { useStateContext } from "../../contexts/ContextProvider";
-import FilterPanel from "../../components/Filter/FilterPanel";
+import React, { useState, useEffect, useRef } from "react";
+import ProductCard from "../components/ProductCard/ProductCard";
+import axiosClient from "../axios-client";
+import { useStateContext } from "../contexts/ContextProvider";
+import FilterPanel from "../components/Filter/FilterPanel";
 
-export default function Catalog() {
+export default function Wishlist() {
     const { searchValue } = useStateContext();
     const [bottles, setBottles] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -15,57 +15,64 @@ export default function Catalog() {
     const containerRef = useRef(null);
     const sentinelRef = useRef();
 
+    const handleRemoveFromWishlist = (bottleId) => {
+        getBottles(null, { bottle: { id: bottleId } });
+    };
+
     const [filters, setFilters] = useState({
         type: [],
         country: [],
+        ratings: [],
     });
 
     const [oldFilters, setOldFilters] = useState();
     const [oldSearch, setOldSearch] = useState();
 
-    // Elodie + Gabriel
-    // aller chercher les bouteilles dans la base de données et les mettre dans le state
-    const getBottles = (bottleUpdt) => {
-        setLoading(true); // à mettre en place (eg Gif)
+    // aller chercher les bouteilles du cellier de l'usager dans la base de données et les mettre dans le state
+    const getBottles = (dataUpdt, bottleRmv) => {
+        setLoading(true);
         //sauvegarder la position avant de fetch les prochaines bouteilles
         setScrollPosition(window.pageYOffset);
 
         const filterParams = new URLSearchParams();
 
-        // Change la requête selon filtre country
+        // Change la requête selon recherche/filtre
         if (filters.country.length > 0) {
             filterParams.append("country", filters.country.join(","));
         }
 
-        // Change la requête selon filtre type
+        // Change la requête selon recherche/filtre
         if (filters.type.length > 0) {
             filterParams.append("type", filters.type.join(","));
         }
 
-        // Change la requête selon recherche
         if (searchValue) {
             filterParams.append("search", searchValue);
         }
 
+        // autres filtres
+
         // si on ajoute la bouteille au cellier, refleter la nouvelle quantite sans devoir fetch toutes les bouteilles a nouveau
-        if (bottleUpdt) {
+        if (dataUpdt) {
             const updatedBottles = bottles.map((bottle) => {
-                if (bottle.id === bottleUpdt.id && !bottle.quantity) {
+                if (bottle.bottle.id === dataUpdt.bottle.id) {
                     // ajouter la propriete quantite sans recharger toutes les bouteilles
                     return {
                         ...bottle,
-                        quantity: 1,
-                    };
-                } else if (bottle.id === bottleUpdt.id && bottle.quantity) {
-                    //augmenter la quantite si elle existe
-                    return {
-                        ...bottle,
-                        quantity: bottle.quantity + parseInt(1),
+                        quantity: dataUpdt.quantity,
                     };
                 }
                 // garder meme bouteille et proprietes si rien change
                 return bottle;
             });
+            setBottles(updatedBottles);
+            setLoading(false);
+            //arreter la fonction
+            return;
+        } else if (bottleRmv) {
+            const updatedBottles = bottles.filter(
+                (bottle) => bottle.bottle.id != bottleRmv.bottle.id
+            );
             setBottles(updatedBottles);
             setLoading(false);
             //arreter la fonction
@@ -82,7 +89,7 @@ export default function Catalog() {
         }
 
         axiosClient
-            .get(`/bottles?${filterParams.toString()}&page=${page}`)
+            .get(`/wishlist?${filterParams.toString()}&page=${page}`)
             .then(({ data }) => {
                 if (page == 1) {
                     //si on est a la page 1, on veut repartir a neuf et enlever les autres resultats de la page
@@ -101,9 +108,17 @@ export default function Catalog() {
                 setOldSearch(searchValue);
             })
             .catch((error) => {
-                console.error(error.response);
+                console.error(error);
                 setLoading(false);
             });
+    };
+
+    
+    const handleClearFilters = () => {
+        setFilters({
+            type: [],
+            country: [],
+        });
     };
 
     //lorsque le sentinel entre en vue, charger la prochaine page
@@ -119,17 +134,9 @@ export default function Catalog() {
         }
     };
 
-    // Fetch bouteille seulement lors de la recherche
+    //executer la fonction
     useEffect(() => {
-        if (
-            searchValue ||
-            filters.type.length > 0 ||
-            filters.country.length > 0
-        ) {
-            getBottles();
-        } else {
-            setLoading(false);
-        }
+        getBottles();
     }, [filters, searchValue]);
 
     //sentinel observer pour la pagination scroll
@@ -154,25 +161,10 @@ export default function Catalog() {
     }, [bottles]);
 
     return (
-        <div className="flex flex-col" ref={containerRef}>
-            {searchValue ? null : (
-                <div className="flex flex-col h-[76vh] place-content-center text-center text-gray-500">
-                    <div className="mx-auto">
-                        Utilisez la barre de recherche
-                        <br />
-                        pour trouver votre bouteille
-                    </div>
-                    <div className="mx-auto mt-2"></div>
-                </div>
-            )}
-            {/* Loading state n'est pas nécéssaire dans l'état actuel des choses mais pourrait le devenir */}
-            {loading ? (
-                <p className="ml-2 mb-1 mt-4">Chargement...</p>
-            ) : searchValue ? (
-                <>
-                    {total && total != 1 ? (
+        <div className="flex flex-col">
+            {total && total != 1 && searchValue ? (
                         <p className="ml-2 mb-1 mt-4">{total} résultats</p>
-                    ) : total == 1 ? (
+                    ) : total == 1 && searchValue ? (
                         <span className="ml-2 mb-1 mt-4">1 résultat</span>
                     ) : total == 0 && searchValue ? (
                         <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
@@ -182,28 +174,44 @@ export default function Catalog() {
                                 ou effectuez une nouvelle recherche
                             </div>
                         </div>
+            ) : null}
+            {loading ? (
+                <p className="ml-2 mb-1 mt-4">Chargement...</p>
+            ) : (
+                <ul className="flex flex-col gap-2 mt-4">
+                    {bottles.map((bottle) => (
+                        <li key={bottle.id}>
+                            <ProductCard
+                                bottle={bottle.bottle}
+                                onRemoveFromWishlist={handleRemoveFromWishlist}
+                            />
+                            {/* mettre en place le comportement swipe */}
+                        </li>
+                    ))}
+
+                    <div
+                        ref={(el) => (sentinelRef.current = el)}
+                        id="sentinel"
+                        className="opacity-0"
+                    >
+                        sentinel
+                    </div>
+
+                    {bottles.length == 0 && searchValue == "" ? (
+                        <div className="flex flex-col h-[70vh] place-content-center text-center text-gray-500">
+                            <div className="mx-auto">
+                                Votre liste de favoris semble vide...
+                            </div>
+                            <div className="mx-auto mt-2">
+                                Ajoutez vos bouteilles à l'aide
+                                <br />
+                                du "+" dans la barre de navigation
+                            </div>
+                        </div>
                     ) : null}
 
-                    <ul className="flex flex-col gap-2">
-                        {bottles.map((bottle) => (
-                            <li key={bottle.id}>
-                                <ProductCard
-                                    bottle={bottle}
-                                    getBottles={getBottles}
-                                />
-                            </li>
-                        ))}
-
-                        <div
-                            ref={(el) => (sentinelRef.current = el)}
-                            id="sentinel"
-                            className="opacity-0"
-                        >
-                            sentinel
-                        </div>
-                    </ul>
-                </>
-            ): null}
+                </ul>
+            )}
         </div>
     );
 }

@@ -10,6 +10,7 @@ import Signup from "./views/Signup.jsx";
 import Cellar from "./views/Cellar/Cellar.jsx";
 import ProductView from "./views/Product/ProductView.jsx";
 import Catalog from "./views/Catalog/Catalog.jsx";
+import Wishlist from "./views/Wishlist.jsx";
 import UserView from "./views/UserView.jsx";
 import ErrorPage from "./views/ErrorPage.jsx";
 
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
             {
                 path: "/catalog",
                 element: <Catalog />,
+            },
+            {
+                path: "/wishlist",
+                element: <Wishlist />,
             },
             {
                 path: "/product/:id",

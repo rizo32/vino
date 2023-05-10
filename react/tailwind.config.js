@@ -21,6 +21,16 @@ export default {
                 "vh-10": "10vh",
                 "vh-15": "15vh",
                 "vh-20": "20vh",
+                "22": "5.5rem",
+                "26": "6.5rem",
+            },
+            height: {
+                "18": "4.5rem",
+                "38": "9.5rem",
+            },
+            padding: {
+                "18": "4.5rem",
+                "34": "8.5rem",
             },
             colors: {
                 // couleur action base (bg-red-900): hsl(0, 62.8, 30.6)

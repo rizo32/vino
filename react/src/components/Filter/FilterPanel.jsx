@@ -3,42 +3,27 @@ import axiosClient from "../../axios-client";
 import OptionsList from "./OptionsList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEarthAmericas, faWineBottle } from "@fortawesome/free-solid-svg-icons";
+import { useStateContext } from "../../contexts/ContextProvider";
 
 const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [countries, setCountries] = useState([]);
     const [types, setTypes] = useState([]);
-    const [showCategories, setShowCategories] = useState(false);
+    // const { showCategories, setShowCategories } = useStateContext();
     const [optionsVisible, setOptionsVisible] = useState(false);
-    const [isAtTop, setIsAtTop] = useState(true);
+    const { searchBarOpen, setSearchBarOpen } = useStateContext();
+
 
     const CATEGORIES = {
         type: { internalName: "type", displayName: "Raisins", icon: faWineBottle },
         country: { internalName: "country", displayName: "Région", icon: faEarthAmericas },
+        // cepage: { internalName: "cepage", displayName: "Cépages", icon: faEarthAmericas }
     };
     
     const [checkedItems, setCheckedItems] = useState({
         [CATEGORIES.type.internalName]: {},
         [CATEGORIES.country.internalName]: {},
     });
-
-    // Vérifie si le scroll est en haut, pour changer le z-index du volet de filtre (pour enlever le box shadow du navbar)
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsAtTop(window.pageYOffset === 0);
-        };
-
-        window.addEventListener("scroll", handleScroll);
-
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-        };
-    }, []);
-
-    // Fait défiler la fenêtre vers le haut
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    };
 
     // Pour faire les deux fetchs en parallèles
     useEffect(() => {
@@ -149,14 +134,15 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
 
     return (
         <div
-            className={` ${
-                isAtTop ? "z-20" : "z-10"
-            } relative transition-all duration-200 ease-in-out overflow-hidden shadow-shadow-tiny bg-white ${
-                showCategories ? "max-h-[100px]" : "max-h-0"
-            }`}
+            className={`${
+                searchBarOpen ? "pt-2" : "pt-6"
+            } z-20 w-full fixed transition-all duration-200 ease-in-out overflow-hidden max-h-[100px] bg-white shadow-shadow-tiny pt-2 pb-4`}
+            // className={`z-20 w-full fixed transition-all duration-200 ease-in-out overflow-hidden shadow-shadow-tiny bg-white ${
+            //     showCategories ? "max-h-[100px]" : "max-h-0"
+            // }`}
         >
             {/* Bouton pour ouvrir les filtres */}
-            <button
+            {/* <button
                 onClick={() => {
                     setShowCategories(true);
                     scrollToTop();
@@ -177,15 +163,16 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                         d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"
                     />
                 </svg>
-            </button>
+            </button> */}
 
             {/* Liste des catégories de filtre */}
             <div
-                className={`overflow-x-auto scrollbar-hide left-0 top-full flex gap-4 p-2 transition-all duration-300 ease-in-out transform ${
-                    showCategories
-                        ? "translate-y-0 opacity-100 visible bg-white"
-                        : "-translate-y-full opacity-0 invisible"
-                }`}
+                className="overflow-x-auto scrollbar-hide left-0 top-full flex gap-4 px-2 mb-4 transition-all duration-300 ease-in-out transform translate-y-0 opacity-100 visible"
+                // className={`overflow-x-auto scrollbar-hide left-0 top-full flex gap-4 p-2 transition-all duration-300 ease-in-out transform ${
+                //     showCategories
+                //         ? "translate-y-0 opacity-100 visible bg-white"
+                //         : "-translate-y-full opacity-0 invisible"
+                // }`}
             >
                 {categories.map((category) => (
                     <button
@@ -193,16 +180,15 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                         className={`${
                             categoryIsActive(category.internalName)
                                 ? "text-white bg-red-900 shadow-shadow-tiny"
-                                : "text-black bg-gray-200"
-                        } px-4 py-2 rounded-lg flex flex-col justify-center items-center gap-3 flex-shrink-0 w-[48%] hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
-                        // Si on ajoute des catégories: w-[25%] max-w-[200px]
+                                : "text-black"
+                        } px-6 py-2 rounded-3xl flex justify-center items-center gap-3 flex-shrink-0 border border-black hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
 
                         onClick={() => handleCategoryClick(category.internalName)}
                     >
+                        <div>{category.displayName}</div>
                         <FontAwesomeIcon
                             icon={getCategoryIcon(category.internalName)}
                         />
-                        <div>{category.displayName}</div>
                     </button>
                 ))}
             </div>

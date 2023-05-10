@@ -13,16 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-
-        Schema::create('wishlists', function (Blueprint $table) {
+        Schema::create('user_types', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('bottle_id')->constrained()->onDelete('cascade');
+            $table->string('name',90)->unique();
             $table->timestamps();
         });
-
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 
     /**
@@ -32,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wishlists');
+        Schema::dropIfExists('user_types');
     }
 };
