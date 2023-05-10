@@ -13,7 +13,7 @@ const Admin = () => {
     axios
       .get(baseURL)
       .then((response) => {
-        setUsers(response.data);
+        setUsers(response.data.users);
       })
       .catch((error) => {
         console.error(error);
@@ -51,17 +51,21 @@ const Admin = () => {
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
-        {filteredUsers.map((user) => (
-          <div key={user.id} className="bg-gray-200 p-4 rounded-lg shadow flex items-center justify-between">
-            <div>
-              <p className="text-lg font-bold">{user.first_name}</p>
-              <p>{user.email}</p>
+        {filteredUsers.length > 0 ? (
+          filteredUsers.map((user) => (
+            <div key={user.id} className="bg-gray-200 p-4 rounded-lg shadow flex items-center justify-between">
+              <div>
+                <p className="text-lg font-bold">{user.first_name}</p>
+                <p>{user.email}</p>
+              </div>
+              <button className="px-4 py-2 bg-red-900 text-white rounded-lg" onClick={() => openModal(user)}>
+                Modifications
+              </button>
             </div>
-            <button className="px-4 py-2 bg-red-900 text-white rounded-lg" onClick={() => openModal(user)}>
-              Modifications
-            </button>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p>No users found.</p>
+        )}
       </div>
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -71,12 +75,20 @@ const Admin = () => {
               <div>
                 <p className="text-lg">User: {selectedUser.first_name}</p>
                 <p>Email: {selectedUser.email}</p>
+                <label htmlFor="userTypes">Type d'utilisateurs</label>
+                <select name="userTypes" id="userTypes">
+                    <option value="1">Admin</option>
+                    <option value="2">Employées</option>
+                    <option value="3">Utilisateurs</option>
+                    <option value="4">Bannir</option>
+                </select>
+
+
               </div>
             )}
             <button className="px-4 py-2 bg-red-900 text-white rounded-lg mt-4" onClick={closeModal}>
               Fermer
             </button>
-            
           </div>
         </div>
       )}
@@ -85,4 +97,3 @@ const Admin = () => {
 };
 
 export default Admin;
-
