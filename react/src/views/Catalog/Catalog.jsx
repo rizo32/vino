@@ -18,7 +18,6 @@ export default function Catalog() {
     const [filters, setFilters] = useState({
         type: [],
         country: [],
-        ratings: [],
     });
 
     const [oldFilters, setOldFilters] = useState();
@@ -156,8 +155,6 @@ export default function Catalog() {
 
     return (
         <div className="flex flex-col" ref={containerRef}>
-            {/* Désactivation du filtre dans le catalogue avant l'implantation d'une liste d'achat qui justifierait une recherche plus appronfondie */}
-            {/* <FilterPanel filters={filters} setFilters={setFilters} /> */}
             {searchValue ? null : (
                 <div className="flex flex-col h-[76vh] place-content-center text-center text-gray-500">
                     <div className="mx-auto">

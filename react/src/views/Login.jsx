@@ -6,8 +6,9 @@ import { useStateContext } from "../contexts/ContextProvider.jsx";
 export default function Login() {
     const emailRef = useRef();
     const passwordRef = useRef();
-    const { setUser, setToken } = useStateContext();
+    const { setUser, setToken,setUserTypesId } = useStateContext(); /* ajout setUserTypesId YG */
     const [message, setMessage] = useState([]);
+
 
     const onSubmit = (ev) => {
         ev.preventDefault();
@@ -21,6 +22,8 @@ export default function Login() {
             .then(({ data }) => {
                 setUser(data.user);
                 setToken(data.token);
+                setUserTypesId(data.user.user_type_id); /* ajout pour user_types YG */
+                console.log("user_types_id set to:", data.user.user_type_id);
             })
             .catch((err) => {
                 const response = err;

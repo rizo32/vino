@@ -11,13 +11,12 @@ export default function ProductCard({
     removeFromCellar,
     cellarHasBottleId,
     updateBottleQty,
-    onRemoveFromWishlist
+    onRemoveFromWishlist,
 }) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [inWishlist, setInWishlist] = useState(bottle.isInWishlist);
-
 
     // fonction pour ajouter une bouteille au cellier
     const addToCellar = (bottle) => {
@@ -39,16 +38,22 @@ export default function ProductCard({
         axiosClient
             .get(`${import.meta.env.VITE_API_BASE_URL}/api/wishlist`)
             .then(({ data }) => {
-                const wishlistItem = data.data.find((item) => item.bottle.id === bottle.id);
+                const wishlistItem = data.data.find(
+                    (item) => item.bottle.id === bottle.id
+                );
                 if (wishlistItem) {
                     // If the bottle is in the wishlist, remove it
                     axiosClient
-                        .delete(`${import.meta.env.VITE_API_BASE_URL}/api/wishlist/${wishlistItem.id}`)
+                        .delete(
+                            `${
+                                import.meta.env.VITE_API_BASE_URL
+                            }/api/wishlist/${wishlistItem.id}`
+                        )
                         .then(({ data }) => {
                             console.log("Bottle removed from wishlist.");
                             setInWishlist(false);
                             // Si on est dans la wishlist page, on enlève directement de la page
-                            if(onRemoveFromWishlist){
+                            if (onRemoveFromWishlist) {
                                 onRemoveFromWishlist(bottle.id);
                             }
                         })
@@ -58,7 +63,10 @@ export default function ProductCard({
                 } else {
                     // If the bottle is not in the wishlist, add it
                     axiosClient
-                        .post(`${import.meta.env.VITE_API_BASE_URL}/api/wishlist`, { id: bottle.id })
+                        .post(
+                            `${import.meta.env.VITE_API_BASE_URL}/api/wishlist`,
+                            { id: bottle.id }
+                        )
                         .then(() => {
                             console.log("Bottle added to wishlist.");
                             setInWishlist(true);
@@ -127,18 +135,6 @@ export default function ProductCard({
                                 </span>
                             ) : null}
                         </p>
-                    </div>
-                    <div className="flex gap-3">
-                        <StarRating note={bottle.rating_saq} />
-                        {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information */}
-                        {bottle.num_comments ? (
-                            <div className="flex gap-3">
-                                <span className="font-light">|</span>
-                                <p className="font-light">
-                                    {bottle.num_comments} avis
-                                </p>
-                            </div>
-                        ) : null}
                     </div>
                 </section>
             </Link>
