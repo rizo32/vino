@@ -63,6 +63,6 @@ export const data = {
   ],
 };
 
-export function dataset() {
+export function dataset1() {
   return <Line options={options} data={data} />;
 }

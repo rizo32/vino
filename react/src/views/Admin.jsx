@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { dataset } from "../components/Stats/dataSet";
+import { dataset1 } from "../components/Stats/premierDataSet";
 
 const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/admin`;
 
@@ -132,7 +132,7 @@ const Admin = () => {
         )}
         {activeTab === "stats" && (
           <div>
-            {dataset()}
+            {dataset1()}
           </div>
         )}
       </div>
