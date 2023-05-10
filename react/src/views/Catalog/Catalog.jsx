@@ -18,7 +18,6 @@ export default function Catalog() {
     const [filters, setFilters] = useState({
         type: [],
         country: [],
-        ratings: [],
     });
 
     const [oldFilters, setOldFilters] = useState();
