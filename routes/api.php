@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\SaqCatalogueController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TypeController;
 use App\Http\Controllers\Api\CountryController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,9 +56,9 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 /* <YG */
-Route::apiResource('/admin', AdminController::class);
 Route::post('/saq/fetch', [SaqCatalogueController::class, 'fetchProduits'])->name('saq.fetch');
 Route::get('/saq/fetch', [SaqCatalogueController::class, 'fetchProduits'])->name('saq.fetch');
+Route::get('/admin', [UserController::class, 'userList'])->name('admin');
 /* YG> */
 
 
