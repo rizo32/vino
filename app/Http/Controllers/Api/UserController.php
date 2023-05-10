@@ -57,4 +57,13 @@ class UserController extends Controller
         $users = User::all();
         return response()->json(compact('users', 'userTypes'));
     }
+
+    public function userUpdate(Request $request, $id){
+        $data = $request->all();
+        $user = User::findOrFail($id);
+        $user->update([
+            'user_type_id' => $data['user_type_id'],
+        ]);
+        return response(compact('user'));
+    }
 }
