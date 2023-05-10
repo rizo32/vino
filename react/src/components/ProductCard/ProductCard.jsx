@@ -32,6 +32,7 @@ export default function ProductCard({
                 console.log(err.response);
             });
     };
+    // -----------
 
     // fonction pour ajouter une bouteille à la wishlist
     const toggleWishlist = (bottle) => {
@@ -80,6 +81,7 @@ export default function ProductCard({
                 console.log(err);
             });
     };
+    // --------
 
     return (
         <article

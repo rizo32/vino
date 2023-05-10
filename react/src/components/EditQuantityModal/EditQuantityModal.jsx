@@ -2,17 +2,8 @@ import { useState, useEffect } from "react";
 import axiosClient from "../../axios-client";
 import "./style/EditQuantityModal.css";
 
-export default function ({ cellarId, bottleId, quantity, handleClose, removeFromCellar, cellarHasBottleId, updateBottleQty }) {
+export default function ({ quantity, handleClose, removeFromCellar, cellarHasBottleId, updateBottleQty }) {
     const [count, setCount] = useState(quantity);
-    const [deleteBottles, setDeleteBottles] = useState(false);
-
-    const handleDeleteBottles = () => {
-        if(deleteBottles){
-            setDeleteBottles(false);
-        }else if(!deleteBottles){
-            setDeleteBottles(true);
-        }
-    }
 
     const removeAll = () => {
         removeFromCellar(cellarHasBottleId);
@@ -21,7 +12,7 @@ export default function ({ cellarId, bottleId, quantity, handleClose, removeFrom
 
     const updateQty = () => {
         if (count == 0) {
-            handleDeleteBottles();
+            removeAll();
         } else {
             const data = {'quantity': count};
             updateBottleQty(cellarHasBottleId, data);
@@ -67,20 +58,10 @@ export default function ({ cellarId, bottleId, quantity, handleClose, removeFrom
                         </span>
                     </div>
                 </div>
-                { !deleteBottles ?
+              
                 <div className="flex flex-row flex-nowrap w-full mx-auto">
-                    <button className="rounded p-2 bg-red-900 w-1/2 m-2 text-white" onClick={handleDeleteBottles}>supprimer tout</button>
-                    <button className="rounded p-2 bg-transparent w-1/2 m-2 text-red-900 border-solid border-2 border-red-900" onClick={updateQty}>sauvegarder</button>
+                    <button className="rounded p-2 bg-transparent w-full m-2 text-red-900 border-solid border-2 border-red-900" onClick={updateQty}>sauvegarder</button>
                 </div>
-                : null
-                }
-                {deleteBottles ?
-                    <div className="flex flex-row flex-nowrap w-full mx-auto">
-                    <button className="rounded p-2 bg-red-900 w-[80%] m-2 text-white" onClick={removeAll}>oui, supprimer de mon cellier</button>
-                    <button className="rounded p-2 bg-transparent m-2 text-red-900 border-solid border-2 border-red-900" onClick={handleDeleteBottles}>x</button>
-                </div>
-                : null
-                }
             </article>
         </div>
     );
