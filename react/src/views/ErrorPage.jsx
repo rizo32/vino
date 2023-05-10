@@ -14,6 +14,16 @@ const ErrorPage = ({ errorStatus }) => {
             return <NotFound handleBackClick={handleBackClick} />;
         case 500:
             return <InternalServerError handleBackClick={handleBackClick} />;
+        case 666:
+            return (
+                <div>
+                    <h1>Erreur: {errorStatus}</h1>
+                    <p>
+                        Hmmmm, vous n'avez rien a faire ici. Vous êtes un petit malin!
+                    </p>
+                    <button onClick={handleBackClick}>Retour</button>
+                </div>
+            );
         default:
             return (
                 <div>
