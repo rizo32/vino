@@ -14,6 +14,15 @@ import Wishlist from "./views/Wishlist.jsx";
 import UserView from "./views/UserView.jsx";
 import ErrorPage from "./views/ErrorPage.jsx";
 
+
+const RouteAdmin = ({ children, userTypesId }) => {
+    if (userTypesId === 1) {
+      return children;
+    } else {
+      return <Navigate to="/login" />;
+    }
+  };
+
 const router = createBrowserRouter([
     {
         path: "/",
