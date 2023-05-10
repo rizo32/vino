@@ -46,7 +46,6 @@ export const ContextProvider = ({ children }) => {
         }
     };
 
-    /* ajout setUser en localstorage YG */
     const setUserTypesId = (id) => {
         _setUserTypesId(id);
         if (id) {
@@ -54,7 +53,7 @@ export const ContextProvider = ({ children }) => {
         } else {
             localStorage.removeItem("USER_TYPES_ID");
         }
-       
+        console.log("user_types_id set to:", id);
     }
     
 
