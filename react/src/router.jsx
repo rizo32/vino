@@ -19,7 +19,8 @@ import ErrorPage from "./views/ErrorPage.jsx";
 const RouteAdmin = ({ children }) => {
     const { user_types_id } = useStateContext();
 
-    if (user_types_id === 1) {
+
+    if (user_types_id == 1) {
         return children;
       } else {
         return <ErrorPage errorStatus={666} />;
