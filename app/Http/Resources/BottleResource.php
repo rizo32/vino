@@ -49,9 +49,10 @@ class BottleResource extends JsonResource
             'price_saq' => $this->price_saq,
             'url_saq' => $this->url_saq,
         */
+        $user = auth()->user();
 
         if ($this->relationLoaded('cellarHasBottle')) {
-            $data['quantity'] = $this->cellarHasBottle->first()->quantity ?? 0;
+            $data['quantity'] = $this->cellarHasBottle->where('cellar_id', '=', $user->cellar->id)->first()->quantity ?? 0;
         }
     
         return $data;
