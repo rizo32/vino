@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserType;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Auth;
@@ -52,7 +53,8 @@ class UserController extends Controller
 
 
     public function userList(){
+        $userTypes = UserType::all();
         $users = User::all();
-        return response()->json($users);
+        return response()->json(compact('users', 'userTypes'));
     }
 }
