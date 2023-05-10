@@ -15,8 +15,10 @@ import UserView from "./views/UserView.jsx";
 import ErrorPage from "./views/ErrorPage.jsx";
 
 
-const RouteAdmin = ({ children, userTypesId }) => {
-    if (userTypesId === 1) {
+const RouteAdmin = ({ children }) => {
+    const userData = useContext(UserContext);
+  
+    if (userData && userData.user_types_id === 1) {
       return children;
     } else {
       return <Navigate to="/login" />;
