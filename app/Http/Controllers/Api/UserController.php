@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserType;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Auth;
@@ -47,6 +48,22 @@ class UserController extends Controller
             'password' => isset($data['password']) ? bcrypt($data['password']) : $user->password,
         ]);
 
+        return response(compact('user'));
+    }
+
+
+    public function userList(){
+        $userTypes = UserType::all();
+        $users = User::all();
+        return response()->json(compact('users', 'userTypes'));
+    }
+
+    public function userUpdate(Request $request, $id){
+        $data = $request->all();
+        $user = User::findOrFail($id);
+        $user->update([
+            'user_type_id' => $data['user_type_id'],
+        ]);
         return response(compact('user'));
     }
 }
