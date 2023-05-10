@@ -6,7 +6,7 @@ import { useStateContext } from "../../contexts/ContextProvider";
 const TopNavbar = () => {
     const location = useLocation();
     const searchInputRef = useRef(null);
-    const { searchValue, setSearchValue, setShowCategories, searchBarOpen, setSearchBarOpen } = useStateContext();
+    const { user, searchValue, setSearchValue, setShowCategories, searchBarOpen, setSearchBarOpen } = useStateContext();
     const navigate = useNavigate();
 
     // La barre de recherche deviens active (ouvre le clavier sur mobile) dès l'ouverture de la page Catalogue
@@ -74,12 +74,12 @@ const TopNavbar = () => {
 
                 {/* Profil */}
                 <div className="flex flex-grow justify-end items-center">
-                    {/* <NavLink
+                    <NavLink
                         to={`/users/${user.id}`}
                         className={({ isActive, isPending }) =>
                             isPending ? "pending" : isActive ? "active" : ""
                         }
-                    > */}
+                    >
                     <div className="p-4">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +96,7 @@ const TopNavbar = () => {
                             />
                         </svg>
                     </div>
-                    {/* </NavLink> */}
+                    </NavLink>
 
                     {/* Filtres */}
                     {/* Padding autour permet d'agrandir la zone de clique */}
