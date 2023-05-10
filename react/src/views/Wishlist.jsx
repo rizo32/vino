@@ -118,7 +118,6 @@ export default function Wishlist() {
         setFilters({
             type: [],
             country: [],
-            ratings: [],
         });
     };
 
