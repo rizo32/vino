@@ -22,6 +22,7 @@ class AuthController extends Controller
             'email' => $data['email'],
             // encryption du mot de passe
             'password' => bcrypt($data['password']),
+            'user_type_id' => '3', /* default user value YG */
         ]);
 
         // création d'un cellier à la création de l'user
