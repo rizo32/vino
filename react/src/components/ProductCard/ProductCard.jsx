@@ -16,6 +16,7 @@ export default function ProductCard({
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const [count, setCount] = useState(quantity);
     const [inWishlist, setInWishlist] = useState(bottle.isInWishlist);
 
     // fonction pour ajouter une bouteille au cellier
@@ -31,6 +32,24 @@ export default function ProductCard({
             .catch((err) => {
                 console.log(err.response);
             });
+    };
+    // -----------
+
+    // update quantity
+    const updateQty = (quantity, type) => {
+      if (quantity == 1 && type == 'rmv') {
+        removeFromCellar(cellarHasBottleId);
+      } else if( type === 'rmv') {
+        quantity = parseInt(quantity) - parseInt(1);
+        const data = {'quantity': quantity};
+        setCount(quantity);
+        updateBottleQty(cellarHasBottleId, data);
+      }else if( type === 'add') {
+        quantity = parseInt(quantity) + parseInt(1);
+        const data = {'quantity': quantity};
+        setCount(quantity);
+        updateBottleQty(cellarHasBottleId, data);
+      }
     };
     // -----------
 
@@ -178,29 +197,33 @@ export default function ProductCard({
             ) : null}
             {/* Zone édition bouteille (svg style) */}
             {location.pathname === "/cellar" ? (
-                <section className="px-3 flex flex-col justify-between">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={2}
-                        stroke="currentColor"
-                        className="w-9 h-9 cursor-pointer"
-                        onClick={handleOpen}
+                <section className="px-3 flex flex-col justify-start">
+                  {/* add */}
+                    <div
+                        className="border-solid border-2 rounded border-red-900 h-10 w-10 m-2 text-center cursor-pointer"
+                        onClick={() => updateQty(count, "add")}
                     >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-                        />
-                    </svg>
+                        <span className="text-red-900">
+                            <svg viewBox="-4.8 -4.8 33.60 33.60" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fillRule="evenodd" clipRule="evenodd" d="M12 4C12.5523 4 13 4.44772 13 5V11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H13V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V13H5C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11H11V5C11 4.44772 11.4477 4 12 4Z" fill="#742521"></path> </g></svg>
+                        </span>
+                    </div>
+                    {/* remove */}
+                    <div
+                        className="border-solid border-2 rounded border-red-900 h-10 w-10 m-2 mt-1 text-center cursor-pointer"
+                        onClick={() => updateQty(count, "rmv")}
+                    >
+                        <span className="text-red-900">
+                            <svg viewBox="-4.8 -4.8 33.60 33.60" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fillRule="evenodd" clipRule="evenodd" d="M4 12C4 11.4477 4.44772 11 5 11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H5C4.44772 13 4 12.5523 4 12Z" fill="#742521"></path> </g></svg>
+                        </span>
+                    </div>
+                    {/* add to wishlist */}
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill={inWishlist ? "#7F1D1D" : "none"}
                         viewBox="0 0 24 24"
                         strokeWidth={2}
                         stroke="currentColor"
-                        className="block w-10 h-10 cursor-pointer"
+                        className="block w-10 h-10 cursor-pointer mx-auto"
                         onClick={() => toggleWishlist(bottle)}
                     >
                         <path
@@ -211,9 +234,6 @@ export default function ProductCard({
                     </svg>
                     {open && (
                         <EditQuantityModal
-                            //utiliser le cellier de l'usagé connecté
-                            cellarId={1}
-                            bottleId={bottle.id}
                             quantity={quantity}
                             handleClose={handleClose}
                             removeFromCellar={removeFromCellar}
