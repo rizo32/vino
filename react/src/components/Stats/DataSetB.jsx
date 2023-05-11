@@ -2,6 +2,7 @@
 import React from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
+import {thirdDataSet} from './DataSetC'
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -32,8 +33,12 @@ export const options = {
   
   export function secondDataSet() {
     return (
-      <div className="flex justify-center w-full md:w-96 h-64 md:h-96">
-        <Pie data={data} options={options} />
+      <div className="grid grid-cols-2 gap-4 w-full">
+        <div className="flex justify-center w-48 h-48">
+          <Pie data={data} options={options} />
+        </div>
+        {thirdDataSet()}
       </div>
     );
   }
+  
