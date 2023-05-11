@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller; 
 use App\Models\Bottle;
 use App\Models\User;
+use App\Models\CellarHasBottle;
 use App\Models\Cellar;
 use App\Models\Country;
 
@@ -35,8 +36,23 @@ class StatsController extends Controller
 
     private function getAvgCellarTotalWorth()
     {
-
+        $cellarCount = Cellar::count();
+        $totalWorth = 0;
+    
+        $cellars = Cellar::all();
+        foreach ($cellars as $cellar) {
+            $cellarHasBottles = CellarHasBottle::where('cellar_id', $cellar->id)->get();
+            foreach ($cellarHasBottles as $cellarHasBottle) {
+                $bottle = Bottle::find($cellarHasBottle->bottle_id);
+                $totalWorth += $bottle->price_saq;
+            }
+        }
+    
+        $avgTotalWorth = $cellarCount > 0 ? $totalWorth / $cellarCount : 0;
+    
+        return $avgTotalWorth;
     }
+    
 
     private function getTotalCellarWorth()
     {
