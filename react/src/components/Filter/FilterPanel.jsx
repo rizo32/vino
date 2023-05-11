@@ -198,7 +198,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                 <button
                     className={`${
                         anyCategoryIsActive() ? "" : "hidden"
-                    } p-2 rounded-3xl flex justify-center items-center gap-3 flex-shrink-0 border-2 border-black bg-red-900 text-white`}
+                    } p-2 rounded-3xl flex justify-center items-center gap-3 flex-shrink-0 border border-black bg-red-900 text-white`}
                     onClick={clearAllFilters}
                 >
                     <svg
@@ -223,7 +223,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                             categoryIsActive(category.internalName)
                                 ? "text-white bg-red-900 shadow-shadow-tiny"
                                 : "text-black"
-                        } px-6 py-2 rounded flex justify-center items-center gap-3 flex-shrink-0 border-2 border-black hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
+                        } px-6 py-2 rounded-3xl flex justify-center items-center gap-3 flex-shrink-0 border border-black hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
                         onClick={() =>
                             handleCategoryClick(category.internalName)
                         }
