@@ -28,7 +28,7 @@ class StatsController extends Controller
     private function getNumberOfUsers()
     {
     
-       
+        return User::count();
     }
 
     private function getAvgCellarTotalWorth()
