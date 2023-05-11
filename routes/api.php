@@ -68,6 +68,7 @@ Route::get('/saq/fetch', [SaqCatalogueController::class, 'fetchProduits'])->name
 Route::get('/admin', [UserController::class, 'userList'])->name('admin');
 Route::put('/admin/{id}', [UserController::class, 'userUpdate'])->name('user.update');
 Route::get('/stats', [QuickStatsController::class, 'getStats']);
+Route::get('/piestats', [PieGraphController::class, 'getGraphStats']);
 /* YG> */
 
 

@@ -13,5 +13,16 @@ use Illuminate\Http\Request;
 
 class PieGraphController extends Controller
 {
-    
+    public function getWineStats()
+    {
+       /* data simple pour test -> manque logique */
+        $redWineCount = Bottle::where('type', 'red')->count();
+        $whiteWineCount = Bottle::where('type', 'white')->count();
+
+     
+        return response()->json([
+            'redWineCount' => $redWineCount,
+            'whiteWineCount' => $whiteWineCount,
+        ]);
+    }
 }
