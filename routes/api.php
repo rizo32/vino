@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\SaqCatalogueController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TypeController;
 use App\Http\Controllers\Api\CountryController;
+use App\Http\Controllers\Api\StatsController;
 use App\Models\User;
 
 /*
@@ -66,6 +67,7 @@ Route::post('/saq/fetch', [SaqCatalogueController::class, 'fetchProduits'])->nam
 Route::get('/saq/fetch', [SaqCatalogueController::class, 'fetchProduits'])->name('saq.fetch');
 Route::get('/admin', [UserController::class, 'userList'])->name('admin');
 Route::put('/admin/{id}', [UserController::class, 'userUpdate'])->name('user.update');
+Route::get('/stats', [StatsController::class, 'getStats']);
 /* YG> */
 
 
