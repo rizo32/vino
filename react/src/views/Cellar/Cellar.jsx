@@ -209,7 +209,7 @@ export default function Cellar() {
             {loading ? (
                 <p className="ml-2 mb-1 mt-4">Chargement...</p>
             ) : (
-                <ul className={`${searchBarOpen ? "mt-22" : "mt-26"} flex flex-col gap-2 transition-all duration-200 ease-in-out`}>
+                <ul className={`${searchBarOpen ? "mt-23" : "mt-23"} flex flex-col gap-2 transition-all duration-200 ease-in-out`}>
                     {bottles.map((bottle) => (
                         <li key={bottle.id}>
                             <ProductCard

@@ -53,6 +53,12 @@ Route::middleware('auth:sanctum')->group(function () {
     // Gestion des bouteilles
     Route::apiResource('/bottles', BottleController::class);
 
+    // Va chercher les options pour les filtres
+    // Route::apiResource('/countries', CountryController::class);
+    // Route::apiResource('/types', TypeController::class);
+    Route::post('/countries', [CountryController::class, 'index']);
+    Route::post('/types', [TypeController::class, 'index']);
+
 });
 
 /* <YG */
@@ -68,7 +74,3 @@ Route::put('/admin/{id}', [UserController::class, 'userUpdate'])->name('user.upd
 
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
-
-// Va chercher les options pour les filtres
-Route::get('/countries', [CountryController::class, 'index']);
-Route::get('/types', [TypeController::class, 'index']);
