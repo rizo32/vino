@@ -53,7 +53,7 @@ export default function DefaultLayout() {
                 <TopNavbar />
             </header>
             <main className={`${
-                searchBarOpen ? "pt-36" : "pt-14"
+                searchBarOpen ? "pt-32" : "pt-14"
             } transition-all duration-200 ease-in-out bg-red-50 pb-10 min-h-screen`}>
                 {/* Outlet va aller chercher la vue appropriée dans le router */}
                 <Outlet />

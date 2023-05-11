@@ -11,6 +11,7 @@ export default {
             },
             boxShadow: {
                 "shadow-tiny": "0 1px 1px 0 rgba(0, 0, 0, 0.25)",
+                "shadow-md": "0 2px 1px 0 rgba(0, 0, 0, 0.25)",
                 "shadow-tiny-inset": "inset 0 1px 1px 0 rgba(0, 0, 0, 0.25)",
             },
             margin: {
@@ -22,10 +23,12 @@ export default {
                 "vh-15": "15vh",
                 "vh-20": "20vh",
                 "22": "5.5rem",
+                "23": "5.75rem",
                 "26": "6.5rem",
             },
             height: {
                 "18": "4.5rem",
+                "34": "8.5rem",
                 "38": "9.5rem",
             },
             padding: {

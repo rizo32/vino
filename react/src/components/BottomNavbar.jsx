@@ -38,7 +38,7 @@ const BottomNavbar = () => {
                         viewBox="0 0 24 24"
                         strokeWidth={2}
                         stroke="currentColor"
-                        className="w-12 h-12 p-2 bg-red-900 text-white rounded-full"
+                        className="w-12 h-12 p-2 bg-red-900 text-white rounded-full shadow-shadow-md"
                     >
                         <path
                             strokeLinecap="round"
@@ -57,7 +57,7 @@ const BottomNavbar = () => {
                 <div className="flex flex-col items-center">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
+                        fill="black"
                         viewBox="0 0 24 24"
                         strokeWidth={2}
                         stroke="currentColor"
