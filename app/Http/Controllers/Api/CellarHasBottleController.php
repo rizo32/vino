@@ -84,7 +84,7 @@ class CellarHasBottleController extends Controller
 
         // incrémentation du nombre de bouteilles dans cellier (pour la pastille colorée)
         if ($bottleInCellar) {
-            $data = ['quantity' => $bottleInCellar->quantity + 1];
+            $data = ['quantity' => $bottleInCellar->quantity + $request->input('quantity')];
             $bottleInCellar->update($data);
             return BottleResource::collection(
                 Bottle::with('cellarHasBottle')->orderBy('id', 'desc')->paginate(10)
@@ -95,7 +95,7 @@ class CellarHasBottleController extends Controller
             //ajouter une bouteille au cellier de l'user connecté
             'cellar_id' => $user->cellar->id,
             'bottle_id' => $request->input('id'),
-            'quantity' => 1,
+            'quantity' => $request->input('quantity'),
         ]);
 
 

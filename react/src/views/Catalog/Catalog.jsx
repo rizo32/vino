@@ -14,6 +14,7 @@ export default function Catalog() {
     const [page, setPage] = useState(1);
     const containerRef = useRef(null);
     const sentinelRef = useRef();
+    const [showMessage, setShowMessage] = useState(false);
 
     const [filters, setFilters] = useState({
         type: [],
@@ -50,17 +51,17 @@ export default function Catalog() {
         // si on ajoute la bouteille au cellier, refleter la nouvelle quantite sans devoir fetch toutes les bouteilles a nouveau
         if (bottleUpdt) {
             const updatedBottles = bottles.map((bottle) => {
-                if (bottle.id === bottleUpdt.id && !bottle.quantity) {
+                if (bottle.id === bottleUpdt.id && !bottleUpdt.initialQty) {
                     // ajouter la propriete quantite sans recharger toutes les bouteilles
                     return {
                         ...bottle,
-                        quantity: 1,
+                        quantity: bottleUpdt.quantity,
                     };
-                } else if (bottle.id === bottleUpdt.id && bottle.quantity) {
+                } else if (bottle.id === bottleUpdt.id && bottleUpdt.initialQty) {
                     //augmenter la quantite si elle existe
                     return {
                         ...bottle,
-                        quantity: bottle.quantity + parseInt(1),
+                        quantity: bottleUpdt.initialQty + bottleUpdt.quantity,
                     };
                 }
                 // garder meme bouteille et proprietes si rien change
@@ -68,6 +69,7 @@ export default function Catalog() {
             });
             setBottles(updatedBottles);
             setLoading(false);
+            setShowMessage(true);
             //arreter la fonction
             return;
         }
@@ -153,6 +155,19 @@ export default function Catalog() {
         window.scrollTo(0, scrollPosition);
     }, [bottles]);
 
+    // message de succes lorsque bouteille(s) est ajoute au cellier
+    useEffect(() => {
+        if (showMessage) {
+          const timeoutId = setTimeout(() => {
+            setShowMessage(false);
+          }, 5000); // Message will disappear after 3 seconds
+    
+          return () => {
+            clearTimeout(timeoutId);
+          };
+        }
+    }, [showMessage]);
+
     return (
         <div className="flex flex-col" ref={containerRef}>
             {searchValue ? null : (
@@ -204,6 +219,9 @@ export default function Catalog() {
                     </ul>
                 </>
             ): null}
+            { showMessage ?
+                <div className="fixed bg-green-50 text-white-100 m-3 mt-5 p-3 rounded-md border-2 border-lime-500">Vos bouteilles ont bien été ajoutées à votre cellier.</div>
+            :null}
         </div>
     );
 }
