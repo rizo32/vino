@@ -2,20 +2,14 @@ import { useState, useEffect } from "react";
 import axiosClient from "../../axios-client";
 import "./style/EditQuantityModal.css";
 
-export default function ({ quantity, handleClose, removeFromCellar, cellarHasBottleId, updateBottleQty }) {
-    const [count, setCount] = useState(quantity);
+export default function ({ bottle, quantity, handleClose, addToCellar }) {
+    const [count, setCount] = useState(1);
 
-    const removeAll = () => {
-        removeFromCellar(cellarHasBottleId);
-        handleClose();
-    }
-
-    const updateQty = () => {
+    const addQty = () => {
         if (count == 0) {
-            removeAll();
+            handleClose();
         } else {
-            const data = {'quantity': count};
-            updateBottleQty(cellarHasBottleId, data);
+            addToCellar(bottle, count, quantity);
             handleClose();
         }
     };
@@ -60,7 +54,7 @@ export default function ({ quantity, handleClose, removeFromCellar, cellarHasBot
                 </div>
               
                 <div className="flex flex-row flex-nowrap w-full mx-auto">
-                    <button className="rounded p-2 bg-transparent w-full m-2 text-red-900 border-solid border-2 border-red-900" onClick={updateQty}>sauvegarder</button>
+                    <button className="rounded p-2 bg-transparent w-full m-2 text-red-900 border-solid border-2 border-red-900" onClick={addQty}>sauvegarder</button>
                 </div>
             </article>
         </div>
