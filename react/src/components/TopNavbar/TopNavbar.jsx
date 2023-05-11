@@ -62,7 +62,7 @@ const TopNavbar = () => {
     return (
         <nav
             className={`${
-                searchBarOpen ? "h-38" : "h-16"
+                searchBarOpen ? "h-34" : "h-16"
             } transition-all duration-200 ease-in-out fixed w-full bg-white px-2 z-20 shadow-shadow-tiny`}
         >
             <div className="flex items-center justify-between">
