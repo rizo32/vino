@@ -33,15 +33,18 @@ export const options = {
 export function secondDataSet() {
   return (
     <div className="flex flex-col items-center w-full">
-      <h2 className="text-small  mb-4">
+      <h2 className="text-small mb-4">
         Statistiques celliers
       </h2>
       <div className="grid grid-cols-2 gap-4 w-full">
-        <div className="flex justify-center w-48 h-48">
+        <div className="flex justify-center w-full h-56 md:h-64 lg:h-96">
           <Pie data={data} options={options} />
         </div>
-        {thirdDataSet()}
+        <div className="flex justify-center w-full h-56 md:h-64 lg:h-96">
+          {thirdDataSet()}
+        </div>
       </div>
     </div>
   );
+
 }
