@@ -56,7 +56,18 @@ class StatsController extends Controller
 
     private function getTotalCellarWorth()
     {
-
+        $cellarCount = Cellar::count();
+        $totalWorth = 0;
+    
+        $cellars = Cellar::all();
+        foreach ($cellars as $cellar) {
+            $cellarHasBottles = CellarHasBottle::where('cellar_id', $cellar->id)->get();
+            foreach ($cellarHasBottles as $cellarHasBottle) {
+                $bottle = Bottle::find($cellarHasBottle->bottle_id);
+                $totalWorth += $bottle->price_saq;
+            }
+        }
+        return $totalWorth;
     }
 
     private function getWineOfTheMoment()
