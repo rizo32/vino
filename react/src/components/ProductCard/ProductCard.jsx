@@ -223,7 +223,7 @@ export default function ProductCard({
                         viewBox="0 0 24 24"
                         strokeWidth={2}
                         stroke="currentColor"
-                        className="block w-10 h-10 cursor-pointer"
+                        className="block w-10 h-10 cursor-pointer mx-auto"
                         onClick={() => toggleWishlist(bottle)}
                     >
                         <path
