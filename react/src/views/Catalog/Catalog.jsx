@@ -91,7 +91,6 @@ export default function Catalog() {
                     //si on va vers la prochaine page, on veut seulement ajouter les resultats a ceux qui sont deja la
                     setBottles([...bottles, ...data.data]);
                 }
-                console.log(data.data);
                 //sauvegarder le compte de resultats presents sur la page
                 setOnPage(data.meta.to);
                 //sauvegarder le nombre de resultats total
