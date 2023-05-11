@@ -22,6 +22,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
             (category) => filters[category].length > 0
         );
     };
+    const [tempFilters, setTempFilters] = useState(filters);
 
     const CATEGORIES = {
         type: {
@@ -37,6 +38,11 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
         // cepage: { internalName: "cepage", displayName: "Cépages", icon: faEarthAmericas }
     };
 
+    const applyFilters = () => {
+        setFilters(tempFilters);
+        setOptionsVisible(false);
+    };
+
     const [checkedItems, setCheckedItems] = useState({
         [CATEGORIES.type.internalName]: {},
         [CATEGORIES.country.internalName]: {},
@@ -46,6 +52,27 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
         fetchFilteredCountries();
         fetchFilteredTypes();
     }, [filters]);
+
+    useEffect(() => {
+        if (!optionsVisible) {
+            // Reset tempFilters to the current filters
+            setTempFilters(filters);
+    
+            // Reset checkedItems based on the current filters
+            const newCheckedItems = {
+                [CATEGORIES.type.internalName]: {},
+                [CATEGORIES.country.internalName]: {},
+            };
+    
+            for (const category in filters) {
+                for (const filterValue of filters[category]) {
+                    newCheckedItems[category][filterValue] = true;
+                }
+            }
+    
+            setCheckedItems(newCheckedItems);
+        }
+    }, [optionsVisible, filters]);
 
     const fetchFilteredCountries = async () => {
         const response = await axiosClient.post("/countries", {
@@ -142,7 +169,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
             const value = e.target.value;
             const isChecked = e.target.checked;
 
-            setFilters((prevFilters) => {
+            setTempFilters((prevFilters) => {
                 const newFilters = { ...prevFilters };
 
                 if (isChecked) {
@@ -182,18 +209,10 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
             className={`${
                 searchBarOpen ? "pt-2" : "pt-6"
             } z-20 w-full fixed transition-all duration-200 ease-in-out overflow-hidden max-h-[100px] bg-white shadow-shadow-tiny pt-6 pb-0`}
-            // className={`z-20 w-full fixed transition-all duration-200 ease-in-out overflow-hidden shadow-shadow-tiny bg-white ${
-            //     showCategories ? "max-h-[100px]" : "max-h-0"
-            // }`}
         >
             {/* Liste des catégories de filtre */}
             <div
                 className="overflow-x-auto scrollbar-hide left-0 top-full flex gap-4 px-2 mb-4 transition-all duration-300 ease-in-out transform translate-y-0 opacity-100 visible"
-                // className={`overflow-x-auto scrollbar-hide left-0 top-full flex gap-4 p-2 transition-all duration-300 ease-in-out transform ${
-                //     showCategories
-                //         ? "translate-y-0 opacity-100 visible bg-white"
-                //         : "-translate-y-full opacity-0 invisible"
-                // }`}
             >
                 <button
                     className={`${
@@ -242,7 +261,30 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                     optionsVisible ? "translate-x-0" : "translate-x-full"
                 }`}
             >
-                <h1 className="text-lg font-bold">Filtres</h1>
+                <div className="flex justify-between px-2 pb-1">
+                    <h1 className="text-lg font-bold">Filtres</h1>
+                    <button
+                        className="text-gray-700 z-10"
+                        onClick={() => {
+                            setOptionsVisible(false);
+                        }}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="1.5"
+                                d="M6 18L18 6M6 6l12 12"
+                            />
+                        </svg>
+                    </button>
+                </div>
                 <OptionsList
                     categories={categories}
                     selectedCategory={selectedCategory}
@@ -251,7 +293,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                 />
                 <div className="flex flex-col justify-center">
                     <button
-                        onClick={() => setOptionsVisible(false)}
+                        onClick={applyFilters}
                         className="btn btn-block mt-6 bg-red-900 rounded-md text-white h-12 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover w-10/12 mx-auto"
                     >
                         Confirmation
