@@ -20,7 +20,7 @@ export const data2 = {
     plugins: {
       title: {
         display: true,
-        text: 'Total des bouteilles par région',
+        text: 'Total des bouteilles dans les top 5 régions',
       },
       legend: {
         position: 'top',
