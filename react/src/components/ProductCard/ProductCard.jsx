@@ -71,7 +71,6 @@ export default function ProductCard({
                             }/api/wishlist/${wishlistItem.id}`
                         )
                         .then(({ data }) => {
-                            console.log("Bottle removed from wishlist.");
                             setInWishlist(false);
                             // Si on est dans la wishlist page, on enlève directement de la page
                             if (onRemoveFromWishlist) {
@@ -89,7 +88,6 @@ export default function ProductCard({
                             { id: bottle.id }
                         )
                         .then(() => {
-                            console.log("Bottle added to wishlist.");
                             setInWishlist(true);
                         })
                         .catch((err) => {

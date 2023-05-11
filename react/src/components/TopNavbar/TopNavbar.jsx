@@ -54,7 +54,8 @@ const TopNavbar = () => {
             setHasOneCharacter(false);
         }
     
-        if (e.target.value.length > 2) {
+        // pas avant d'avoir inscrit 3 charactères, mais update lors de la suppression complète
+        if (e.target.value.length > 2 || e.target.value.length === 0) {
             setSearchValue(e.target.value);
         }
     };
