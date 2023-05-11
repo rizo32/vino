@@ -227,7 +227,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                 {/* Annulation de tous les filtres */}
                 <button
                     className={`${
-                        anyCategoryIsActive() ? "" : "hidden"
+                        anyCategoryIsActive() ? "" : "opacity-0"
                     } p-2 rounded-3xl flex justify-center items-center gap-3 flex-shrink-0 border border-black bg-red-900 text-white`}
                     onClick={clearAllFilters}
                 >
@@ -255,7 +255,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                             categoryIsActive(category.internalName)
                                 ? "text-white bg-red-900 shadow-shadow-tiny"
                                 : "text-black"
-                        } px-6 py-2 rounded-3xl flex justify-center items-center gap-3 flex-shrink-0 border border-black hover:text-white active:text-white hover:bg-red-900 active:bg-red-900`}
+                        }  duration-200 ease-in-out px-6 py-2 rounded-3xl flex justify-center items-center gap-3 flex-shrink-0 border border-black hover:text-white active:text-white hover:bg-red-900 active:bg-red-900 ${!anyCategoryIsActive() ? "translate-x-[-58px]" : ""} `}
                         onClick={() =>
                             handleCategoryClick(category.internalName)
                         }
