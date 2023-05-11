@@ -210,7 +210,7 @@ export default function ProductCard({
                 <section className="px-3 flex flex-col justify-start">
                   {/* add */}
                     <div
-                        className="border-solid border-2 rounded border-red-900 h-10 w-10 m-2 text-center cursor-pointer"
+                        className="border-solid border-[1px] rounded-full border-red-900 h-10 w-10 m-2 text-center cursor-pointer"
                         onClick={() => updateQty(count, "add")}
                     >
                         <span className="text-red-900">
@@ -219,7 +219,7 @@ export default function ProductCard({
                     </div>
                     {/* remove */}
                     <div
-                        className="border-solid border-2 rounded border-red-900 h-10 w-10 m-2 mt-1 text-center cursor-pointer"
+                        className="border-solid border-[1px] rounded-full border-red-900 h-10 w-10 m-2 mt-1 text-center cursor-pointer"
                         onClick={() => updateQty(count, "rmv")}
                     >
                         <span className="text-red-900">
