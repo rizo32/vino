@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { dataset1 } from "../components/Stats/premierDataSet";
-import { secondDataSet } from "../components/Stats/secondDataSet";
+import { dataset1 } from "../components/Stats/DataSetA";
+import { secondDataSet } from "../components/Stats/DataSetB";
+import DataSets from '../components/Stats/DataSets';
 
 const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/admin`;
 
@@ -133,6 +134,7 @@ const Admin = () => {
         )}
         {activeTab === "stats" && (
           <div>
+            <DataSets />
             {dataset1()}
             {secondDataSet()}
           </div>

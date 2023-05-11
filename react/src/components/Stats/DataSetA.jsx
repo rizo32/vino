@@ -55,7 +55,7 @@ export const data = {
     },
     {
         label: `moyenne des bouteilles supprimer / utilisateur`,
-        data: [180, 240, 360, 190, 320],
+        data: [4, 240, 360, 190, 320],
         borderColor: 'rgba(127,29,29,1)',
         backgroundColor: 'rgba(127,29,29,0.5)',
         fill: false,
