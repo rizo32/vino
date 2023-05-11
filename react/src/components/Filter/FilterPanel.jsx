@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import axiosClient from "../../axios-client";
-import OptionsList from "./OptionsList";
+import OptionPage from "./OptionPage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faEarthAmericas,
@@ -38,6 +38,21 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
     const applyFilters = () => {
         setFilters(tempFilters);
         setOptionsVisible(false);
+    };
+
+    // objet des catégories de filtres pour définir label et icone
+    const CATEGORIES = {
+        type: {
+            internalName: "type",
+            displayName: "Couleur",
+            icon: faWineBottle,
+        },
+        country: {
+            internalName: "country",
+            displayName: "Région",
+            icon: faEarthAmericas,
+        },
+        // cepage: { internalName: "cepage", displayName: "Cépages", icon: faEarthAmericas }
     };
 
     // reinitialisation de l'interface de la page d'options
@@ -85,21 +100,6 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
         }
     }, [optionsVisible, filters]);
 
-    // objet des catégories de filtres pour définir label et icone
-    const CATEGORIES = {
-        type: {
-            internalName: "type",
-            displayName: "Couleur",
-            icon: faWineBottle,
-        },
-        country: {
-            internalName: "country",
-            displayName: "Région",
-            icon: faEarthAmericas,
-        },
-        // cepage: { internalName: "cepage", displayName: "Cépages", icon: faEarthAmericas }
-    };
-
     // Mise à jour des catégories
     const getCategories = (filteredCountries, filteredTypes) => [
         {
@@ -137,7 +137,6 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
 
     // supprime tous les filtres en cours
     const clearAllFilters = useCallback(() => {
-        // Clear filters for all categories
         setFilters((prevFilters) => {
             const newFilters = { ...prevFilters };
             Object.keys(newFilters).forEach((category) => {
@@ -167,7 +166,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                 return newFilters;
             });
 
-            // Update the UI
+            // met à jour le UI
             setCheckedItems((prevCheckedItems) => {
                 const newCheckedItems = { ...prevCheckedItems };
                 newCheckedItems[selectedCategory] = {};
@@ -223,10 +222,8 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                 searchBarOpen ? "pt-2" : "pt-6"
             } z-20 w-full fixed transition-all duration-200 ease-in-out overflow-hidden max-h-[100px] bg-white shadow-shadow-tiny pt-6 pb-0`}
         >
-
             {/* Rangée des catégories de filtre */}
             <div className="overflow-x-auto scrollbar-hide left-0 top-full flex gap-4 px-2 mb-4 transition-all duration-300 ease-in-out transform translate-y-0 opacity-100 visible">
-
                 {/* Annulation de tous les filtres */}
                 <button
                     className={`${
@@ -270,60 +267,16 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                     </button>
                 ))}
             </div>
-
-            {/* Page d'options */}
-            <div
-                className={`fixed inset-0 bg-white p-8 top-16 transition-all duration-300 ease-in-out z-20 ${
-                    optionsVisible ? "translate-x-0" : "translate-x-full"
-                }`}
-            >
-                <div className="flex justify-between px-2 pb-1">
-                    <h1 className="text-lg font-bold">Filtres</h1>
-                    <button
-                        className="text-gray-700 z-10"
-                        onClick={() => {
-                            setOptionsVisible(false);
-                        }}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="1.5"
-                                d="M6 18L18 6M6 6l12 12"
-                            />
-                        </svg>
-                    </button>
-                </div>
-                <OptionsList
-                    categories={categories}
-                    selectedCategory={selectedCategory}
-                    checkedItems={checkedItems}
-                    handleFilterChange={handleFilterChange}
-                />
-                <div className="flex flex-col justify-center">
-                    <button
-                        onClick={applyFilters}
-                        className="btn btn-block mt-6 bg-red-900 rounded-md text-white h-12 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-red-hover w-10/12 mx-auto"
-                    >
-                        Confirmation
-                    </button>
-                    <div className="text-center mt-6 underline">
-                        <p
-                            className="cursor-pointer underline"
-                            onClick={clearSelectedFilters}
-                        >
-                            Retirer les filtres
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <OptionPage
+                categories={categories}
+                selectedCategory={selectedCategory}
+                checkedItems={checkedItems}
+                handleFilterChange={handleFilterChange}
+                applyFilters={applyFilters}
+                clearSelectedFilters={clearSelectedFilters}
+                optionsVisible={optionsVisible}
+                setOptionsVisible={setOptionsVisible}
+            />
         </div>
     );
 };
