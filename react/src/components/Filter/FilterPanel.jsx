@@ -9,21 +9,83 @@ import {
 import { useStateContext } from "../../contexts/ContextProvider";
 
 const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    // const [countries, setCountries] = useState([]);
-    // const [types, setTypes] = useState([]);
-    // const { showCategories, setShowCategories } = useStateContext();
+    // visibilité de la page d'options
     const [optionsVisible, setOptionsVisible] = useState(false);
+
+    // Categorie de filtre affiché dans la page d'options
+    const [selectedCategory, setSelectedCategory] = useState(null);
+
+    // visibilité de la barre de recherche
     const { searchBarOpen, setSearchBarOpen } = useStateContext();
+
+    // pays pouvant être filtrés
     const [filteredCountries, setFilteredCountries] = useState([]);
+
+    // types pouvant être filtrés
     const [filteredTypes, setFilteredTypes] = useState([]);
+
+    // filtres en transition (sélectionné, pas confirmés)
+    const [tempFilters, setTempFilters] = useState(filters);
+
+    // state indiquant si un filtre est en place
     const anyCategoryIsActive = () => {
         return Object.keys(filters).some(
             (category) => filters[category].length > 0
         );
     };
-    const [tempFilters, setTempFilters] = useState(filters);
 
+    // confirmation de filtre
+    const applyFilters = () => {
+        setFilters(tempFilters);
+        setOptionsVisible(false);
+    };
+
+    // reinitialisation de l'interface de la page d'options
+    const [checkedItems, setCheckedItems] = useState({
+        [CATEGORIES.type.internalName]: {},
+        [CATEGORIES.country.internalName]: {},
+    });
+
+    // les options de filtres sont récupérés
+    const fetchFilteredCountries = async () => {
+        const response = await axiosClient.post("/countries", {
+            filters,
+        });
+        setFilteredCountries(response.data);
+    };
+    const fetchFilteredTypes = async () => {
+        const response = await axiosClient.post("/types", {
+            filters,
+        });
+        setFilteredTypes(response.data);
+    };
+
+    // les filtres possibles sont mis à jour à chaque nouveau filtre appliqué
+    useEffect(() => {
+        fetchFilteredCountries();
+        fetchFilteredTypes();
+    }, [filters]);
+
+    // l'interface graphique des filtres est mis à jour avec les filtres confirmés lors de la fermeture de la page de filtre
+    useEffect(() => {
+        if (!optionsVisible) {
+            // reinit
+            setTempFilters(filters);
+            const newCheckedItems = {
+                [CATEGORIES.type.internalName]: {},
+                [CATEGORIES.country.internalName]: {},
+            };
+            // mise à jour
+            for (const category in filters) {
+                for (const filterValue of filters[category]) {
+                    newCheckedItems[category][filterValue] = true;
+                }
+            }
+            setCheckedItems(newCheckedItems);
+        }
+    }, [optionsVisible, filters]);
+
+    // objet des catégories de filtres pour définir label et icone
     const CATEGORIES = {
         type: {
             internalName: "type",
@@ -38,56 +100,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
         // cepage: { internalName: "cepage", displayName: "Cépages", icon: faEarthAmericas }
     };
 
-    const applyFilters = () => {
-        setFilters(tempFilters);
-        setOptionsVisible(false);
-    };
-
-    const [checkedItems, setCheckedItems] = useState({
-        [CATEGORIES.type.internalName]: {},
-        [CATEGORIES.country.internalName]: {},
-    });
-
-    useEffect(() => {
-        fetchFilteredCountries();
-        fetchFilteredTypes();
-    }, [filters]);
-
-    useEffect(() => {
-        if (!optionsVisible) {
-            // Reset tempFilters to the current filters
-            setTempFilters(filters);
-    
-            // Reset checkedItems based on the current filters
-            const newCheckedItems = {
-                [CATEGORIES.type.internalName]: {},
-                [CATEGORIES.country.internalName]: {},
-            };
-    
-            for (const category in filters) {
-                for (const filterValue of filters[category]) {
-                    newCheckedItems[category][filterValue] = true;
-                }
-            }
-    
-            setCheckedItems(newCheckedItems);
-        }
-    }, [optionsVisible, filters]);
-
-    const fetchFilteredCountries = async () => {
-        const response = await axiosClient.post("/countries", {
-            filters,
-        });
-        setFilteredCountries(response.data);
-    };
-    const fetchFilteredTypes = async () => {
-        const response = await axiosClient.post("/types", {
-            filters,
-        });
-        setFilteredTypes(response.data);
-    };
-
-    // Définition des catégories
+    // Mise à jour des catégories
     const getCategories = (filteredCountries, filteredTypes) => [
         {
             internalName: "type",
@@ -99,8 +112,14 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
             displayName: CATEGORIES.country.displayName,
             options: filteredCountries,
         },
-        // ajouter d'autres catégories ici si nécessaire
+        // ajouter d'autres catégories ici si nécessaire (sprint 4...)
     ];
+
+    // useMemo = Évite de refaire le fetch des filtres si pas nécéssaire
+    const categories = useMemo(
+        () => getCategories(filteredCountries, filteredTypes),
+        [filteredCountries, filteredTypes]
+    );
 
     // Fetch les icones des catégories
     const getCategoryIcon = (internalName) => {
@@ -109,12 +128,6 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
         }
         return null;
     };
-
-    // useMemo = Évite de refaire le fetch des filtres si pas nécéssaire
-    const categories = useMemo(
-        () => getCategories(filteredCountries, filteredTypes),
-        [filteredCountries, filteredTypes]
-    );
 
     // Ouvre la page des options
     const handleCategoryClick = useCallback((category) => {
@@ -148,7 +161,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
 
     const clearSelectedFilters = useCallback(() => {
         if (selectedCategory) {
-            setFilters((prevFilters) => {
+            setTempFilters((prevFilters) => {
                 const newFilters = { ...prevFilters };
                 newFilters[selectedCategory] = [];
                 return newFilters;
@@ -161,7 +174,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                 return newCheckedItems;
             });
         }
-    }, [selectedCategory, setFilters]);
+    }, [selectedCategory, setTempFilters]);
 
     // Nouveau fetch à chaque filtre
     const handleFilterChange = useCallback(
@@ -199,7 +212,7 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
         [setFilters]
     );
 
-    // Defini si la catégorie de filtre est active (pour colorer)
+    // Defini si la catégorie de filtre est active (pour coloration)
     const categoryIsActive = (category) => {
         return filters[category] && filters[category].length > 0;
     };
@@ -210,10 +223,11 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                 searchBarOpen ? "pt-2" : "pt-6"
             } z-20 w-full fixed transition-all duration-200 ease-in-out overflow-hidden max-h-[100px] bg-white shadow-shadow-tiny pt-6 pb-0`}
         >
-            {/* Liste des catégories de filtre */}
-            <div
-                className="overflow-x-auto scrollbar-hide left-0 top-full flex gap-4 px-2 mb-4 transition-all duration-300 ease-in-out transform translate-y-0 opacity-100 visible"
-            >
+
+            {/* Rangée des catégories de filtre */}
+            <div className="overflow-x-auto scrollbar-hide left-0 top-full flex gap-4 px-2 mb-4 transition-all duration-300 ease-in-out transform translate-y-0 opacity-100 visible">
+
+                {/* Annulation de tous les filtres */}
                 <button
                     className={`${
                         anyCategoryIsActive() ? "" : "hidden"
@@ -235,6 +249,8 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
                         />
                     </svg>
                 </button>
+
+                {/* Catégories de filtre */}
                 {categories.map((category) => (
                     <button
                         key={category.internalName}
