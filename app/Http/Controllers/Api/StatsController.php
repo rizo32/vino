@@ -72,7 +72,22 @@ class StatsController extends Controller
 
     private function getWineOfTheMoment()
     {
-        
+        $bottleCounts = [];
+
+    $cellarHasBottles = CellarHasBottle::all();
+    foreach ($cellarHasBottles as $cellarHasBottle) {
+        $bottleId = $cellarHasBottle->bottle_id;
+        if (array_key_exists($bottleId, $bottleCounts)) {
+            $bottleCounts[$bottleId]++;
+        } else {
+            $bottleCounts[$bottleId] = 1;
+        }
+    }
+
+    $mostPopularBottleId = max($bottleCounts);
+    $mostPopularBottle = Bottle::find($mostPopularBottleId);
+
+    return $mostPopularBottle['name'];
     }
 }
 
