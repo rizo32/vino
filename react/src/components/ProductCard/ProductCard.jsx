@@ -20,13 +20,15 @@ export default function ProductCard({
     const [inWishlist, setInWishlist] = useState(bottle.isInWishlist);
 
     // fonction pour ajouter une bouteille au cellier
-    const addToCellar = (bottle) => {
+    const addToCellar = (bottle, quantity, initialQty) => {
+        bottle.quantity = quantity;
         axiosClient
             .post(
                 `${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles`,
                 bottle
             )
             .then(({ data }) => {
+                bottle.initialQty = initialQty;
                 getBottles(bottle);
             })
             .catch((err) => {
@@ -170,7 +172,7 @@ export default function ProductCard({
                         strokeWidth={2}
                         stroke="currentColor"
                         className="block w-10 h-10 cursor-pointer"
-                        onClick={() => addToCellar(bottle)}
+                        onClick={() => handleOpen()}
                     >
                         <path
                             strokeLinecap="round"
@@ -193,6 +195,14 @@ export default function ProductCard({
                             d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                         />
                     </svg>
+                    {open && (
+                        <EditQuantityModal
+                            bottle={bottle}
+                            quantity={bottle.quantity}
+                            handleClose={handleClose}
+                            addToCellar={addToCellar}
+                        />
+                    )}
                 </div>
             ) : null}
             {/* Zone édition bouteille (svg style) */}
@@ -232,15 +242,6 @@ export default function ProductCard({
                             d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                         />
                     </svg>
-                    {open && (
-                        <EditQuantityModal
-                            quantity={quantity}
-                            handleClose={handleClose}
-                            removeFromCellar={removeFromCellar}
-                            cellarHasBottleId={cellarHasBottleId}
-                            updateBottleQty={updateBottleQty}
-                        />
-                    )}
                 </section>
             ) : null}
         </article>
