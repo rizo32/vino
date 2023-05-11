@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { dataset1 } from "../components/Stats/premierDataSet";
-import { secondDataSet } from "../components/Stats/secondDataSet";
+import { dataset1 } from "../components/Stats/DataSetA";
+import { secondDataSet } from "../components/Stats/DataSetB";
 
 const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/admin`;
 
