@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import axiosClient from "../../axios-client";
 import EditQuantityModal from "../EditQuantityModal/EditQuantityModal";
-import StarRating from "../../components/StarRating/StarRating.jsx";
 import { useState, useEffect } from "react";
 
 export default function ProductCard({
@@ -169,7 +168,7 @@ export default function ProductCard({
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
-                        strokeWidth={2}
+                        strokeWidth={1.5}
                         stroke="currentColor"
                         className="block w-10 h-10 cursor-pointer"
                         onClick={() => handleOpen()}
@@ -182,9 +181,9 @@ export default function ProductCard({
                     </svg>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        fill={inWishlist ? "#7F1D1D" : "none"}
+                        fill={inWishlist ? "#b91c1c" : "none"}
                         viewBox="0 0 24 24"
-                        strokeWidth={2}
+                        strokeWidth={1.25}
                         stroke="currentColor"
                         className="block w-10 h-10 cursor-pointer"
                         onClick={() => toggleWishlist(bottle)}
@@ -207,7 +206,7 @@ export default function ProductCard({
             ) : null}
             {/* Zone édition bouteille (svg style) */}
             {location.pathname === "/cellar" ? (
-                <section className="px-3 flex flex-col justify-start">
+                <section className="px-3 flex flex-col justify-start items-center">
                   {/* add */}
                     <div
                         className="border-solid border-2 rounded border-red-900 h-10 w-10 m-2 text-center cursor-pointer"
@@ -219,7 +218,7 @@ export default function ProductCard({
                     </div>
                     {/* remove */}
                     <div
-                        className="border-solid border-2 rounded border-red-900 h-10 w-10 m-2 mt-1 text-center cursor-pointer"
+                        className="border-solid border-2 rounded border-red-900 h-10 w-10 m-2 text-center cursor-pointer"
                         onClick={() => updateQty(count, "rmv")}
                     >
                         <span className="text-red-900">
@@ -229,11 +228,11 @@ export default function ProductCard({
                     {/* add to wishlist */}
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        fill={inWishlist ? "#7F1D1D" : "none"}
+                        fill={inWishlist ? "#b91c1c" : "none"}
                         viewBox="0 0 24 24"
-                        strokeWidth={2}
+                        strokeWidth={1.25}
                         stroke="currentColor"
-                        className="block w-10 h-10 cursor-pointer mx-auto"
+                        className="block w-11 h-11 cursor-pointer m-1"
                         onClick={() => toggleWishlist(bottle)}
                     >
                         <path
