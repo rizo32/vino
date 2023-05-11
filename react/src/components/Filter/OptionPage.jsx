@@ -1,4 +1,4 @@
-import OptionsList from "./OptionsList";
+import OptionList from "./OptionList";
 
 const OptionPage = ({
     categories,
@@ -40,7 +40,7 @@ const OptionPage = ({
                     </svg>
                 </button>
             </div>
-            <OptionsList
+            <OptionList
                 categories={categories}
                 selectedCategory={selectedCategory}
                 checkedItems={checkedItems}
