@@ -11,10 +11,6 @@ class CountryController extends Controller
 {
     public function index(Request $request)
     {
-        \Log::info(Auth::user());
-        // \Log::info($request);
-        // \Log::info(['query' => $request->toSql(), 'bindings' => $request->getBindings()]);
-
         // Get the logged-in user's cellar
         $cellar = Auth::user()->cellar;
 
@@ -37,12 +33,5 @@ class CountryController extends Controller
         // Finally, get the countries and return them
         $countries = $query->orderBy('name', 'asc')->get();
         return response()->json($countries);
-
-        // public function index()
-        // {
-        //     // utilisé pour les options de filtrage
-        //     $countries = Country::orderBy('name', 'asc')->get();
-        //     return response()->json($countries);
-        // }
     }
 }

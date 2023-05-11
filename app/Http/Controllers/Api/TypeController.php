@@ -33,13 +33,5 @@ class TypeController extends Controller
         // Finally, get the countries and return them
         $types = $query->orderBy('name', 'asc')->get();
         return response()->json($types);
-
-
-        // public function index()
-        // {
-        //     // utilisé pour les options de filtrage
-        //     $types = Type::all();
-        //     return response()->json($types);
-        // }
     }
 }
