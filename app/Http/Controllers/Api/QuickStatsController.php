@@ -11,7 +11,7 @@ use App\Models\Country;
 
 use Illuminate\Http\Request;
 
-class StatsController extends Controller
+class QuickStatsController extends Controller
 {
     public function getStats()
     {
