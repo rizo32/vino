@@ -3,7 +3,8 @@ import React from 'react';
 
 import { Pie } from 'react-chartjs-2';
 
-export const data2 = {
+const ThirdDataSet = () => {
+ const data2 = {
     labels: ['Italie', 'Portugal', 'France', 'Espagne', 'Chili'],
     datasets: [
       {
@@ -16,7 +17,7 @@ export const data2 = {
     ],
   };
   
-  export const options2 = {
+   const options2 = {
     plugins: {
       title: {
         display: true,
@@ -27,13 +28,14 @@ export const data2 = {
       },
     },
   };
-  export function thirdDataSet() {
+ 
     return (
       <div className="w-full h-full">
         <Pie data={data2} options={options2} />
       </div>
     );
   }
-  
+
+  export default ThirdDataSet;
   
   

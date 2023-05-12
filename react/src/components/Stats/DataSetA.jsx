@@ -10,7 +10,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-
+const FirstDataSet = () => {
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -21,7 +21,7 @@ ChartJS.register(
   Legend
 );
 
-export const options = {
+const options = {
   responsive: true,
   plugins: {
     legend: {
@@ -36,7 +36,7 @@ export const options = {
 
 const labels = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai'];
 
-export const data = {
+const data = {
   labels,
   datasets: [
     {
@@ -63,6 +63,7 @@ export const data = {
   ],
 };
 
-export function dataset1() {
+
   return <Line options={options} data={data} />;
-}
+};
+export default FirstDataSet;

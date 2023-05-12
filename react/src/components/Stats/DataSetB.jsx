@@ -1,11 +1,11 @@
 import React from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import { thirdDataSet } from "./DataSetC";
+import  ThirdDataSet  from "./DataSetC";
 import wineAvg from "./WineTypeAvg"
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-
+const SecondDataSet = () => {
  const data = {
   labels: ["Vin rouge", "Vin blanc"],
   datasets: [
@@ -31,7 +31,7 @@ const options = {
   },
 };
 
-export function secondDataSet() {
+
   return (
     <div className="flex flex-col items-center w-full">
       <h2 className="text-small mb-4">
@@ -42,10 +42,11 @@ export function secondDataSet() {
           <Pie data={data} options={options} />
         </div>
         <div className="flex justify-center w-full h-56 md:h-64 lg:h-96">
-          {thirdDataSet()}
+          <ThirdDataSet/>
         </div>
       </div>
     </div>
   );
 
 }
+export default SecondDataSet;
