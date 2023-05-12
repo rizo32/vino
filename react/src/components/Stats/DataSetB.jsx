@@ -26,7 +26,7 @@ const SecondDataSet = () => {
   }, []);
 
   const data = {
-    labels: ["Vin rouge", "Vin blanc", "Vin rosé", "Autres"],
+    labels: ["Vin rouge", "Vin blanc", "Vin rosé"],
     datasets: [
       {
         label: "nombre de bouteilles",
@@ -34,19 +34,18 @@ const SecondDataSet = () => {
           wineData.redWineCount,
           wineData.whiteWineCount,
           wineData.pinkWineCount,
-          wineData.otherWineCount,
         ],
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)", // Red Wine
           "rgba(255, 206, 86, 0.2)", // White Wine
           "rgba(255, 159, 243, 0.2)", // Pink Wine
-          "rgba(153, 102, 255, 0.2)", // Other Wine
+          
         ],
         borderColor: [
           "rgba(255, 99, 132, 1)", // idem
           "rgba(255, 206, 86, 1)",
           "rgba(255, 159, 243, 1)",
-          "rgba(153, 102, 255, 1)",
+          
         ],
 
         borderWidth: 1,
@@ -69,6 +68,9 @@ const SecondDataSet = () => {
           const percentage = ((value / total) * 100).toFixed(2);
           return percentage + '%';
         },
+        anchor: "end", 
+        align: "end", 
+        offset:-25, 
       },
     },
   };
