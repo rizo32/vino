@@ -55,4 +55,8 @@ class PieGraphController extends Controller
             'otherWineCount' => $otherWineCount,
         ]);
     }
+
+
+    public function topWineStats(){
+   
 }
