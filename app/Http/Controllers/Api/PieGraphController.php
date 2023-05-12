@@ -16,8 +16,8 @@ class PieGraphController extends Controller
     public function getWineStats()
     {
        /* data simple pour test -> manque logique */
-        $redWineCount = Bottle::where('type', 'red')->count();
-        $whiteWineCount = Bottle::where('type', 'white')->count();
+        $redWineCount = Bottle::where('type_id', '1')->count();
+        $whiteWineCount = Bottle::where('type_id', '2')->count();
 
      
         return response()->json([
