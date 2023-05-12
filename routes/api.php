@@ -70,7 +70,7 @@ Route::get('/admin', [UserController::class, 'userList'])->name('admin');
 Route::put('/admin/{id}', [UserController::class, 'userUpdate'])->name('user.update');
 Route::get('/stats', [QuickStatsController::class, 'getStats']);
 Route::get('/piestats', [PieGraphController::class, 'getWineStats']);
-Route::get('/piestats', [PieGraphController::class, 'topWineStats']);
+Route::get('/topWineStats', [PieGraphController::class, 'topWineStats']);
 /* YG> */
 
 
