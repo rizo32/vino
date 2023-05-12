@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Pie } from 'react-chartjs-2';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+
 
 const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/topWineStats`;
 
@@ -47,12 +50,20 @@ const ThirdDataSet = () => {
       legend: {
         position: 'chartArea',
       },
+      datalabels: {
+        color: '#000',
+        formatter: function (value, context) {
+          const total = context.dataset.data.reduce((a, b) => a + b, 0);
+          const percentage = ((value / total) * 100).toFixed(2);
+          return percentage + '%';
+        },
+      },
     },
   };
 
   return (
     <div className="w-full h-full">
-      <Pie data={data2} options={options2} />
+      <Pie data={data2} options={options2} plugins={[ChartDataLabels]} />
     </div>
   );
 };

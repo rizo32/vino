@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Pie } from "react-chartjs-2";
 import axios from "axios";
 import ThirdDataSet from "./DataSetC";
@@ -61,15 +62,24 @@ const SecondDataSet = () => {
       legend: {
         position: "chartArea",
       },
+      datalabels: {
+        color: '#000',
+        formatter: function (value, context) {
+          const total = context.dataset.data.reduce((a, b) => a + b, 0);
+          const percentage = ((value / total) * 100).toFixed(2);
+          return percentage + '%';
+        },
+      },
     },
   };
+  
 
   return (
     <div className="flex flex-col items-center w-full">
       <h2 className="text-small mb-4">Statistiques celliers</h2>
       <div className="grid grid-cols-2 gap-4 w-full">
         <div className="flex justify-center w-full h-56 md:h-64 lg:h-96">
-          <Pie data={data} options={options} />
+          <Pie data={data} options={options}  plugins={[ChartDataLabels]}/>
         </div>
         <div className="flex justify-center w-full h-56 md:h-64 lg:h-96">
           <ThirdDataSet />
