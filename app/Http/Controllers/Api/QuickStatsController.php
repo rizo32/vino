@@ -11,7 +11,7 @@ use App\Models\Country;
 
 use Illuminate\Http\Request;
 
-class StatsController extends Controller
+class QuickStatsController extends Controller
 {
     public function getStats()
     {
@@ -45,6 +45,8 @@ class StatsController extends Controller
             foreach ($cellarHasBottles as $cellarHasBottle) {
                 $bottle = Bottle::find($cellarHasBottle->bottle_id);
                 $totalWorth += $bottle->price_saq;
+                $quantity = $cellarHasBottle->quantity;
+                $totalWorth += $bottle->price_saq * $quantity;
             }
         }
     
@@ -64,11 +66,14 @@ class StatsController extends Controller
             $cellarHasBottles = CellarHasBottle::where('cellar_id', $cellar->id)->get();
             foreach ($cellarHasBottles as $cellarHasBottle) {
                 $bottle = Bottle::find($cellarHasBottle->bottle_id);
-                $totalWorth += $bottle->price_saq;
+                $quantity = $cellarHasBottle->quantity;
+                $totalWorth += $bottle->price_saq * $quantity;
             }
         }
+    
         return $totalWorth;
     }
+    
 
     private function getWineOfTheMoment()
     {
