@@ -74,7 +74,7 @@ const FirstDataSet = () => {
       },
       {
           label: `moyenne des bouteilles supprimer / utilisateur`,
-          data: [4, 240, 360, 190, 320],
+          data: [chartData[0].avgAddedBottlesPerUser, chartData[1].avgAddedBottlesPerUser, chartData[2].avgAddedBottlesPerUser, chartData[3].avgAddedBottlesPerUser, chartData[4].avgAddedBottlesPerUser],
           borderColor: 'rgba(127,29,29,1)',
           backgroundColor: 'rgba(127,29,29,0.5)',
           fill: false,
