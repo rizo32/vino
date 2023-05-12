@@ -58,26 +58,20 @@ class PieGraphController extends Controller
 
 
     public function topWineStats(){
-        /* fonction qui resort le total des bouteilles dans les 5 régions les plus populaire dans les cellier de nos utilisateurs. */
-
-
-        $topWineStats = Country::select('name', 'id')
-
-        ->withCount(['bottles' => function ($query) {
-            $query->select(\DB::raw('sum(cellar_has_bottles.quantity) as total'))
-            ->join('cellar_has_bottles', 'cellar_has_bottles.bottle_id', '=', 'bottles.id')
-            ->join('cellars', 'cellars.id', '=', 'cellar_has_bottles.cellar_id')
+          /* fonction qui resort le total des bouteilles dans les 5 régions les plus populaire dans les cellier de nos utilisateurs. */
+        $topWineStats = Country::select('countries.name', 'countries.id', \DB::raw('sum(cellars_has_bottles.quantity) as bottles_count'))
+            ->join('bottles', 'bottles.country_id', '=', 'countries.id')
+            ->join('cellars_has_bottles', 'cellars_has_bottles.bottle_id', '=', 'bottles.id')
+            ->join('cellars', 'cellars.id', '=', 'cellars_has_bottles.cellar_id')
             ->join('users', 'users.id', '=', 'cellars.user_id')
-            ->groupBy('bottles.country_id')
-            ->orderBy('total', 'desc')
-            ->limit(5);
-
-        }])
-        ->get();
-
+            ->groupBy('countries.id', 'countries.name')
+            ->orderBy('bottles_count', 'desc')
+            ->limit(5)
+            ->get();
+    
         return response()->json([
             'topWineStats' => $topWineStats,
         ]);
-
     }
+    
 }
