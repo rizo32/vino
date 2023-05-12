@@ -13,5 +13,7 @@ use Illuminate\Http\Request;
 
 class LineGraphController extends Controller
 {
-    
+    public function appStats(){
+        
+    }
 }
