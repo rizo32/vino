@@ -60,7 +60,7 @@ const FirstDataSet = () => {
     datasets: [
       {
         label: `nombre total d'utilisateurs`,
-        data: [450, 700, 320, 580, 820],
+        data: [chartData[0].totalUsers, chartData[1].totalUsers, chartData[2].totalUsers, chartData[3].totalUsers, chartData[4].totalUsers],
         borderColor: 'rgba(255, 99, 132, 1)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         fill: false,
