@@ -68,9 +68,9 @@ const SecondDataSet = () => {
           const percentage = ((value / total) * 100).toFixed(2);
           return percentage + '%';
         },
-        anchor: "end", // or 'start', 'center'
-        align: "end", // or 'end', 'center'
-        offset: -4, // you can use positive or negative values
+        anchor: "end", 
+        align: "end", 
+        offset:-25, 
       },
     },
   };

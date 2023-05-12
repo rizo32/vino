@@ -57,6 +57,9 @@ const ThirdDataSet = () => {
           const percentage = ((value / total) * 100).toFixed(2);
           return percentage + '%';
         },
+        anchor: "end", 
+        align: "end", 
+        offset:-25, 
       },
     },
   };
