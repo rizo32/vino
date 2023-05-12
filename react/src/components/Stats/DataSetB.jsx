@@ -15,7 +15,7 @@ const SecondDataSet = () => {
       try {
         const response = await axios.get(baseURL);
         setWineData(response.data);
-        console.log(response.data);
+        
       } catch (error) {
         console.error("Error fetching wine data:", error);
       }

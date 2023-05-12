@@ -16,7 +16,7 @@ const ThirdDataSet = () => {
         const data = response.data.topWineStats.map((item) => parseInt(item.bottles_count));
         setTopWineData({ labels, data });
         
-        console.log(response.data);
+       
       } catch (error) {
         console.error("Error fetching wine data:", error);
       }
