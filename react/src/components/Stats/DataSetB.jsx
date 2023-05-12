@@ -6,7 +6,7 @@ import wineAvg from "./WineTypeAvg"
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export const data = {
+ const data = {
   labels: ["Vin rouge", "Vin blanc"],
   datasets: [
     {
@@ -19,14 +19,14 @@ export const data = {
   ],
 };
 
-export const options = {
+const options = {
   plugins: {
     title: {
       display: true,
       text: "Total des bouteilles par type",
     },
     legend: {
-      position: "top",
+      position: "chartArea",
     },
   },
 };

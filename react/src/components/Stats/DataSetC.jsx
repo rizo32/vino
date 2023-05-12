@@ -23,7 +23,7 @@ export const data2 = {
         text: 'Total des bouteilles dans les top 5 régions',
       },
       legend: {
-        position: 'top',
+        position: 'chartArea',
       },
     },
   };
