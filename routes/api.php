@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TypeController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\QuickStatsController;
+use App\Http\Controllers\Api\PieGraphController;
+use App\Http\Controllers\Api\LineGraphController;
 use App\Models\User;
 
 /*
@@ -68,7 +70,9 @@ Route::get('/saq/fetch', [SaqCatalogueController::class, 'fetchProduits'])->name
 Route::get('/admin', [UserController::class, 'userList'])->name('admin');
 Route::put('/admin/{id}', [UserController::class, 'userUpdate'])->name('user.update');
 Route::get('/stats', [QuickStatsController::class, 'getStats']);
-Route::get('/piestats', [PieGraphController::class, 'getGraphStats']);
+Route::get('/piestats', [PieGraphController::class, 'getWineStats']);
+Route::get('/topWineStats', [PieGraphController::class, 'topWineStats']);
+Route::get('/appStats', [LineGraphController::class, 'appStats']);
 /* YG> */
 
 

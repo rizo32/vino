@@ -1,51 +1,91 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Pie } from "react-chartjs-2";
-import { thirdDataSet } from "./DataSetC";
-import wineAvg from "./WineTypeAvg"
+import axios from "axios";
+import ThirdDataSet from "./DataSetC";
+const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/piestats`;
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export const data = {
-  labels: ["Vin rouge", "Vin blanc"],
-  datasets: [
-    {
-      label: "nombre de bouteilles",
-      data: [wineAvg['red'], wineAvg['white']],
-      backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(255, 206, 86, 0.2)"],
-      borderColor: ["rgba(255, 99, 132, 1)", "rgba(255, 206, 86, 1)"],
-      borderWidth: 1,
-    },
-  ],
-};
+const SecondDataSet = () => {
+  const [wineData, setWineData] = useState({ red: 0, white: 0 });
 
-export const options = {
-  plugins: {
-    title: {
-      display: true,
-      text: "Total des bouteilles par type",
-    },
-    legend: {
-      position: "top",
-    },
-  },
-};
+  useEffect(() => {
+    const fetchWineData = async () => {
+      try {
+        const response = await axios.get(baseURL);
+        setWineData(response.data);
+        
+      } catch (error) {
+        console.error("Error fetching wine data:", error);
+      }
+    };
 
-export function secondDataSet() {
+    fetchWineData();
+  }, []);
+
+  const data = {
+    labels: ["Vin rouge", "Vin blanc", "Vin rosé", "Autres"],
+    datasets: [
+      {
+        label: "nombre de bouteilles",
+        data: [
+          wineData.redWineCount,
+          wineData.whiteWineCount,
+          wineData.pinkWineCount,
+          wineData.otherWineCount,
+        ],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)", // Red Wine
+          "rgba(255, 206, 86, 0.2)", // White Wine
+          "rgba(255, 159, 243, 0.2)", // Pink Wine
+          "rgba(153, 102, 255, 0.2)", // Other Wine
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)", // idem
+          "rgba(255, 206, 86, 1)",
+          "rgba(255, 159, 243, 1)",
+          "rgba(153, 102, 255, 1)",
+        ],
+
+        borderWidth: 1,
+      },
+    ],
+  };
+  const options = {
+    plugins: {
+      title: {
+        display: true,
+        text: "Total des bouteilles par type",
+      },
+      legend: {
+        position: "chartArea",
+      },
+      datalabels: {
+        color: '#000',
+        formatter: function (value, context) {
+          const total = context.dataset.data.reduce((a, b) => a + b, 0);
+          const percentage = ((value / total) * 100).toFixed(2);
+          return percentage + '%';
+        },
+      },
+    },
+  };
+  
+
   return (
     <div className="flex flex-col items-center w-full">
-      <h2 className="text-small mb-4">
-        Statistiques celliers
-      </h2>
+      <h2 className="text-small mb-4">Statistiques celliers</h2>
       <div className="grid grid-cols-2 gap-4 w-full">
         <div className="flex justify-center w-full h-56 md:h-64 lg:h-96">
-          <Pie data={data} options={options} />
+          <Pie data={data} options={options}  plugins={[ChartDataLabels]}/>
         </div>
         <div className="flex justify-center w-full h-56 md:h-64 lg:h-96">
-          {thirdDataSet()}
+          <ThirdDataSet />
         </div>
       </div>
     </div>
   );
-
-}
+};
+export default SecondDataSet;
