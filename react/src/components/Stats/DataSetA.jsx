@@ -44,6 +44,7 @@ const FirstDataSet = () => {
       try {
         const response = await axios.get(baseURL);
         setChartData(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error('Error fetching app stats:', error);
       }
