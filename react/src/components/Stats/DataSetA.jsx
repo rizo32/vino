@@ -52,40 +52,40 @@ const FirstDataSet = () => {
     fetchData();
   }, []);
   
+  if (chartData.length === 0) {
+    return <div>Loading...</div>;
+  }
+
   const labels = chartData.map((data) => data.month);
-  
+
   const data = {
     labels,
     datasets: [
       {
         label: `nombre total d'utilisateurs`,
-        data: [chartData[0].totalUsers, chartData[1].totalUsers, chartData[2].totalUsers, chartData[3].totalUsers, chartData[4].totalUsers],
+        data: chartData.map((data) => data.totalUsers),
         borderColor: 'rgba(255, 99, 132, 1)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         fill: false,
       },
       {
         label: `moyennes des bouteilles  / utilisateur`,
-        data: [chartData[0].avgBottlesPerUser, chartData[1].avgBottlesPerUser, chartData[2].avgBottlesPerUser, chartData[3].avgBottlesPerUser, chartData[4].avgBottlesPerUser],
+        data: chartData.map((data) => data.avgBottlesPerUser),
         borderColor: 'rgba(53, 162, 235, 1)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
         fill: false,
       },
       {
-          label: `moyenne des bouteilles ajouter / utilisateur`,
-          data: [chartData[0].avgAddedBottlesPerUser, chartData[1].avgAddedBottlesPerUser, chartData[2].avgAddedBottlesPerUser, chartData[3].avgAddedBottlesPerUser, chartData[4].avgAddedBottlesPerUser],
-          borderColor: 'rgba(127,29,29,1)',
-          backgroundColor: 'rgba(127,29,29,0.5)',
-          fill: false,
-        },
+        label: `moyenne des bouteilles ajouter / utilisateur`,
+        data: chartData.map((data) => data.avgAddedBottlesPerUser),
+        borderColor: 'rgba(127,29,29,1)',
+        backgroundColor: 'rgba(127,29,29,0.5)',
+        fill: false,
+      },
     ],
   };
-  
-  
-    return <Line options={options} data={data} />;
-  };
 
-
-
+  return <Line options={options} data={data} />;
+};
 
 export default FirstDataSet;
