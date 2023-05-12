@@ -48,7 +48,7 @@ const ThirdDataSet = () => {
         text: 'Total des bouteilles dans les top 5 régions',
       },
       legend: {
-        position: 'chartArea',
+        position: 'center',
       },
       datalabels: {
         color: '#000',
