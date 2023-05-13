@@ -65,7 +65,7 @@ const Admin = () => {
       }`}
       onClick={() => setActiveTab("stats")}
     >
-      Stats
+      Statistique
     </button>
     <button
       className={`ml-4 px-4 py-2 rounded-lg border ${
@@ -73,7 +73,7 @@ const Admin = () => {
       }`}
       onClick={() => setActiveTab("users")}
     >
-      Users
+      Utilisateurs
     </button>
   </div>
 
