@@ -57,6 +57,11 @@ const TopWinePieChart = () => {
      
       datalabels: {
         color: '#000',
+        font: {
+          size: 10, 
+          weight: 'bold' 
+        },
+        padding: 2, 
         formatter: function (value, context) {
           const total = context.dataset.data.reduce((a, b) => a + b, 0);
           const percentage = ((value / total) * 100).toFixed(2);
@@ -64,7 +69,9 @@ const TopWinePieChart = () => {
         },
         anchor: "end", 
         align: "end", 
-        offset:-25, 
+        offset: -25, 
+        backgroundColor: 'rgba(255, 255, 255, 0.6)', 
+        borderRadius: 4, 
       },
     },
   };
