@@ -53,6 +53,7 @@ const Admin = () => {
         .then((response) => {
           refreshUsers();
           closeModal();
+          setSuccessMessage("Utilisateurs supprimer !");
         })
         .catch((error) => {
           console.error(error);
@@ -92,7 +93,7 @@ const Admin = () => {
         console.log(response);
         closeModal();
         refreshUsers();
-        setSuccessMessage("utilisateurs mis a jour!");
+        setSuccessMessage("Utilisateurs mis à jour !");
       })
       .catch((error) => {
         console.error(error);
