@@ -42,6 +42,35 @@ const Admin = () => {
     setSelectedUser(null);
   };
 
+  const deleteUser = (userId) => {
+    axios
+      .delete(`${baseURL}/${userId}`)
+      .then((response) => {
+        refreshUsers();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  
+  const refreshUsers = () => {
+    axios
+      .get(baseURL)
+      .then((response) => {
+        setUsers(response.data.users);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  
+  useEffect(() => {
+    refreshUsers();
+  }, []);
+  
+
+
+
   const updateUser = () => {
     axios
       .put(`${baseURL}/${selectedUser.id}`, {
@@ -107,7 +136,12 @@ const Admin = () => {
         </div>
         {showModal && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
-                <div className="bg-white p-8 max-w-md mx-auto rounded-lg shadow-lg">
+                <div className="bg-white p-8 max-w-lg mx-auto rounded-lg shadow-2xl border-2 border-gray-300 relative">
+                    <button className="absolute top-2 right-2 bg-red-900 text-white rounded-full p-1" onClick={closeModal}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                     <h2 className="text-xl font-bold mb-4">Modifications utilisateur</h2>
                     {selectedUser && (
                         <div>
@@ -123,8 +157,8 @@ const Admin = () => {
                         </div>
                     )}
                     <div className="flex justify-between mt-4">
-                        <button className="px-4 py-2 bg-red-900 text-white rounded-lg" onClick={closeModal}>
-                            Fermer
+                        <button className="px-4 py-2 bg-red-900 text-white rounded-lg" onClick={deleteUser}>
+                            Supprimer
                         </button>
                         <button className="px-4 py-2 bg-red-900 text-white rounded-lg" onClick={updateUser}>
                             Sauvegarder
@@ -135,6 +169,7 @@ const Admin = () => {
         )}
     </div>
 )}
+
 
 
         {activeTab === "stats" && (
