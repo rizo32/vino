@@ -29,6 +29,14 @@ const LinePlotChart = () => {
   
   const options = {
     responsive: true,
+    layout: {
+      padding: {
+        top: 0,
+        left: 20,
+        right: 20,
+        bottom: 0,
+      },
+    },
     plugins: {
       legend: {
         position: 'top',
