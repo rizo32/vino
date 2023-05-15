@@ -74,7 +74,15 @@ const Admin = () => {
   useEffect(() => {
     refreshUsers();
   }, []);
-
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage("");
+      }, 3000); 
+  
+      return () => clearTimeout(timer); 
+    }
+  }, [successMessage]);
   const updateUser = () => {
     axios
       .put(`${baseURL}/${selectedUser.id}`, {
@@ -84,14 +92,27 @@ const Admin = () => {
         console.log(response);
         closeModal();
         refreshUsers();
+        setSuccessMessage("utilisateurs mis a jour!");
       })
       .catch((error) => {
         console.error(error);
       });
   };
 
+
   return (
+    
     <div className="pt-4 container mx-auto">
+       {successMessage && (
+      <div className="success-message fixed top-10 left-1/2 transform -translate-x-1/2 bg-green-400 text-white px-6 py-3 rounded shadow-lg transition-all duration-500 z-50 flex items-center space-x-3">
+        <span className="mr-2">{successMessage}</span>
+        <button onClick={() => setSuccessMessage("")} className="hover:text-green-200">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-5 w-5">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    )}
       <div className="flex justify-center mb-4">
         <button
           className={`mr-4 px-4 py-2 rounded-lg border ${
