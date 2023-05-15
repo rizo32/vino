@@ -46,10 +46,15 @@ const TopWinePieChart = () => {
       title: {
         display: true,
         text: 'Total des bouteilles dans les top 5 régions',
+       
       },
       legend: {
         position: 'chartArea',
+        labels: {
+          boxWidth: 2,
+        },
       },
+     
       datalabels: {
         color: '#000',
         formatter: function (value, context) {

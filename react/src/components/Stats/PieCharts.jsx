@@ -60,6 +60,9 @@ const PieCharts = () => {
       },
       legend: {
         position: "chartArea",
+        labels: {
+          boxWidth: 2,
+        },
       },
       datalabels: {
         color: '#000',
