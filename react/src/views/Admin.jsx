@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import  FirstDataSet  from "../components/Stats/DataSetA";
+import  LinePlotChart  from "../components/Stats/LinePlotChart";
 import  SecondDataSet  from "../components/Stats/DataSetB";
 import QuickStats from '../components/Stats/QuickStats';
 
@@ -136,7 +136,7 @@ const Admin = () => {
         {activeTab === "stats" && (
           <div>
             <QuickStats />
-            <FirstDataSet/>
+            <LinePlotChart/>
             <SecondDataSet/>
           </div>
         )}

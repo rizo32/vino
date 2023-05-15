@@ -22,7 +22,7 @@ ChartJS.register(
   Legend
 );
 
-const FirstDataSet = () => {
+const LinePlotChart = () => {
   const [chartData, setChartData] = useState([]);
 
   const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/appStats`;
@@ -88,4 +88,4 @@ const FirstDataSet = () => {
   return <Line options={options} data={data} />;
 };
 
-export default FirstDataSet;
+export default LinePlotChart;
