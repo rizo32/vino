@@ -51,6 +51,7 @@ class QuickStatsController extends Controller
         }
     
         $avgTotalWorth = $cellarCount > 0 ? $totalWorth / $cellarCount : 0;
+        $avgTotalWorth = number_format($avgTotalWorth, 2);
     
         return $avgTotalWorth;
     }
