@@ -35,8 +35,14 @@ const LinePlotChart = () => {
       },
       title: {
         display: true,
-        text: 'Participation des utilisateurs',
+        text: 'Utilisateurs',
+        font: {
+          size: 14, 
+          weight: 'bold',
+        },
+        color: 'rgba(107, 114, 128, 1)', 
       },
+      
     },
   };
   useEffect(() => {

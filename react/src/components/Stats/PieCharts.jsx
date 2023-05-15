@@ -78,7 +78,7 @@ const PieCharts = () => {
 
   return (
     <div className="flex flex-col items-center w-full">
-      <h2 className="text-small mb-4">Statistiques celliers</h2>
+      <h6 className=' text-sm width-full text-center font-semibold text-gray-500'>Celliers</h6>
       <div className="grid grid-cols-2 gap-4 w-full">
         <div className="flex justify-center w-full h-56 md:h-64 lg:h-96">
           <Pie data={data} options={options}  plugins={[ChartDataLabels]}/>
