@@ -55,7 +55,7 @@ export default function Login() {
                         placeholder="johndoe@cmaisonneuve.qc.ca"
                         className="rounded-lg bg-white h-12 pl-2 shadow-shadow-tiny-inset"
                     />
-                    {message.password && (
+                    {!message.email && message.password && (
                         <div className="text-red-900 mt-vh-15 absolute w-full text-center left-1/2 transform -translate-x-1/2">
                             <p>{message.password[0]}</p>
                         </div>
