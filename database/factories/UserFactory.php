@@ -28,7 +28,8 @@ class UserFactory extends Factory
         return [
             'first_name' => $firstName,
             'last_name' => $lastName,
-            'email' => strtolower($firstName) . '.' . strtolower($lastName) . '@example.com',
+            'email' => strtolower($firstName) . '.' . strtolower($lastName) . '@gmail.com',
+            'password' => bcrypt('password'),
             'user_type_id' => 3,
             'created_at' => $this->faker->dateTimeBetween('-6 months', 'now'),
         ];
