@@ -14,6 +14,7 @@ class CellarFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
+            'name' => $this->faker->word,
             'created_at' => $this->faker->dateTimeBetween('-6 months', 'now'),
         ];
     }

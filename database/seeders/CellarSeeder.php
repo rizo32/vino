@@ -2,18 +2,19 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
+use App\Models\Cellar;
 use Illuminate\Database\Seeder;
 
 class CellarSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        //
+        User::all()->each(function ($user) {
+            Cellar::factory()->create([
+                'user_id' => $user->id,
+                'name' => 'Cellier ' . $user->first_name,
+            ]);
+        });
     }
 }
