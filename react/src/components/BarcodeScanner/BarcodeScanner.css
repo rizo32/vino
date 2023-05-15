@@ -1,0 +1,13 @@
+#html5qr-code-full-region__scan_region img {
+    margin: auto;
+}
+
+#html5-qrcode-button-camera-start, #html5-qrcode-button-camera-permission {
+    background-color: grey;
+    color: white;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+}

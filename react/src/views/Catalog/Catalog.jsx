@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../../contexts/ContextProvider";
 import FilterPanel from "../../components/Filter/FilterPanel";
+import BarcodeScanner from "../../components/BarcodeScanner/BarcodeScanner";
 
 export default function Catalog() {
     const { searchValue } = useStateContext();
@@ -15,6 +17,8 @@ export default function Catalog() {
     const containerRef = useRef(null);
     const sentinelRef = useRef();
     const [showMessage, setShowMessage] = useState(false);
+    const [scanned, setScanned] = useState();
+    const [scannedBottle, setScannedBottle] = useState();
 
     const [filters, setFilters] = useState({
         type: [],
@@ -27,6 +31,7 @@ export default function Catalog() {
     // Elodie + Gabriel
     // aller chercher les bouteilles dans la base de données et les mettre dans le state
     const getBottles = (bottleUpdt) => {
+        setScanned(false);
         setLoading(true); // à mettre en place (eg Gif)
         //sauvegarder la position avant de fetch les prochaines bouteilles
         setScrollPosition(window.pageYOffset);
@@ -168,18 +173,102 @@ export default function Catalog() {
         }
     }, [showMessage]);
 
+    //fonction lorsque le code barre est detecté
+    const onNewScanResult = (decodedText, decodedResult) => {
+        setScanned(decodedText);
+        getScanBottle(decodedText);
+    };
+
+    //fetch la bouteille scannée si elle existe
+    const getScanBottle = (code) => {
+        axiosClient.get(`/bottleScan?code=${code}`)
+        .then(({data}) => {
+            if(data.data){
+                addScanToCellar(data.data);
+                data.data.quantity = data.data.quantity + 1;
+            }
+            setScannedBottle(data.data);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    }
+
+    //ajouter au cellier, fait pour apres le scan
+    const addScanToCellar = (bottle) => {
+        axiosClient
+            .post(
+                `/storeScanBottle`,
+                bottle
+            )
+            .then(({ data }) => {
+                setScannedBottle(data.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    //reset pour enlever le resultat du scan
+    const resetScan = () => {
+        setScanned(false);
+        setScannedBottle(false);
+    }
+
     return (
         <div className="flex flex-col" ref={containerRef}>
-            {searchValue ? null : (
+            {searchValue || scanned ? null : (
                 <div className="flex flex-col h-[76vh] place-content-center text-center text-gray-500">
                     <div className="mx-auto">
                         Utilisez la barre de recherche
                         <br />
                         pour trouver votre bouteille
                     </div>
-                    <div className="mx-auto mt-2"></div>
+                    <div className="mx-auto">- ou -</div>
+                    <div className="mx-auto">scanner votre bouteille</div>
+                    <BarcodeScanner
+                        fps={10}
+                        qrbox={250}
+                        qrCodeSuccessCallback={onNewScanResult}
+                    />
                 </div>
             )}
+            {scanned && scannedBottle ? (
+                <div className="flex flex-col h-[75vh] place-content-center text-center">
+                    <div className="mx-auto mb-6">Résultats du scan :</div>
+                    <div className="text-lime-600 mb-4">La bouteille a été ajoutée à votre cellier !</div>
+                    <Link
+                            to={`/product/${scannedBottle.id}`}
+                            state={{ scannedBottle }}
+                    >
+                    <div className="mx-auto pb-4 flex flex-row w-fit place-content-center">
+                        <img className="h-[100px] mr-3 mt-1" src={scannedBottle.image_url} alt={scannedBottle.name} />
+                        <div className="inline-block flex flex-col text-start w-1/2">
+                            <div className="mb-1">{scannedBottle.name}</div>
+                            <div className="mb-1">{scannedBottle.format_name}</div>
+                            <div className="font-bold">Quantité : {scannedBottle.quantity}</div>
+                        </div>
+                    </div>
+                    </Link>
+                    <div className="mx-auto cursor-pointer text-red-900 underline mt-3" onClick={resetScan}>
+                        retour
+                    </div>
+                </div>
+            )
+            : scanned ? (
+                <div className="flex flex-col h-[75vh] place-content-center text-center text-gray-500">
+                    <div className="mx-auto">(UPC {scanned})</div>
+                    <div className="mx-auto">
+                        Cette bouteille n'est pas dans
+                        <br />
+                        notre système.
+                    </div>
+                    <div className="mx-auto cursor-pointer text-red-900 underline mt-3" onClick={resetScan}>
+                        retour
+                    </div>
+                </div>
+            )
+            : null}
             {/* Loading state n'est pas nécéssaire dans l'état actuel des choses mais pourrait le devenir */}
             {loading ? (
                 <p className="ml-2 mb-1 mt-4">Chargement...</p>
