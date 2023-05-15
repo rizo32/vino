@@ -50,6 +50,7 @@ const Admin = () => {
             .delete(`${deleteURL}/${userId}`)
             .then((response) => {
                 refreshUsers();
+                closeModal();
             })
             .catch((error) => {
                 console.error(error);
