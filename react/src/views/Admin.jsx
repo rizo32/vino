@@ -5,6 +5,7 @@ import  PieCharts  from "../components/Stats/PieCharts";
 import QuickStats from '../components/Stats/QuickStats';
 
 const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/admin`;
+const deleteURL = `${import.meta.env.VITE_API_BASE_URL}/api/deleteUser`;
 
 const Admin = () => {
   const [users, setUsers] = useState([]);
@@ -44,7 +45,7 @@ const Admin = () => {
 
   const deleteUser = (userId) => {
     axios
-      .delete(`${baseURL}/${userId}`)
+      .delete(`${deleteURL}/${userId}`)
       .then((response) => {
         refreshUsers();
       })
