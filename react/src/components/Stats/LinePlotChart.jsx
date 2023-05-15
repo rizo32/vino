@@ -29,9 +29,17 @@ const LinePlotChart = () => {
   
   const options = {
     responsive: true,
+    layout: {
+      padding: {
+        top: 0,
+        left: 20,
+        right: 20,
+        bottom: 0,
+      },
+    },
     plugins: {
       legend: {
-        position: 'top',
+        position: 'bottom',
       },
       title: {
         display: true,
@@ -68,21 +76,21 @@ const LinePlotChart = () => {
     labels,
     datasets: [
       {
-        label: `nombre total d'utilisateurs`,
+        label: `Nombre total d'utilisateurs`,
         data: chartData.map((data) => data.totalUsers),
         borderColor: 'rgba(255, 99, 132, 1)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         fill: false,
       },
       {
-        label: `moyennes des bouteilles  / utilisateur`,
+        label: `Moyennes des bouteilles par utilisateur`,
         data: chartData.map((data) => data.avgBottlesPerUser),
         borderColor: 'rgba(53, 162, 235, 1)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
         fill: false,
       },
       {
-        label: `moyenne des bouteilles ajouter / utilisateur`,
+        label: `Moyenne des bouteilles ajoutées par utilisateur`,
         data: chartData.map((data) => data.avgAddedBottlesPerUser),
         borderColor: 'rgba(127,29,29,1)',
         backgroundColor: 'rgba(127,29,29,0.5)',
