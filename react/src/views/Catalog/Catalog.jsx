@@ -173,20 +173,46 @@ export default function Catalog() {
         }
     }, [showMessage]);
 
-    //fonction apres le scan
+    //fonction lorsque le code barre est detecté
     const onNewScanResult = (decodedText, decodedResult) => {
         setScanned(decodedText);
         getScanBottle(decodedText);
     };
 
+    //fetch la bouteille scannée si elle existe
     const getScanBottle = (code) => {
         axiosClient.get(`/bottleScan?code=${code}`)
         .then(({data}) => {
+            if(data.data){
+                addScanToCellar(data.data);
+                data.data.quantity = data.data.quantity + 1;
+            }
             setScannedBottle(data.data);
         })
         .catch((error) => {
-            console.error(error.response);
+            console.error(error);
         });
+    }
+
+    //ajouter au cellier, fait pour apres le scan
+    const addScanToCellar = (bottle) => {
+        axiosClient
+            .post(
+                `/storeScanBottle`,
+                bottle
+            )
+            .then(({ data }) => {
+                setScannedBottle(data.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    //reset pour enlever le resultat du scan
+    const resetScan = () => {
+        setScanned(false);
+        setScannedBottle(false);
     }
 
     return (
@@ -224,32 +250,22 @@ export default function Catalog() {
                         </div>
                     </div>
                     </Link>
-                    <div className="mx-auto">
-                        
+                    <div className="mx-auto cursor-pointer text-red-900 underline mt-3" onClick={resetScan}>
+                        retour
                     </div>
                 </div>
             )
             : scanned ? (
                 <div className="flex flex-col h-[75vh] place-content-center text-center text-gray-500">
-                    <div className="mx-auto">{scanned}</div>
+                    <div className="mx-auto">(UPC {scanned})</div>
                     <div className="mx-auto">
                         Cette bouteille n'est pas dans
                         <br />
                         notre système.
                     </div>
-                    <div className="mx-auto">
-                        Utilisez la barre de recherche
-                        <br />
-                        pour trouver votre bouteille
+                    <div className="mx-auto cursor-pointer text-red-900 underline mt-3" onClick={resetScan}>
+                        retour
                     </div>
-                    <div className="mx-auto">
-                        - ou -
-                    </div>
-                    <BarcodeScanner
-                        fps={10}
-                        qrbox={250}
-                        qrCodeSuccessCallback={onNewScanResult}
-                    />
                 </div>
             )
             : null}

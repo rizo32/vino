@@ -149,4 +149,35 @@ class CellarHasBottleController extends Controller
 
         return new CellarHasBottleResource($cellarHasBottle);
     }
+
+    public function storeScanBottle(Request $request)
+    {
+        // Utilisation connecté
+        $user = auth()->user();
+
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        //ajouter une bouteille au cellier de l'user connecté
+        $bottleInCellar = CellarHasBottle::query()->where('bottle_id', '=', $request->input('id'))->where('cellar_id', '=', $user->cellar->id)->first();
+
+        // incrémentation du nombre de bouteilles dans cellier (pour la pastille colorée)
+        if ($bottleInCellar) {
+            $data = ['quantity' => $bottleInCellar->quantity + 1];
+            $bottleInCellar->update($data);
+            return BottleResource::collection($bottleInCellar);
+        }
+
+        $cellarHasBottle = new CellarHasBottle([
+            //ajouter une bouteille au cellier de l'user connecté
+            'cellar_id' => $user->cellar->id,
+            'bottle_id' => $request->input('id'),
+            'quantity' => 1,
+        ]);
+
+        $cellarHasBottle->save();
+
+        return BottleResource::collection($cellarHasBottle);
+    }
 }
