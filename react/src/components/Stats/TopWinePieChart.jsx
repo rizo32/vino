@@ -46,6 +46,10 @@ const TopWinePieChart = () => {
       title: {
         display: true,
         text: 'Total des bouteilles dans les top 5 régions',
+        font: {
+          size: 13,
+          weight: "normal",
+        },
        
       },
       legend: {

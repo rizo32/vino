@@ -57,6 +57,10 @@ const PieCharts = () => {
       title: {
         display: true,
         text: "Total des bouteilles par type",
+        font: {
+          size: 13,
+          weight: "normal",
+        },
       },
       legend: {
         position: "chartArea",
