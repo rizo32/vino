@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import  LinePlotChart  from "../components/Stats/LinePlotChart";
-import  SecondDataSet  from "../components/Stats/DataSetB";
+import  PieCharts  from "../components/Stats/PieCharts";
 import QuickStats from '../components/Stats/QuickStats';
 
 const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/admin`;
@@ -137,7 +137,7 @@ const Admin = () => {
           <div>
             <QuickStats />
             <LinePlotChart/>
-            <SecondDataSet/>
+            <PieCharts/>
           </div>
         )}
       </div>

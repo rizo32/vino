@@ -7,7 +7,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/topWineStats`;
 
-const ThirdDataSet = () => {
+const TopWinePieChart = () => {
   const [topWineData, setTopWineData] = useState({ labels: [], data: [] }); /* doit mapper etant donner que les labels sont changeeant dépendemment du score  */
 
 
@@ -71,4 +71,4 @@ const ThirdDataSet = () => {
   );
 };
 
-export default ThirdDataSet;
+export default TopWinePieChart;
