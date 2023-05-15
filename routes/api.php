@@ -73,6 +73,8 @@ Route::get('/stats', [QuickStatsController::class, 'getStats']);
 Route::get('/piestats', [PieGraphController::class, 'getWineStats']);
 Route::get('/topWineStats', [PieGraphController::class, 'topWineStats']);
 Route::get('/appStats', [LineGraphController::class, 'appStats']);
+Route::delete('/deleteUser/{id}', [UserController::class, 'deleteUser']);
+
 /* YG> */
 
 
