@@ -40,9 +40,7 @@ const TopNavbar = () => {
         } else if (!location.pathname.includes("/product/")) {
             setSearchBarOpen(false);
             setSearchValue("");
-            if (searchInputRef.current) {
-                searchInputRef.current.value = "";
-            }
+            clearSearchValue();
         }
     }, [location, setSearchValue]);
 
