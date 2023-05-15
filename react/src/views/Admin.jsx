@@ -43,16 +43,20 @@ const Admin = () => {
     setSelectedUser(null);
   };
 
-  const deleteUser = (userId) => {
-    axios
-      .delete(`${deleteURL}/${userId}`)
-      .then((response) => {
-        refreshUsers();
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+  const deleteUser = () => {
+    if (selectedUser) {
+        const userId = selectedUser.id;
+        axios
+            .delete(`${deleteURL}/${userId}`)
+            .then((response) => {
+                refreshUsers();
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+};
+
   
   const refreshUsers = () => {
     axios
