@@ -27,9 +27,6 @@ const QuickStats = () => {
 
   return (
     <div className="flex flex-col items-center w-full">
-      <h2 className="text-l font-semibold mb-4">
-        Panneaux de statistiques
-      </h2>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <StatCard title="Total des utilisateurs" value={numberOfUsers} />
         <StatCard title="Prix moyen d'un cellier" value={`$${avgCellarTotalWorth}`} />
