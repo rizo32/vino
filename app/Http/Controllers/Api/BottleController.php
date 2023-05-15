@@ -70,6 +70,7 @@ class BottleController extends Controller
      */
     public function show(Bottle $bottle)
     {
+        dd($bottle);
         //json des infos de la bouteille
         return new BottleResource($bottle);
     }
@@ -100,5 +101,15 @@ class BottleController extends Controller
         $bottle->delete();
 
         return response("", 204);
+    }
+
+    public function scan(Request $request)
+    {
+        $bottle = Bottle::query()->where('code_cup', 'LIKE', '%'.$request->code.'%')->first();
+        if($bottle){
+            return new BottleResource($bottle);
+        }else {
+            return false;
+        }
     }
 }

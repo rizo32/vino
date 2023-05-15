@@ -53,6 +53,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Gestion des bouteilles
     Route::apiResource('/bottles', BottleController::class);
 
+    //get bottle from barcode
+    Route::get('/bottleScan', [BottleController::class, 'scan']);
+
     // Va chercher les options pour les filtres
     // Route::apiResource('/countries', CountryController::class);
     // Route::apiResource('/types', TypeController::class);
