@@ -180,9 +180,9 @@ const Admin = () => {
 
         {activeTab === "stats" && (
           <div>
-            <QuickStats />
-            <LinePlotChart/>
-            <PieCharts/>
+           <div className=" pb-5">  <QuickStats /></div>
+            <LinePlotChart/> 
+            <div className="pt-6 pb-6"> <PieCharts/></div>
           </div>
         )}
       </div>
