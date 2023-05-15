@@ -2,22 +2,19 @@
 
 namespace Database\Factories;
 
+use App\Models\Cellar;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Cellar>
- */
 class CellarFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = Cellar::class;
+
     public function definition()
     {
         return [
-            //
+            'user_id' => User::factory(),
+            'created_at' => $this->faker->dateTimeBetween('-6 months', 'now'),
         ];
     }
 }
