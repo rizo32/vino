@@ -13,6 +13,8 @@ const Admin = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [activeTab, setActiveTab] = useState("stats");
+  const [successMessage, setSuccessMessage] = useState("");
+
 
   useEffect(() => {
     axios
