@@ -77,62 +77,66 @@ const Admin = () => {
     </button>
   </div>
 
-      {activeTab === "users" && (
-        <div className="px-4">
-          <div className="flex justify-center mb-4">
+  {activeTab === "users" && (
+    <div className="px-4">
+        <div className="flex justify-center mb-4">
             <input
-              type="text"
-              placeholder="Rechercher par Prénom"
-              value={searchTerm}
-              onChange={handleSearch}
-              className="px-4 py-2 border border-gray-300 rounded-lg w-full sm:w-auto"
+                type="text"
+                placeholder="Rechercher par Prénom"
+                value={searchTerm}
+                onChange={handleSearch}
+                className="px-4 py-2 border border-gray-300 rounded-lg w-full sm:w-auto"
             />
-          </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {filteredUsers.length > 0 ? (
-              filteredUsers.map((user) => (
-                <div key={user.id} className="bg-gray-200 p-4 rounded-lg shadow">
-                  <div>
-                    <p className="text-lg font-bold">{user.first_name}</p>
-                    <p>{user.email}</p>
-                  </div>
-                  <button className="px-4 py-2 bg-red-900 text-white rounded-lg mt-4" onClick={() => openModal(user)}>
-                    Modifications
-                  </button>
-                </div>
-              ))
-            ) : (
-              <p>Aucun utilisateur correspondant</p>
-              )}
-            </div>
-            {showModal && (
-              <div className="fixed inset-0 flex items-center justify-center z-50">
-                <div className="bg-white p-8 max-w-md mx-auto rounded-lg shadow-lg">
-                  <h2 className="text-xl font-bold mb-4">Modifications utilisateur</h2>
-                  {selectedUser && (
-                    <div>
-                      <p className="text-lg">User: {selectedUser.first_name}</p>
-                      <p>Email: {selectedUser.email}</p>
-                      <label htmlFor="userTypes">Type d'utilisateurs</label>
-                      <select name="userTypes" id="userTypes" className="px-4 py-2 border border-gray-300 rounded-lg">
-                        <option value="1">Admin</option>
-                        <option value="2">Employées</option>
-                        <option value="3">Utilisateurs</option>
-                        <option value="4">Bannir</option>
-                      </select>
+                filteredUsers.map((user) => (
+                    <div key={user.id} className="bg-white p-2 rounded-lg shadow-lg flex justify-between items-center">
+                        <div>
+                            <p className="text-lg font-bold mb-1">{user.first_name}</p>
+                            <p className="mb-1">{user.email}</p>
+                        </div>
+                        <button className="px-2 py-1 bg-red-900 text-white rounded-lg" onClick={() => openModal(user)}>
+                            Modifications
+                        </button>
                     </div>
-                  )}
-                  <button className="px-4 py-2 bg-red-900 text-white rounded-lg mt-4" onClick={closeModal}>
-                    Fermer
-                  </button>
-                  <button className="px-4 py-2 bg-red-900 text-white rounded-lg mt-4" onClick={updateUser}>
-                    Sauvegarder
-                  </button>
-                </div>
-              </div>
+                ))
+            ) : (
+                <p>Aucun utilisateur correspondant</p>
             )}
-          </div>
+        </div>
+        {showModal && (
+            <div className="fixed inset-0 flex items-center justify-center z-50">
+                <div className="bg-white p-8 max-w-md mx-auto rounded-lg shadow-lg">
+                    <h2 className="text-xl font-bold mb-4">Modifications utilisateur</h2>
+                    {selectedUser && (
+                        <div>
+                            <p className="text-lg">User: {selectedUser.first_name}</p>
+                            <p>Email: {selectedUser.email}</p>
+                            <label htmlFor="userTypes">Type d'utilisateurs</label>
+                            <select name="userTypes" id="userTypes" className="px-4 py-2 border border-gray-300 rounded-lg">
+                                <option value="1">Admin</option>
+                                <option value="2">Employées</option>
+                                <option value="3">Utilisateurs</option>
+                                <option value="4">Bannir</option>
+                            </select>
+                        </div>
+                    )}
+                    <div className="flex justify-between mt-4">
+                        <button className="px-4 py-2 bg-red-900 text-white rounded-lg" onClick={closeModal}>
+                            Fermer
+                        </button>
+                        <button className="px-4 py-2 bg-red-900 text-white rounded-lg" onClick={updateUser}>
+                            Sauvegarder
+                        </button>
+                    </div>
+                </div>
+            </div>
         )}
+    </div>
+)}
+
+
         {activeTab === "stats" && (
           <div>
             <QuickStats />
