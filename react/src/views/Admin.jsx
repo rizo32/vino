@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import  FirstDataSet  from "../components/Stats/DataSetA";
-import  SecondDataSet  from "../components/Stats/DataSetB";
-import DataSets from '../components/Stats/DataSets';
+import  LinePlotChart  from "../components/Stats/LinePlotChart";
+import  PieCharts  from "../components/Stats/PieCharts";
+import QuickStats from '../components/Stats/QuickStats';
 
 const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/admin`;
+const deleteURL = `${import.meta.env.VITE_API_BASE_URL}/api/deleteUser`;
 
 const Admin = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [activeTab, setActiveTab] = useState("users");
+  const [activeTab, setActiveTab] = useState("stats");
 
   useEffect(() => {
     axios
@@ -42,6 +43,40 @@ const Admin = () => {
     setSelectedUser(null);
   };
 
+  const deleteUser = () => {
+    if (selectedUser) {
+        const userId = selectedUser.id;
+        axios
+            .delete(`${deleteURL}/${userId}`)
+            .then((response) => {
+                refreshUsers();
+                closeModal();
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+};
+
+  
+  const refreshUsers = () => {
+    axios
+      .get(baseURL)
+      .then((response) => {
+        setUsers(response.data.users);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  
+  useEffect(() => {
+    refreshUsers();
+  }, []);
+  
+
+
+
   const updateUser = () => {
     axios
       .put(`${baseURL}/${selectedUser.id}`, {
@@ -57,86 +92,97 @@ const Admin = () => {
   };
 
   return (
-    <div className="pt-4 container mx-auto">
-      <div className="flex justify-center mb-4">
-        <button
-          className={`mr-4 px-4 py-2 rounded-lg border ${
-            activeTab === "users" ? " bg-red-900 text-white" : "border-gray-300"
-          }`}
-          onClick={() => setActiveTab("users")}
-        >
-          Users
-        </button>
-        <button
-          className={`ml-4 px-4 py-2 rounded-lg border ${
-            activeTab === "stats" ?  "bg-red-900 text-white" : "border-gray-300"
-          }`}
-          onClick={() => setActiveTab("stats")}
-        >
-          Stats
-        </button>
-      </div>
-      {activeTab === "users" && (
-        <div className="px-4">
-          <div className="flex justify-center mb-4">
+   <div className="pt-4 container mx-auto">
+  <div className="flex justify-center mb-4">
+    <button
+      className={`mr-4 px-4 py-2 rounded-lg border ${
+        activeTab === "stats" ? "bg-red-900 text-white" : "border-gray-300"
+      }`}
+      onClick={() => setActiveTab("stats")}
+    >
+      Statistique
+    </button>
+    <button
+      className={`ml-4 px-4 py-2 rounded-lg border ${
+        activeTab === "users" ? "bg-red-900 text-white" : "border-gray-300"
+      }`}
+      onClick={() => setActiveTab("users")}
+    >
+      Utilisateurs
+    </button>
+  </div>
+
+  {activeTab === "users" && (
+    <div className="px-4">
+        <div className="flex justify-center mb-4">
             <input
-              type="text"
-              placeholder="Rechercher par Prénom"
-              value={searchTerm}
-              onChange={handleSearch}
-              className="px-4 py-2 border border-gray-300 rounded-lg w-full sm:w-auto"
+                type="text"
+                placeholder="Rechercher par Prénom"
+                value={searchTerm}
+                onChange={handleSearch}
+                className="px-4 py-2 border border-gray-300 rounded-lg w-full sm:w-auto"
             />
-          </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {filteredUsers.length > 0 ? (
-              filteredUsers.map((user) => (
-                <div key={user.id} className="bg-gray-200 p-4 rounded-lg shadow">
-                  <div>
-                    <p className="text-lg font-bold">{user.first_name}</p>
-                    <p>{user.email}</p>
-                  </div>
-                  <button className="px-4 py-2 bg-red-900 text-white rounded-lg mt-4" onClick={() => openModal(user)}>
-                    Modifications
-                  </button>
-                </div>
-              ))
-            ) : (
-              <p>Aucun utilisateur correspondant</p>
-              )}
-            </div>
-            {showModal && (
-              <div className="fixed inset-0 flex items-center justify-center z-50">
-                <div className="bg-white p-8 max-w-md mx-auto rounded-lg shadow-lg">
-                  <h2 className="text-xl font-bold mb-4">Modifications utilisateur</h2>
-                  {selectedUser && (
-                    <div>
-                      <p className="text-lg">User: {selectedUser.first_name}</p>
-                      <p>Email: {selectedUser.email}</p>
-                      <label htmlFor="userTypes">Type d'utilisateurs</label>
-                      <select name="userTypes" id="userTypes" className="px-4 py-2 border border-gray-300 rounded-lg">
-                        <option value="1">Admin</option>
-                        <option value="2">Employées</option>
-                        <option value="3">Utilisateurs</option>
-                        <option value="4">Bannir</option>
-                      </select>
+                filteredUsers.map((user) => (
+                    <div key={user.id} className="bg-white p-2 rounded-lg shadow-lg flex justify-between items-center">
+                        <div>
+                            <p className="text-lg font-bold mb-1">{user.first_name}</p>
+                            <p className="mb-1">{user.email}</p>
+                        </div>
+                        <button className="px-2 py-1 bg-red-900 text-white rounded-lg" onClick={() => openModal(user)}>
+                            Modifications
+                        </button>
                     </div>
-                  )}
-                  <button className="px-4 py-2 bg-red-900 text-white rounded-lg mt-4" onClick={closeModal}>
-                    Fermer
-                  </button>
-                  <button className="px-4 py-2 bg-red-900 text-white rounded-lg mt-4" onClick={updateUser}>
-                    Sauvegarder
-                  </button>
-                </div>
-              </div>
+                ))
+            ) : (
+                <p>Aucun utilisateur correspondant</p>
             )}
-          </div>
+        </div>
+        {showModal && (
+            <div className="fixed inset-0 flex items-center justify-center z-50">
+                <div className="bg-white p-8 max-w-lg mx-auto rounded-lg shadow-2xl border-2 border-gray-300 relative">
+                    <button className="absolute top-2 right-2 bg-red-900 text-white rounded-full p-1" onClick={closeModal}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    <h2 className="text-xl font-bold mb-4">Modifications utilisateur</h2>
+                    {selectedUser && (
+                        <div>
+                            <p className="text-lg">User: {selectedUser.first_name}</p>
+                            <p>Email: {selectedUser.email}</p>
+                            <label htmlFor="userTypes">Type d'utilisateurs</label>
+                            <select name="userTypes" id="userTypes" className="px-4 py-2 border border-gray-300 rounded-lg">
+                                <option value="1">Admin</option>
+                                <option value="2">Employées</option>
+                                <option value="3">Utilisateurs</option>
+                                <option value="4">Bannir</option>
+                            </select>
+                        </div>
+                    )}
+                    <div className="flex justify-between mt-4">
+                        <button className="px-4 py-2 bg-red-900 text-white rounded-lg" onClick={deleteUser}>
+                            Supprimer
+                        </button>
+                        <button className="px-4 py-2 bg-red-900 text-white rounded-lg" onClick={updateUser}>
+                            Sauvegarder
+                        </button>
+                    </div>
+                </div>
+            </div>
         )}
+    </div>
+)}
+
+
+
         {activeTab === "stats" && (
           <div>
-            <DataSets />
-            <FirstDataSet/>
-            <SecondDataSet/>
+            <QuickStats />
+            <LinePlotChart/>
+            <PieCharts/>
           </div>
         )}
       </div>

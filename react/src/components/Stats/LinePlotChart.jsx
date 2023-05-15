@@ -22,7 +22,7 @@ ChartJS.register(
   Legend
 );
 
-const FirstDataSet = () => {
+const LinePlotChart = () => {
   const [chartData, setChartData] = useState([]);
 
   const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/appStats`;
@@ -35,8 +35,14 @@ const FirstDataSet = () => {
       },
       title: {
         display: true,
-        text: 'Participation des utilisateurs',
+        text: 'Utilisateurs',
+        font: {
+          size: 14, 
+          weight: 'bold',
+        },
+        color: 'rgba(107, 114, 128, 1)', 
       },
+      
     },
   };
   useEffect(() => {
@@ -88,4 +94,4 @@ const FirstDataSet = () => {
   return <Line options={options} data={data} />;
 };
 
-export default FirstDataSet;
+export default LinePlotChart;

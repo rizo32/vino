@@ -3,12 +3,12 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Pie } from "react-chartjs-2";
 import axios from "axios";
-import ThirdDataSet from "./DataSetC";
+import TopWinePieChart from "./TopWinePieChart";
 const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/piestats`;
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const SecondDataSet = () => {
+const PieCharts = () => {
   const [wineData, setWineData] = useState({ red: 0, white: 0 });
 
   useEffect(() => {
@@ -57,12 +57,24 @@ const SecondDataSet = () => {
       title: {
         display: true,
         text: "Total des bouteilles par type",
+        font: {
+          size: 13,
+          weight: "normal",
+        },
       },
       legend: {
         position: "chartArea",
+        labels: {
+          boxWidth: 2,
+        },
       },
       datalabels: {
         color: '#000',
+        font: {
+          size: 10, 
+          weight: 'bold' 
+        },
+        padding: 2, 
         formatter: function (value, context) {
           const total = context.dataset.data.reduce((a, b) => a + b, 0);
           const percentage = ((value / total) * 100).toFixed(2);
@@ -70,24 +82,28 @@ const SecondDataSet = () => {
         },
         anchor: "end", 
         align: "end", 
-        offset:-25, 
+        offset: -25, 
+        backgroundColor: 'rgba(255, 255, 255, 0.6)', 
+        borderRadius: 4, 
       },
+      
+      
     },
   };
   
 
   return (
     <div className="flex flex-col items-center w-full">
-      <h2 className="text-small mb-4">Statistiques celliers</h2>
+      <h6 className=' text-sm width-full text-center font-semibold text-gray-500'>Celliers</h6>
       <div className="grid grid-cols-2 gap-4 w-full">
         <div className="flex justify-center w-full h-56 md:h-64 lg:h-96">
           <Pie data={data} options={options}  plugins={[ChartDataLabels]}/>
         </div>
         <div className="flex justify-center w-full h-56 md:h-64 lg:h-96">
-          <ThirdDataSet />
+          <TopWinePieChart />
         </div>
       </div>
     </div>
   );
 };
-export default SecondDataSet;
+export default PieCharts;

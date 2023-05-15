@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/stats`;
-const DataSets = () => {
+const QuickStats = () => {
   const [numberOfUsers, setNumberOfUsers] = useState(0);
   const [avgCellarTotalWorth, setAvgCellarTotalWorth] = useState(0);
   const [totalCellarWorth, setTotalCellarWorth] = useState(0);
@@ -27,9 +27,6 @@ const DataSets = () => {
 
   return (
     <div className="flex flex-col items-center w-full">
-      <h2 className="text-l font-semibold mb-4">
-        Panneaux de statistiques
-      </h2>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <StatCard title="Total des utilisateurs" value={numberOfUsers} />
         <StatCard title="Prix moyen d'un cellier" value={`$${avgCellarTotalWorth}`} />
@@ -49,4 +46,4 @@ const StatCard = ({ title, value }) => {
   );
 };
 
-export default DataSets;
+export default QuickStats;
