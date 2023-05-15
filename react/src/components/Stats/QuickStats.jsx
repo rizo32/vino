@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/stats`;
-const DataSets = () => {
+const QuickStats = () => {
   const [numberOfUsers, setNumberOfUsers] = useState(0);
   const [avgCellarTotalWorth, setAvgCellarTotalWorth] = useState(0);
   const [totalCellarWorth, setTotalCellarWorth] = useState(0);
@@ -49,4 +49,4 @@ const StatCard = ({ title, value }) => {
   );
 };
 
-export default DataSets;
+export default QuickStats;
