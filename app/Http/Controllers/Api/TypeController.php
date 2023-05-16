@@ -9,28 +9,52 @@ use Illuminate\Support\Facades\Auth;
 
 class TypeController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, $source)
     {
-        // Get the logged-in user's cellar
-        $cellar = Auth::user()->cellar;
-
-        // Get the filters from the request payload
+        
+        // Ajout des filtres à la requête http
         $filters = $request->input('filters', []);
-
-        // Start building the query
+        
+        // Mise en place de la requête fetch
         $query = Type::query();
-
-        $query->whereHas('bottles', function ($q) use ($filters, $cellar) {
-            if (isset($filters['country']) && !empty($filters['country'])) {
-                $q->whereIn('country_id', $filters['country']);
-            }
+        
+        // Fetch différent selon la page appelant le filtre
+        if ($source == 'cellar') {
+            
+            // options des pays si des filtres type sont en place
+            $query->whereHas('bottles', function ($q) use ($filters) {
+                if (isset($filters['country']) && !empty($filters['country'])) {
+                    $q->whereIn('country_id', $filters['country']);
+                }
     
-            $q->whereHas('cellarHasBottle', function ($q) use ($cellar) {
-                $q->where('cellar_id', $cellar->id);
-            });
-        });
+                // Obtention des informations du cellier de l'usager
+                $cellar = Auth::user()->cellar;
 
-        // Finally, get the countries and return them
+                // filtre selon le cellier de l'usager
+                $q->whereHas('cellarHasBottle', function ($q) use ($cellar) {
+                    $q->where('cellar_id', $cellar->id);
+                });
+            });
+
+        } else if ($source == 'wishlist') {
+            
+            // options des pays si des filtres type sont en place
+            $query->whereHas('bottles', function ($q) use ($filters, $userId) {
+                if (isset($filters['type']) && !empty($filters['type'])) {
+                    $q->whereIn('type_id', $filters['type']);
+                }
+    
+                // Obtention des informations de l'usager
+                $userId = Auth::id();
+
+                // filtre selon les favoris de l'usager
+                $q->whereHas('wishlist', function ($q) use ($userId) {
+                    $q->where('user_id', $userId);
+                });
+            });
+        }
+
+        // Retour de la liste des types en ordre alphabétique
         $types = $query->orderBy('name', 'asc')->get();
         return response()->json($types);
     }

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useLocation } from "react";
 import axiosClient from "../../axios-client";
 import OptionPage from "./OptionPage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -61,15 +61,17 @@ const FilterPanel = ({ filters, setFilters, onClearFilters }) => {
         [CATEGORIES.country.internalName]: {},
     });
 
+    let source = location.pathname;
+
     // les options de filtres sont récupérés
     const fetchFilteredCountries = async () => {
-        const response = await axiosClient.post("/countries", {
+        const response = await axiosClient.post(`/countries${ source }`, {
             filters,
         });
         setFilteredCountries(response.data);
     };
     const fetchFilteredTypes = async () => {
-        const response = await axiosClient.post("/types", {
+        const response = await axiosClient.post(`/types${ source }`, {
             filters,
         });
         setFilteredTypes(response.data);
