@@ -24,7 +24,7 @@ const ImageOnImage = ({ src, alt, type }) => {
                 alt="vignoble"
             />
             <div className="flex flex-column relative justify-center items-end">
-                <img id="shit" className="h-80" src={src} alt={alt} />
+                <img className="h-76 mt-4" src={src} alt={alt} />
             </div>
         </div>
     );
