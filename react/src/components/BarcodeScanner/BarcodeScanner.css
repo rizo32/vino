@@ -16,6 +16,10 @@
     height: 300px;
 }
 
+#html5-qrcode-anchor-scan-type-change {
+    display: none;
+}
+
 /* #qr-shaded-region {
 
 } */

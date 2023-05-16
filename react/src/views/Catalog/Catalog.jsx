@@ -218,7 +218,7 @@ export default function Catalog() {
     return (
         <div className="flex flex-col" ref={containerRef}>
             {searchValue || scanned ? null : (
-                <div className="flex flex-col h-[76vh] place-content-center text-center text-gray-500">
+                <div className="flex flex-col h-[76vh] place-content-center text-center text-gray-500 overflow-scroll">
                     <div className="mx-auto">
                         Utilisez la barre de recherche
                         <br />
