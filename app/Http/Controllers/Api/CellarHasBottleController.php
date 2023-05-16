@@ -12,8 +12,6 @@ use App\Models\CellarHasBottle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-// Elodie et Gabriel
-
 class CellarHasBottleController extends Controller
 {
     /**
@@ -30,6 +28,7 @@ class CellarHasBottleController extends Controller
             },
             'cellar'
         ])
+            // seulement ce qui se trouve dans le cellier
             ->whereHas('cellar', function ($q) {
                 $q->where('user_id', Auth::id());
             });
@@ -70,7 +69,7 @@ class CellarHasBottleController extends Controller
      */
     public function store(Request $request)
     {
-        // Utilisation connecté
+        // Utilisateur connecté
         $user = auth()->user();
 
         $request->validate([
