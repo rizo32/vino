@@ -36,7 +36,7 @@ class LineGraphController extends Controller
             $totalBottles = CellarHasBottle::whereBetween('created_at', [$startOfMonth, $endOfMonth])->count();
 
             $avgBottlesPerUser = $totalCellars ? $totalBottles / $totalCellars : 0;
-$avgAddedBottlesPerUser = $totalUsers ? $totalBottles / $totalUsers : 0;
+            $avgAddedBottlesPerUser = $totalUsers ? $totalBottles / $totalUsers : 0;
 
 
             $stats[] = [
