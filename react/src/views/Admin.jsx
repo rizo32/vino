@@ -1,60 +1,70 @@
+/* importation des modules */
 import { useEffect, useState } from "react";
 import axios from "axios";
 import LinePlotChart from "../components/Stats/LinePlotChart";
 import PieCharts from "../components/Stats/PieCharts";
 import QuickStats from "../components/Stats/QuickStats";
 
+/* Creation des URLs */
 const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/admin`;
 const deleteURL = `${import.meta.env.VITE_API_BASE_URL}/api/deleteUser`;
 
+/* Creation de la fonction Admin */
 const Admin = () => {
+  /* Creation des states */
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [activeTab, setActiveTab] = useState("stats");
+  const [activeTab, setActiveTab] = useState("stats"); /* par defaut le tab est sur stats */
   const [successMessage, setSuccessMessage] = useState("");
 
 
   useEffect(() => {
     axios
-      .get(baseURL)
+      .get(baseURL) /* Requete Get a baseURL */
       .then((response) => {
-        setUsers(response.data.users);
+        setUsers(response.data.users);  /* Modifies l'etat avec les donnees recu */
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
 
+
   const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
+    setSearchTerm(event.target.value); /* modifie l'etat avec l"entree de l'utilisateurs */
   };
 
   const filteredUsers = users.filter((user) =>
-    user.first_name.toLowerCase().includes(searchTerm.toLowerCase())
+    user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) /* Filtre avec la valeur de l'etat */
   );
 
+  /* Ouverture de la modal */
   const openModal = (user) => {
     setSelectedUser(user);
     setShowModal(true);
   };
-
-  const clearSearch = () => {
-    setSearchTerm("");
-  };
-
-  const closeModal = () => {
+  /* Fermeture de la modal */
+   const closeModal = () => {
     setShowModal(false);
     setSelectedUser(null);
   };
 
+  /* Reset le barre de recherche - mis ajour de l'etat  '' */
+  const clearSearch = () => {
+    setSearchTerm("");
+  };
+
+
+  /* Suppression d'un utilisateur */
   const deleteUser = () => {
     if (selectedUser) {
       const userId = selectedUser.id;
       axios
         .delete(`${deleteURL}/${userId}`)
         .then((response) => {
+          /* utilisations de séquence des méthodes */
           refreshUsers();
           closeModal();
           clearSearch();
@@ -66,6 +76,7 @@ const Admin = () => {
     }
   };
 
+  /* Mise à jour de la liste utilisateur */
   const refreshUsers = () => {
     axios
       .get(baseURL)
@@ -83,19 +94,22 @@ const Admin = () => {
   useEffect(() => {
     if (successMessage) {
       const timer = setTimeout(() => {
+        /* apres 3 seconde, change l'etat de Message(le ferme) */
         setSuccessMessage("");
       }, 3000); 
   
       return () => clearTimeout(timer); 
     }
   }, [successMessage]);
+
+  /* Mise à jour de l'utilisateur */
   const updateUser = () => {
     axios
       .put(`${baseURL}/${selectedUser.id}`, {
         user_type_id: document.getElementById("userTypes").value,
       })
       .then((response) => {
-        console.log(response);
+        /* sequences des methodes */
         closeModal();
         refreshUsers();
         clearSearch();
@@ -108,7 +122,7 @@ const Admin = () => {
 
 
   return (
-    
+    /* Creation de deux tabs pour le pannel Admin -> Stats et Users */
     <div className="pt-4 container mx-auto">
        {successMessage && (
       <div className="success-message fixed top-10 left-1/2 transform -translate-x-1/2 bg-green-400 text-white px-6 py-3 rounded shadow-lg transition-all duration-500 z-50 flex items-center space-x-3">
@@ -138,7 +152,7 @@ const Admin = () => {
           Utilisateurs
         </button>
       </div>
-
+      {/* < users */}
       {activeTab === "users" && (
         <div className="px-4">
           <div className="flex justify-center mb-4">
@@ -173,6 +187,7 @@ const Admin = () => {
               <p>Aucun utilisateur correspondant</p>
             )}
           </div>
+          {/* < modal */}
           {showModal && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
               <div className="bg-white p-8 max-w-lg mx-auto rounded-lg shadow-2xl border-2 border-gray-300 relative">
@@ -260,9 +275,12 @@ const Admin = () => {
               </div>
             </div>
           )}
+          {/* </ modal */}
         </div>
       )}
+      {/* </ users */}
 
+      {/* < stats */}
       {activeTab === "stats" && (
         <div>
           <div className=" pb-5">
@@ -276,6 +294,7 @@ const Admin = () => {
           </div>
         </div>
       )}
+      {/* </ stats */}
     </div>
   );
 };
