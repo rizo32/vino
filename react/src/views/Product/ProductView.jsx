@@ -97,7 +97,7 @@ export default function ProductView(props) {
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="mr-5 text-white block w-10 h-10 cursor-pointer"
+                        className="mr-5 text-white block w-11 h-11 cursor-pointer"
                         onClick={() => handleOpen()}
                     >
                         <path
