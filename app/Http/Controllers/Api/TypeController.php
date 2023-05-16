@@ -39,7 +39,7 @@ class TypeController extends Controller
         } else if ($source == 'wishlist') {
             
             // options des pays si des filtres type sont en place
-            $query->whereHas('bottles', function ($q) use ($filters, $userId) {
+            $query->whereHas('bottles', function ($q) use ($filters) {
                 if (isset($filters['type']) && !empty($filters['type'])) {
                     $q->whereIn('type_id', $filters['type']);
                 }
