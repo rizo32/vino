@@ -37,9 +37,11 @@ export default {
             },
             colors: {
                 // couleur action base (bg-red-900): hsl(0, 62.8, 30.6)
-                "red-hover": "hsl(0, 62.8%, 25%)",
+                "red-hover": "hsl(0, 62.8%, 35%)",
+                // "red-hover": "hsl(0, 62.8%, 25%)",
                 // couleur fond base (bg-red-50): hsl(0, 85.7, 97.3)
-                "rose-hover": "hsl(0, 85.7%, 95%)",
+                "rose-hover": "hsl(0, 100%, 100%)",
+                // "rose-hover": "hsl(0, 85.7%, 95%)",
             },
             blur: {
                 "xs": "3px"
