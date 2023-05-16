@@ -40,6 +40,10 @@ const Admin = () => {
     setShowModal(true);
   };
 
+  const clearSearch = () => {
+    setSearchTerm("");
+  };
+
   const closeModal = () => {
     setShowModal(false);
     setSelectedUser(null);
@@ -53,6 +57,7 @@ const Admin = () => {
         .then((response) => {
           refreshUsers();
           closeModal();
+          clearSearch();
           setSuccessMessage("Utilisateurs supprimer");
         })
         .catch((error) => {
@@ -93,6 +98,7 @@ const Admin = () => {
         console.log(response);
         closeModal();
         refreshUsers();
+        clearSearch();
         setSuccessMessage("Utilisateurs mis à jour");
       })
       .catch((error) => {
