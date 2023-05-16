@@ -1,6 +1,14 @@
 // formulaire pour changer les informations
-function UserForm({ user, onChange, onSubmit, setUser, originalUser, onReturn, message, setMessage }) {
-
+function UserForm({
+    user,
+    onChange,
+    onSubmit,
+    setUser,
+    originalUser,
+    onReturn,
+    message,
+    setMessage,
+}) {
     const handleReturn = () => {
         setUser(originalUser); // Reset the user data to the original state
         onReturn();
@@ -61,6 +69,11 @@ function UserForm({ user, onChange, onSubmit, setUser, originalUser, onReturn, m
             />
             <label htmlFor="password" className="mt-vh-2 ml-2">
                 Mot de passe
+                {!message.password && (
+                    <span className="text-xs pl-2">
+                        8 caractères incluant au moins un chiffre et un symbole
+                    </span>
+                )}
                 {message.password && (
                     <span className="text-red-900 text-sm pl-2">
                         {message.password[0]}
