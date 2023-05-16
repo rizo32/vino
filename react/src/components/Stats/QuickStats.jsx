@@ -1,7 +1,10 @@
+/* imporantations des composantes et modules */
 import { useEffect, useState } from "react";
 import axios from "axios";
+/* déclartation de baseURL */
 const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/stats`;
 const QuickStats = () => {
+  /* déclaration des states */
   const [numberOfUsers, setNumberOfUsers] = useState(0);
   const [avgCellarTotalWorth, setAvgCellarTotalWorth] = useState(0);
   const [totalCellarWorth, setTotalCellarWorth] = useState(0);
@@ -9,9 +12,9 @@ const QuickStats = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(baseURL);
-      const data = await response.json();
-
+      const response = await fetch(baseURL); /* declaration des données recceuillis */
+      const data = await response.json();  /* déclaration des données a utilisé pour le graphique (format change) */
+      /* Delcaration des données pour chaque cartes */
       setNumberOfUsers(data.numberOfUsers);
       setAvgCellarTotalWorth(data.avgCellarTotalWorth);
       setTotalCellarWorth(data.totalCellarWorth);
@@ -26,9 +29,9 @@ const QuickStats = () => {
   }, []);
 
   const formatNumber = (number) => {
-    return number.toLocaleString();
+    return number.toLocaleString(); /* déclaration du format des nombres pour les sommes monétaires*/
   };
-
+/* creation de composante regroupant les Cartes et leurs données */
   return (
     <div className="flex flex-col items-center w-full">
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -41,6 +44,7 @@ const QuickStats = () => {
   );
 };
 
+/* declarations de la carte StatCard */
 const StatCard = ({ title, value }) => {
   return (
     <div className="bg-white p-2 md:p-4 rounded-lg shadow-lg border border-gray-300">

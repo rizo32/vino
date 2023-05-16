@@ -47,7 +47,7 @@ class PieGraphController extends Controller
             }
         }
     
-        
+        /* attributions des valeurs recceuillis pour le retour de reponse */
         return response()->json([
             'redWineCount' => $redWineCount,
             'whiteWineCount' => $whiteWineCount,

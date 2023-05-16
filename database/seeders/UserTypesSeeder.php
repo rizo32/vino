@@ -15,6 +15,7 @@ class UserTypesSeeder extends Seeder
      */
     public function run()
 {
+    /* Tableau des types d'utilisateurs à insérer dans la table "user_types --normalisation et standardisation de la BD */
     $userTypes = [
         ['name' => 'Admin'],
         ['name' => 'Employee'],
@@ -22,6 +23,6 @@ class UserTypesSeeder extends Seeder
         ['name' => 'Banned'],
     ];
 
-    DB::table('user_types')->insert($userTypes);
+    DB::table('user_types')->insert($userTypes);  /* insertion  */
 }
 }

@@ -1,3 +1,4 @@
+/* imporantations des composantes et modules */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
@@ -22,12 +23,15 @@ ChartJS.register(
   Legend
 );
 
+
 const LinePlotChart = () => {
+  /* déclarations des states */
   const [chartData, setChartData] = useState([]);
 
-  const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/appStats`;
-  
+  const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/appStats`; /* déclarations de baseURL */
+
   const options = {
+    /* déclarations esthétiques et labels a utilisé pour le graphique */
     responsive: true,
     layout: {
       padding: {
@@ -57,7 +61,7 @@ const LinePlotChart = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(baseURL);
-        setChartData(response.data);
+        setChartData(response.data); /* déclaration des données a utilisé pour le graphique */
       } catch (error) {
         console.error('Error fetching app stats:', error);
       }
@@ -67,17 +71,17 @@ const LinePlotChart = () => {
   }, []);
   
   if (chartData.length === 0) {
-    return <div>Loading...</div>;
+    return <div className='text-center'><p className='font-semibold text-stone-500'>Téléchargement...</p></div>; /*  si le tableau est vide afficher téléchargement */
   }
 
-  const labels = chartData.map((data) => data.month);
+  const labels = chartData.map((data) => data.month); /* déclaration des labels a utilisé pour le graphique(mois EN -> builit in  */
 
   const data = {
     labels,
-    datasets: [
+    datasets: [ /* déclaration des datasets a utilisé pour le graphique */
       {
         label: `Nombre total d'utilisateurs`,
-        data: chartData.map((data) => data.totalUsers),
+        data: chartData.map((data) => data.totalUsers), 
         borderColor: 'rgba(255, 99, 132, 1)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         fill: false,
@@ -99,7 +103,7 @@ const LinePlotChart = () => {
     ],
   };
 
-  return <Line options={options} data={data} />;
+  return <Line options={options} data={data} />; /* retourne le graphique avec les options et les données. */
 };
 
 export default LinePlotChart;
