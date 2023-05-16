@@ -25,12 +25,16 @@ const QuickStats = () => {
     fetchData();
   }, []);
 
+  const formatNumber = (number) => {
+    return number.toLocaleString();
+  };
+
   return (
     <div className="flex flex-col items-center w-full">
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <StatCard title="Total des utilisateurs" value={numberOfUsers} />
-        <StatCard title="Prix moyen d'un cellier" value={`$${avgCellarTotalWorth}`} />
-        <StatCard title="Valeur total des celliers" value={`$${totalCellarWorth}`} />
+          <StatCard title="Prix moyen d'un cellier" value={`$${formatNumber(avgCellarTotalWorth)}`} />
+        <StatCard title="Valeur total des celliers" value={`$${formatNumber(totalCellarWorth)}`} />
         <StatCard title="Vin de l'heure" value={wineOfTheMoment} />
       </div>
     </div>

@@ -31,12 +31,13 @@ class LineGraphController extends Controller
             $startOfMonth = Carbon::parse("first day of $month")->startOfDay();
             $endOfMonth = Carbon::parse("last day of $month")->endOfDay();
 
-            $totalUsers = User::whereBetween('created_at', [$startOfMonth, $endOfMonth])->count();
+            $totalUsers = User::where('created_at', '<=', $endOfMonth)->count();
             $totalCellars = Cellar::whereBetween('created_at', [$startOfMonth, $endOfMonth])->count();
             $totalBottles = CellarHasBottle::whereBetween('created_at', [$startOfMonth, $endOfMonth])->count();
 
-            $avgBottlesPerUser = $totalUsers ? $totalCellars / $totalUsers : 0;
+            $avgBottlesPerUser = $totalCellars ? $totalBottles / $totalCellars : 0;
             $avgAddedBottlesPerUser = $totalUsers ? $totalBottles / $totalUsers : 0;
+
 
             $stats[] = [
                 'month' => $month,
