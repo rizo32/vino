@@ -5,7 +5,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 import FilterPanel from "../components/Filter/FilterPanel";
 
 export default function Wishlist() {
-    const { searchValue } = useStateContext();
+    const { searchValue, searchBarOpen } = useStateContext();
     const [bottles, setBottles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [onPage, setOnPage] = useState();
@@ -15,20 +15,16 @@ export default function Wishlist() {
     const containerRef = useRef(null);
     const sentinelRef = useRef();
 
-    const handleRemoveFromWishlist = (bottleId) => {
-        getBottles(null, { bottle: { id: bottleId } });
-    };
-
+    // initialiser les filtres
     const [filters, setFilters] = useState({
         type: [],
         country: [],
-        ratings: [],
     });
 
     const [oldFilters, setOldFilters] = useState();
     const [oldSearch, setOldSearch] = useState();
 
-    // aller chercher les bouteilles du cellier de l'usager dans la base de données et les mettre dans le state
+    // aller chercher les bouteilles favorites de l'usager dans la base de données et les mettre dans le state
     const getBottles = (dataUpdt, bottleRmv) => {
         setLoading(true);
         //sauvegarder la position avant de fetch les prochaines bouteilles
@@ -49,8 +45,6 @@ export default function Wishlist() {
         if (searchValue) {
             filterParams.append("search", searchValue);
         }
-
-        // autres filtres
 
         // si on ajoute la bouteille au cellier, refleter la nouvelle quantite sans devoir fetch toutes les bouteilles a nouveau
         if (dataUpdt) {
@@ -113,7 +107,7 @@ export default function Wishlist() {
             });
     };
 
-    
+    // vider les filtres
     const handleClearFilters = () => {
         setFilters({
             type: [],
@@ -132,6 +126,11 @@ export default function Wishlist() {
         ) {
             getBottles();
         }
+    };
+
+    // suppression de la page de favoris
+    const handleRemoveFromWishlist = (bottleId) => {
+        getBottles(null, { bottle: { id: bottleId } });
     };
 
     //executer la fonction
@@ -162,23 +161,33 @@ export default function Wishlist() {
 
     return (
         <div className="flex flex-col">
+            <FilterPanel
+                filters={filters}
+                setFilters={setFilters}
+                onClearFilters={handleClearFilters}
+            />
             {total && total != 1 && searchValue ? (
-                        <p className="ml-2 mb-1 mt-4">{total} résultats</p>
-                    ) : total == 1 && searchValue ? (
-                        <span className="ml-2 mb-1 mt-4">1 résultat</span>
-                    ) : total == 0 && searchValue ? (
-                        <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
-                            <div className="mx-auto">
-                                Aucun résultats, modifier vos filtres
-                                <br />
-                                ou effectuez une nouvelle recherche
-                            </div>
-                        </div>
+                <p className="ml-2 mb-1 mt-4">{total} résultats</p>
+            ) : total == 1 && searchValue ? (
+                <span className="ml-2 mb-1 mt-4">1 résultat</span>
+            ) : total == 0 && searchValue ? (
+                <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
+                    <div className="mx-auto">
+                        Aucun résultats, modifier vos filtres
+                        <br />
+                        ou effectuez une nouvelle recherche
+                    </div>
+                </div>
             ) : null}
             {loading ? (
                 <p className="ml-2 mb-1 mt-4">Chargement...</p>
             ) : (
-                <ul className="flex flex-col gap-2 mt-4">
+                <ul
+                    className={`${
+                        searchBarOpen ? "mt-23" : "mt-23"
+                    } flex flex-col gap-2 transition-all duration-200 ease-in-out`}
+                >
+                    {/* <ul className="flex flex-col gap-2 mt-4"> */}
                     {bottles.map((bottle) => (
                         <li key={bottle.id}>
                             <ProductCard
@@ -209,7 +218,6 @@ export default function Wishlist() {
                             </div>
                         </div>
                     ) : null}
-
                 </ul>
             )}
         </div>
