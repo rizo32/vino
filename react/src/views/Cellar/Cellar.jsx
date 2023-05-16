@@ -4,7 +4,6 @@ import axiosClient from "../../axios-client";
 import { useStateContext } from "../../contexts/ContextProvider";
 import FilterPanel from "../../components/Filter/FilterPanel";
 
-// Elodie
 export default function Cellar() {
     const { searchValue, searchBarOpen } = useStateContext();
     const [bottles, setBottles] = useState([]);
@@ -15,14 +14,6 @@ export default function Cellar() {
     const [page, setPage] = useState(1);
     const containerRef = useRef(null);
     const sentinelRef = useRef();
-
-    const [filters, setFilters] = useState({
-        type: [],
-        country: [],
-    });
-
-    const [oldFilters, setOldFilters] = useState();
-    const [oldSearch, setOldSearch] = useState();
 
     // aller chercher les bouteilles du cellier de l'usager dans la base de données et les mettre dans le state
     const getBottles = (dataUpdt, bottleRmv) => {
@@ -45,8 +36,6 @@ export default function Cellar() {
         if (searchValue) {
             filterParams.append("search", searchValue);
         }
-
-        // autres filtres
 
         // si on ajoute la bouteille au cellier, refleter la nouvelle quantite sans devoir fetch toutes les bouteilles a nouveau
         if (dataUpdt) {
@@ -109,12 +98,11 @@ export default function Cellar() {
             });
     };
 
-    
+    // vider les filtres
     const handleClearFilters = () => {
         setFilters({
             type: [],
             country: [],
-            ratings: [],
         });
     };
 
@@ -131,26 +119,14 @@ export default function Cellar() {
         }
     };
 
-    //executer la fonction
-    useEffect(() => {
-        getBottles();
-    }, [filters, searchValue]);
+    // initialiser les filtres
+    const [filters, setFilters] = useState({
+        type: [],
+        country: [],
+    });
 
-    //sentinel observer pour la pagination scroll
-    useEffect(() => {
-        const observer = new IntersectionObserver(handleIntersection, {
-            root: null,
-            rootMargin: "0px",
-            threshold: 1.0,
-        });
-
-        //s'assurer que la ref existe
-        if (sentinelRef.current) {
-            observer.observe(sentinelRef.current);
-        }
-
-        return () => observer.disconnect();
-    }, [sentinelRef.current]);
+    const [oldFilters, setOldFilters] = useState();
+    const [oldSearch, setOldSearch] = useState();
 
     //retirer la bouteille du cellier de l'usager
     const removeFromCellar = (id) => {
@@ -185,6 +161,27 @@ export default function Cellar() {
             });
     };
 
+    //executer la fonction
+    useEffect(() => {
+        getBottles();
+    }, [filters, searchValue]);
+
+    //sentinel observer pour la pagination scroll
+    useEffect(() => {
+        const observer = new IntersectionObserver(handleIntersection, {
+            root: null,
+            rootMargin: "0px",
+            threshold: 1.0,
+        });
+
+        //s'assurer que la ref existe
+        if (sentinelRef.current) {
+            observer.observe(sentinelRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, [sentinelRef.current]);
+
     //lorsque que le state bottles est mis a jour, on scroll a la position sauvegardée
     useEffect(() => {
         window.scrollTo(0, scrollPosition);
@@ -192,24 +189,32 @@ export default function Cellar() {
 
     return (
         <div className="flex flex-col">
-            <FilterPanel filters={filters} setFilters={setFilters} onClearFilters={handleClearFilters} />
+            <FilterPanel
+                filters={filters}
+                setFilters={setFilters}
+                onClearFilters={handleClearFilters}
+            />
             {total && total != 1 && searchValue ? (
-                        <p className="ml-2 mb-1 mt-4">{total} résultats</p>
-                    ) : total == 1 && searchValue ? (
-                        <span className="ml-2 mb-1 mt-4">1 résultat</span>
-                    ) : total == 0 && searchValue ? (
-                        <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
-                            <div className="mx-auto">
-                                Aucun résultats, modifier vos filtres
-                                <br />
-                                ou effectuez une nouvelle recherche
-                            </div>
-                        </div>
+                <p className="ml-2 mb-1 mt-4">{total} résultats</p>
+            ) : total == 1 && searchValue ? (
+                <span className="ml-2 mb-1 mt-4">1 résultat</span>
+            ) : total == 0 && searchValue ? (
+                <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
+                    <div className="mx-auto">
+                        Aucun résultats, modifier vos filtres
+                        <br />
+                        ou effectuez une nouvelle recherche
+                    </div>
+                </div>
             ) : null}
             {loading ? (
                 <p className="ml-2 mb-1 mt-4">Chargement...</p>
             ) : (
-                <ul className={`${searchBarOpen ? "mt-23" : "mt-23"} flex flex-col gap-2 transition-all duration-200 ease-in-out`}>
+                <ul
+                    className={`${
+                        searchBarOpen ? "mt-23" : "mt-23"
+                    } flex flex-col gap-2 transition-all duration-200 ease-in-out`}
+                >
                     {bottles.map((bottle) => (
                         <li key={bottle.id}>
                             <ProductCard
@@ -243,7 +248,6 @@ export default function Cellar() {
                             </div>
                         </div>
                     ) : null}
-
                 </ul>
             )}
         </div>
