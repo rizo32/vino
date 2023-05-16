@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import StarRating from "../../components/StarRating/StarRating.jsx";
 import ImageOnImage from "../../components/ImageOnImage/ImageOnImage.jsx";
+import EditQuantityModal from "../../components/EditQuantityModal/EditQuantityModal";
+import axiosClient from "../../axios-client";
 
 export default function ProductView(props) {
     const location = useLocation();
@@ -9,15 +11,36 @@ export default function ProductView(props) {
     const handleRetour = () => {
         navigate(-1);
     };
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     // Récupère les informations de bottle passées depuis la page précédente
     const bottle = location.state.bottle;
+
+    // fonction pour ajouter une bouteille au cellier
+    const addToCellar = (bottle, quantity, initialQty) => {
+        bottle.quantity = quantity;
+        axiosClient
+            .post(
+                `${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles`,
+                bottle
+            )
+            .then(({ data }) => {
+                bottle.initialQty = initialQty;
+                getBottles(bottle);
+            })
+            .catch((err) => {
+                console.log(err.response);
+            });
+    };
+    // -----------
 
     window.scrollTo(0,0);
 
     return (
         <div className="flex flex-col justify-center items-center">
-            <div className="absolute top-20 left-5 flex flex-row z-30">
+            <div className="absolute top-20 left-5 flex flex-row justify-between z-30">
                 {" "}
                 <button
                     onClick={handleRetour}
@@ -39,7 +62,20 @@ export default function ProductView(props) {
                     </svg>
                     Retour
                 </button>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-5 text-white block w-10 h-10 cursor-pointer" onClick={handleOpen}>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"></path>
+                </svg>
             </div>
+
+            {open ? (
+                <EditQuantityModal
+                bottle={bottle}
+                quantity={bottle.quantity}
+                handleClose={handleClose}
+                addToCellar={addToCellar}
+            />
+            )
+            : null}
 
             {/* Zone image */}
             <ImageOnImage
