@@ -63,8 +63,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Va chercher les options pour les filtres
     // Route::apiResource('/countries', CountryController::class);
     // Route::apiResource('/types', TypeController::class);
-    Route::post('/countries', [CountryController::class, 'index']);
-    Route::post('/types', [TypeController::class, 'index']);
+    Route::post('/countries/{source}', [CountryController::class, 'index']);
+    Route::post('/types/{source}', [TypeController::class, 'index']);
 
 });
 

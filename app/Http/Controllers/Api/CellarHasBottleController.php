@@ -48,7 +48,6 @@ class CellarHasBottleController extends Controller
             $query->whereHas('bottle', function ($q) use ($countries) {
                 $q->whereIn('country_id', $countries);
             });
-            // \Log::info(['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
         }
 
         // Filtre TYPE
@@ -57,7 +56,6 @@ class CellarHasBottleController extends Controller
             $query->whereHas('bottle', function ($q) use ($types) {
                 $q->whereIn('type_id', $types);
             });
-            // \Log::info(['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
         }
 
         //retourne les bouteilles du cellier de l'user connecté en format json

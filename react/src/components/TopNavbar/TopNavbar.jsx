@@ -40,9 +40,7 @@ const TopNavbar = () => {
         } else if (!location.pathname.includes("/product/")) {
             setSearchBarOpen(false);
             setSearchValue("");
-            if (searchInputRef.current) {
-                searchInputRef.current.value = "";
-            }
+            clearSearchValue();
         }
     }, [location, setSearchValue]);
 
@@ -62,7 +60,7 @@ const TopNavbar = () => {
 
     // La barre de recherche navigue vers le cellier sauf si l'on part du catalogue
     const handleSearchInputKeyDown = (e) => {
-        if (e.key === "Enter" && location.pathname !== "/catalog") {
+        if (e.key === "Enter" && location.pathname !== "/catalog" && location.pathname !== "/wishlist") {
             navigate("/cellar");
         }
     };
@@ -71,7 +69,7 @@ const TopNavbar = () => {
     const toggleSearchBar = () => {
         if (searchBarOpen && searchInputRef.current.value.trim() !== "") {
             // On peut refermer la barre si le contenu est vide, sinon la recherche s'enclenche
-            if (location.pathname !== "/catalog") {
+            if (location.pathname !== "/catalog" && location.pathname !== "/wishlist") {
                 navigate("/cellar");
             }
         } else {
@@ -91,10 +89,10 @@ const TopNavbar = () => {
         >
             <div className="flex items-center justify-between">
                 {/* Logo */}
-                <Link to="/cellar">
+                {/* <Link to="/cellar"> */}
                     {/* Padding autour permet d'agrandir la zone de clique */}
                     <img src={logoShort} alt="logo" className="h-16 p-4" />
-                </Link>
+                {/* </Link> */}
 
                 {/* Profil */}
                 <div className="flex flex-grow justify-end items-center">
@@ -163,12 +161,21 @@ const TopNavbar = () => {
                         onChange={handleSearchInputChange}
                         onKeyDown={handleSearchInputKeyDown}
                     />
+                ) : location.pathname === "/wishlist" ? (
+                    <input
+                        ref={searchInputRef}
+                        type="text"
+                        className="focus:outline-2 shadow-shadow-tiny-inset bg-gray-100 rounded-lg py-1 px-4 w-full h-10 placeholder-gray-500"
+                        placeholder="Recherchez dans vos favoris"
+                        onChange={handleSearchInputChange}
+                        onKeyDown={handleSearchInputKeyDown}
+                    />
                 ) : (
                     <input
                         ref={searchInputRef}
                         type="text"
                         className="focus:outline-2 shadow-shadow-tiny-inset bg-gray-100 rounded-lg py-1 px-4 w-full h-10 placeholder-gray-500"
-                        placeholder="Trouvez votre bouteille"
+                        placeholder="Recherchez dans votre cellier"
                         onChange={handleSearchInputChange}
                         onKeyDown={handleSearchInputKeyDown}
                     />
