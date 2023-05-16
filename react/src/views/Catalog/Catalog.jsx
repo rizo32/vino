@@ -66,7 +66,7 @@ export default function Catalog() {
                     //augmenter la quantite si elle existe
                     return {
                         ...bottle,
-                        quantity: bottleUpdt.initialQty + bottleUpdt.quantity,
+                        quantity: parseInt(bottleUpdt.initialQty) + parseInt(bottleUpdt.quantity),
                     };
                 }
                 // garder meme bouteille et proprietes si rien change
@@ -185,7 +185,7 @@ export default function Catalog() {
         .then(({data}) => {
             if(data.data){
                 addScanToCellar(data.data);
-                data.data.quantity = data.data.quantity + 1;
+                data.data.quantity = parseInt(data.data.quantity) + parseInt(1);
             }
             setScannedBottle(data.data);
         })
