@@ -68,7 +68,7 @@ export default function ProductView(props) {
             <div
                 className={`${
                     searchBarOpen ? "mt-18" : ""
-                } absolute top-20 w-full flex flex-col justify-between z-30 transition-all duration-200 ease-in-out`}
+                } absolute top-20 w-full flex flex-col justify-between z-10 transition-all duration-200 ease-in-out`}
             >
                 <div className="flex flex-row justify-between">
                     <button
