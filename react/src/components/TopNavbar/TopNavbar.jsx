@@ -13,7 +13,7 @@ const TopNavbar = () => {
         setSearchValue,
         setShowCategories,
         searchBarOpen,
-        setSearchBarOpen
+        setSearchBarOpen,
     } = useStateContext();
     const navigate = useNavigate();
 
@@ -25,7 +25,6 @@ const TopNavbar = () => {
             searchInputRef.current.value = "";
         }
     };
-    
 
     // La barre de recherche deviens active (ouvre le clavier sur mobile) dès l'ouverture de la page Catalogue
     // afin d'aider les usagers à trouver la bouteille rapidement
@@ -51,7 +50,7 @@ const TopNavbar = () => {
         } else {
             setHasOneCharacter(false);
         }
-    
+
         // pas avant d'avoir inscrit 3 charactères, mais update lors de la suppression complète
         if (e.target.value.length > 2 || e.target.value.length === 0) {
             setSearchValue(e.target.value);
@@ -60,7 +59,11 @@ const TopNavbar = () => {
 
     // La barre de recherche navigue vers le cellier sauf si l'on part du catalogue
     const handleSearchInputKeyDown = (e) => {
-        if (e.key === "Enter" && location.pathname !== "/catalog" && location.pathname !== "/wishlist") {
+        if (
+            e.key === "Enter" &&
+            location.pathname !== "/catalog" &&
+            location.pathname !== "/wishlist"
+        ) {
             navigate("/cellar");
         }
     };
@@ -69,7 +72,10 @@ const TopNavbar = () => {
     const toggleSearchBar = () => {
         if (searchBarOpen && searchInputRef.current.value.trim() !== "") {
             // On peut refermer la barre si le contenu est vide, sinon la recherche s'enclenche
-            if (location.pathname !== "/catalog" && location.pathname !== "/wishlist") {
+            if (
+                location.pathname !== "/catalog" &&
+                location.pathname !== "/wishlist"
+            ) {
                 navigate("/cellar");
             }
         } else {
@@ -90,8 +96,8 @@ const TopNavbar = () => {
             <div className="flex items-center justify-between">
                 {/* Logo */}
                 {/* <Link to="/cellar"> */}
-                    {/* Padding autour permet d'agrandir la zone de clique */}
-                    <img src={logoShort} alt="logo" className="h-16 p-4" />
+                {/* Padding autour permet d'agrandir la zone de clique */}
+                <img src={logoShort} alt="logo" className="h-16 p-4" />
                 {/* </Link> */}
 
                 {/* Profil */}
@@ -121,28 +127,30 @@ const TopNavbar = () => {
                     </NavLink>
 
                     {/* Search */}
-                    <div className="flex items-center">
-                        {/* Padding autour permet d'agrandir la zone de clique */}
-                        <button
-                            className="text-gray-700 p-4 z-10 focus:outline-none"
-                            onClick={toggleSearchBar}
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-8"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
+                    {!location.pathname.startsWith("/users/") && (
+                        <div className="flex items-center">
+                            {/* Padding autour permet d'agrandir la zone de clique */}
+                            <button
+                                className="text-gray-700 p-4 z-10 focus:outline-none"
+                                onClick={toggleSearchBar}
                             >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="1.5"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                />
-                            </svg>
-                        </button>
-                    </div>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-8"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="1.5"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
             <div
@@ -180,27 +188,27 @@ const TopNavbar = () => {
                         onKeyDown={handleSearchInputKeyDown}
                     />
                 )}
-            {hasOneCharacter && (
-                <button
-                    className="absolute right-0 top-0 text-gray-700 z-10 focus:outline-none h-10 pr-2"
-                    onClick={clearSearchValue}
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                {hasOneCharacter && (
+                    <button
+                        className="absolute right-0 top-0 text-gray-700 z-10 focus:outline-none h-10 pr-2"
+                        onClick={clearSearchValue}
                     >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="1.5"
-                            d="M6 18L18 6M6 6l12 12"
-                        />
-                    </svg>
-                </button>
-            )}
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="1.5"
+                                d="M6 18L18 6M6 6l12 12"
+                            />
+                        </svg>
+                    </button>
+                )}
             </div>
         </nav>
     );
