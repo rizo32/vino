@@ -14,8 +14,8 @@ class CellarFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'name' => $this->faker->word,
-            'created_at' => $this->faker->dateTimeBetween('-6 months', 'now'),
+            'name' => $this->faker->word, /* nom générer faker */
+            'created_at' => $this->faker->dateTimeBetween('-6 months', 'now'), /*  date de creation aleatoire entre aujourd'hui et moins 6 mois ( pour simuler 6 mois d'intéractions ) */
         ];
     }
 }
