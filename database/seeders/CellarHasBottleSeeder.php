@@ -18,7 +18,7 @@ class CellarHasBottleSeeder extends Seeder
 
         Cellar::all()->each(function ($cellar) use ($bottleIds) {
            
-            $numBottles = random_int(15, 100);
+            $numBottles = random_int(5, 30);
 
             for ($i = 0; $i < $numBottles; $i++) {
                 
