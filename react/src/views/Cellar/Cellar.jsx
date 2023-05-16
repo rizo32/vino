@@ -224,7 +224,6 @@ export default function Cellar() {
                                 cellarHasBottleId={bottle.id}
                                 updateBottleQty={updateBottleQty}
                             />
-                            {/* mettre en place le comportement swipe */}
                         </li>
                     ))}
 
