@@ -131,7 +131,7 @@ export default function Wishlist() {
     // suppression de la page de favoris
     const handleRemoveFromWishlist = (bottleId) => {
         getBottles(null, { bottle: { id: bottleId } });
-        setTotal(prevTotal => prevTotal - 1);
+        setTotal((prevTotal) => prevTotal - 1);
     };
 
     //executer la fonction
@@ -167,13 +167,16 @@ export default function Wishlist() {
                 setFilters={setFilters}
                 onClearFilters={handleClearFilters}
             />
-            <p className="mt-23"></p>
-            {total && total != 1 ? (
+            <p className="mt-20"></p>
+            <div className="h-16 bg-red-900 flex justify-center items-center text-white">
+                <p className="text-xl">VOS FAVORIS</p>
+            </div>
+            {total && total !== 1 && !loading ? (
                 <p className="ml-2 mb-1 mt-4">{total} résultats</p>
-            ) : total == 1 ? (
+            ) : total === 1 && !loading ? (
                 <span className="ml-2 mb-1 mt-4">1 résultat</span>
-            ) : total == 0 ? (
-                <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
+            ) : total === 0 && searchValue && !loading ? (
+                <div className="absolute flex flex-col h-[80vh] place-content-center text-center text-gray-500">
                     <div className="mx-auto">
                         Aucun résultats, modifier vos filtres
                         <br />
@@ -184,17 +187,13 @@ export default function Wishlist() {
             {loading ? (
                 <p className="ml-2 mb-1 mt-4">Chargement...</p>
             ) : (
-                <ul
-                    className="flex flex-col gap-2 transition-all duration-200 ease-in-out"
-                >
-                    {/* <ul className="flex flex-col gap-2 mt-4"> */}
+                <ul className="flex flex-col gap-2 transition-all duration-200 ease-in-out">
                     {bottles.map((bottle) => (
                         <li key={bottle.id}>
                             <ProductCard
                                 bottle={bottle.bottle}
                                 onRemoveFromWishlist={handleRemoveFromWishlist}
                             />
-                            {/* mettre en place le comportement swipe */}
                         </li>
                     ))}
 
@@ -207,14 +206,14 @@ export default function Wishlist() {
                     </div>
 
                     {bottles.length == 0 && searchValue == "" ? (
-                        <div className="flex flex-col h-[70vh] place-content-center text-center text-gray-500">
-                            <div className="mx-auto">
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-gray-500 w-full">
+                            <div className="mt-6">
                                 Votre liste de favoris semble vide...
                             </div>
-                            <div className="mx-auto mt-2">
+                            <div className="mt-3">
                                 Ajoutez vos bouteilles à l'aide
                                 <br />
-                                du "+" dans la barre de navigation
+                                du "+" ci-dessous
                             </div>
                         </div>
                     ) : null}
