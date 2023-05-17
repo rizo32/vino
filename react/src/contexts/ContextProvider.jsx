@@ -6,21 +6,19 @@ const StateContext = createContext({
     token: null,
     setUser: () => {},
     setToken: () => {},
+
     // Pour la recherche
     searchBarOpen: false,
     setSearchBarOpen: () => {},
+    searchValue: "",
+    setSearchValue: () => {},
+
     /* ajout pour user_types YG */
     user_types_id: null,
     setUserTypesId: () => {},
     
 
 
-    searchValue: "",
-    setSearchValue: () => {},
-    // Pour l'affichage des catégories
-
-    // showCategories: false,
-    // setShowCategories: () => {},
 });
 
 // Créer un composant fournisseur de contexte pour gérer et fournir l'authentification
@@ -68,8 +66,6 @@ export const ContextProvider = ({ children }) => {
                 setSearchBarOpen,
                 searchValue,
                 setSearchValue,
-                // showCategories,
-                // setShowCategories,
                 user_types_id,
                 setUserTypesId,
             }}

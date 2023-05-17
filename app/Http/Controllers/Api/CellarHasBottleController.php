@@ -100,13 +100,6 @@ class CellarHasBottleController extends Controller
 
         return 'test';
     }
-
-    // $query = CellarHasBottle::with(['bottle' => function ($q) {
-    //     $q->orderBy('name', 'asc');
-    // }, 'cellar'])
-    // ->whereHas('cellar', function ($q) {
-    //     $q->where('user_id', Auth::id());
-    // });
     /**
      * Display the specified resource.
      *
@@ -115,7 +108,6 @@ class CellarHasBottleController extends Controller
      */
     public function show(CellarHasBottle $cellarHasBottle)
     {
-        //comment on utilise ca en parallele avec juste show une bouteille, vu que ici on a la donnée quantity ?
         return new CellarHasBottleResource($cellarHasBottle);
     }
 
@@ -149,7 +141,7 @@ class CellarHasBottleController extends Controller
 
     public function storeScanBottle(Request $request)
     {
-        // Utilisation connecté
+        // Utilisateur connecté
         $user = auth()->user();
 
         $request->validate([

@@ -28,11 +28,10 @@ export default function Catalog() {
     const [oldFilters, setOldFilters] = useState();
     const [oldSearch, setOldSearch] = useState();
 
-    // Elodie + Gabriel
     // aller chercher les bouteilles dans la base de données et les mettre dans le state
     const getBottles = (bottleUpdt) => {
         setScanned(false);
-        setLoading(true); // à mettre en place (eg Gif)
+        setLoading(true);
         //sauvegarder la position avant de fetch les prochaines bouteilles
         setScrollPosition(window.pageYOffset);
 
