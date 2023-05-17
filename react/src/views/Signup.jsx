@@ -98,7 +98,7 @@ export default function Signup() {
                         Mot de passe
                         {!message.password && (
                             <span className="text-xs pl-2">
-                                8 caractères incluant au moins un chiffre et un symbole
+                                au moins 8 caractères incluant au moins un chiffre et un symbole
                             </span>
                         )}
                         {message.password && (
