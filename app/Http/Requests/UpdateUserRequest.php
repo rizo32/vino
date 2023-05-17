@@ -34,6 +34,7 @@ class UpdateUserRequest extends FormRequest
             'email' => [
                 'required',
                 'email',
+                'min:8',
                 // email unique auprès des AUTRES users
                 Rule::unique('users')->ignore($userId),
             ],
@@ -42,8 +43,17 @@ class UpdateUserRequest extends FormRequest
                 'nullable',
                 Password::min(8)
                     ->letters()
+                    ->numbers()
                     ->symbols()
             ]
+        ];
+    }
+
+    // message explicatif de l'ensemble des règles si le mot de passe est trop court
+    public function messages()
+    {
+        return [
+            'password.min' => 'au moins 8 caractères incluant au minimum un chiffre et un symbole',
         ];
     }
 }
