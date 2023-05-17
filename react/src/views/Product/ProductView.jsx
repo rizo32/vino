@@ -1,7 +1,9 @@
-import React, { useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
+import { useState } from "react";
+import axiosClient from "../../axios-client";
 import { useLocation, useNavigate } from "react-router-dom";
 import StarRating from "../../components/StarRating/StarRating.jsx";
+import { useStateContext } from "../../contexts/ContextProvider";
 import ImageOnImage from "../../components/ImageOnImage/ImageOnImage.jsx";
 import EditQuantityModal from "../../components/EditQuantityModal/EditQuantityModal";
 import axiosClient from "../../axios-client";
@@ -40,30 +42,97 @@ export default function ProductView(props) {
     };
     // -----------
 
-    window.scrollTo(0,0);
+    // est-ce la bouteille fait partie de la liste de souhait
+    const [inWishlist, setInWishlist] = useState(bottle.isInWishlist);
+
+    // fonction pour ajouter une bouteille à la wishlist
+    const toggleWishlist = (bottle) => {
+        axiosClient
+            .get(`${import.meta.env.VITE_API_BASE_URL}/api/wishlist`)
+            .then(({ data }) => {
+                const wishlistItem = data.data.find(
+                    (item) => item.bottle.id === bottle.id
+                );
+                if (wishlistItem) {
+                    // If the bottle is in the wishlist, remove it
+                    axiosClient
+                        .delete(
+                            `${
+                                import.meta.env.VITE_API_BASE_URL
+                            }/api/wishlist/${wishlistItem.id}`
+                        )
+                        .then(({ data }) => {
+                            setInWishlist(false);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                } else {
+                    // If the bottle is not in the wishlist, add it
+                    axiosClient
+                        .post(
+                            `${import.meta.env.VITE_API_BASE_URL}/api/wishlist`,
+                            { id: bottle.id }
+                        )
+                        .then(() => {
+                            setInWishlist(true);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    window.scrollTo(0, 0);
 
     return (
         <div className="flex flex-col justify-center items-center">
-            <div className="absolute top-20 left-5 flex flex-row justify-between z-30">
-                {" "}
-                <button
-                    onClick={handleRetour}
-                    className="flex flex-row items-center justify-center gap-1 text-white"
-                >
+            <div
+                className={`${
+                    searchBarOpen ? "mt-18" : ""
+                } absolute top-20 w-full flex flex-col justify-between z-10 transition-all duration-200 ease-in-out`}
+            >
+                <div className="flex flex-row justify-between">
+                    <button
+                        onClick={handleRetour}
+                        className="flex flex-row ml-5 items-center justify-center gap-1 text-white"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="block w-8 h-8 cursor-pointer"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                            />
+                        </svg>
+                        {/* Retour */}
+                    </button>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
-                        strokeWidth={2}
+                        strokeWidth={1.5}
                         stroke="currentColor"
-                        className="w-4 h-4"
+                        className="mr-5 text-white block w-11 h-11 cursor-pointer"
+                        onClick={() => handleOpen()}
                     >
                         <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                            d="M12 6v12m6-6H6"
                         />
                     </svg>
+
                     Retour
                 </button>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-5 text-white block w-10 h-10 cursor-pointer" onClick={handleOpen}>
@@ -85,6 +154,23 @@ export default function ProductView(props) {
             </div>
             )
             : null}
+
+                </div>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill={inWishlist ? "#b91c1c" : "none"}
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.25}
+                    stroke="currentColor"
+                    className="ml-auto mr-5 mt-48 text-white block w-10 h-10 cursor-pointer"
+                    onClick={() => toggleWishlist(bottle)}
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                    />
+                </svg>
 
             {/* Zone image */}
             <ImageOnImage

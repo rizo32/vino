@@ -13,11 +13,11 @@ const TopNavbar = () => {
         setSearchValue,
         setShowCategories,
         searchBarOpen,
-        setSearchBarOpen
+        setSearchBarOpen,
     } = useStateContext();
     const navigate = useNavigate();
 
-    // Clear the search value
+    // Reinit la recherche
     const clearSearchValue = () => {
         setSearchValue("");
         setHasOneCharacter(false);
@@ -25,24 +25,20 @@ const TopNavbar = () => {
             searchInputRef.current.value = "";
         }
     };
-    
 
-    // La barre de recherche deviens active (ouvre le clavier sur mobile) dès l'ouverture de la page Catalogue
+    // La barre de recherche s'ouvre dès l'ouverture de la page Catalogue
     // afin d'aider les usagers à trouver la bouteille rapidement
+    // elle n'est pas active pour ne pas cacher la section barcode avec le claver
     useEffect(() => {
         if (location.pathname === "/catalog") {
             setSearchBarOpen(true);
-            if (searchInputRef.current) {
-                searchInputRef.current.focus();
-            }
+
             // réinitialisation du contenu de la barre de recherche sauf dans la page produit
             // afin de pouvoir revenir vers le retour de recherche intact
         } else if (!location.pathname.includes("/product/")) {
             setSearchBarOpen(false);
             setSearchValue("");
-            if (searchInputRef.current) {
-                searchInputRef.current.value = "";
-            }
+            clearSearchValue();
         }
     }, [location, setSearchValue]);
 
@@ -53,15 +49,20 @@ const TopNavbar = () => {
         } else {
             setHasOneCharacter(false);
         }
-    
-        if (e.target.value.length > 2) {
+
+        // pas avant d'avoir inscrit 3 charactères, mais update lors de la suppression complète
+        if (e.target.value.length > 2 || e.target.value.length === 0) {
             setSearchValue(e.target.value);
         }
     };
 
     // La barre de recherche navigue vers le cellier sauf si l'on part du catalogue
     const handleSearchInputKeyDown = (e) => {
-        if (e.key === "Enter" && location.pathname !== "/catalog") {
+        if (
+            e.key === "Enter" &&
+            location.pathname !== "/catalog" &&
+            location.pathname !== "/wishlist"
+        ) {
             navigate("/cellar");
         }
     };
@@ -70,7 +71,10 @@ const TopNavbar = () => {
     const toggleSearchBar = () => {
         if (searchBarOpen && searchInputRef.current.value.trim() !== "") {
             // On peut refermer la barre si le contenu est vide, sinon la recherche s'enclenche
-            if (location.pathname !== "/catalog") {
+            if (
+                location.pathname !== "/catalog" &&
+                location.pathname !== "/wishlist"
+            ) {
                 navigate("/cellar");
             }
         } else {
@@ -89,11 +93,10 @@ const TopNavbar = () => {
             } transition-all duration-200 ease-in-out fixed w-full bg-white px-2 z-40 shadow-shadow-tiny`}
         >
             <div className="flex items-center justify-between">
+
                 {/* Logo */}
-                <Link to="/cellar">
-                    {/* Padding autour permet d'agrandir la zone de clique */}
-                    <img src={logoShort} alt="logo" className="h-16 p-4" />
-                </Link>
+                {/* Le logo n'est plus un lien vers le cellier pour ne pas créer de confusion avec des boutons redondants */}
+                <img src={logoShort} alt="logo" className="h-16 p-4" />
 
                 {/* Profil */}
                 <div className="flex flex-grow justify-end items-center">
@@ -122,30 +125,34 @@ const TopNavbar = () => {
                     </NavLink>
 
                     {/* Search */}
-                    <div className="flex items-center">
-                        {/* Padding autour permet d'agrandir la zone de clique */}
-                        <button
-                            className="text-gray-700 p-4 z-10 focus:outline-none"
-                            onClick={toggleSearchBar}
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-8"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
+                    {!location.pathname.startsWith("/users/") && (
+                        <div className="flex items-center">
+                            {/* Padding autour permet d'agrandir la zone de clique */}
+                            <button
+                                className="text-gray-700 p-4 z-10 focus:outline-none"
+                                onClick={toggleSearchBar}
                             >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="1.5"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                />
-                            </svg>
-                        </button>
-                    </div>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-8"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="1.5"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
+
+            {/* Placeholder différent dans la barre de recherche selon la page */}
             <div
                 className={`${
                     searchBarOpen
@@ -162,37 +169,48 @@ const TopNavbar = () => {
                         onChange={handleSearchInputChange}
                         onKeyDown={handleSearchInputKeyDown}
                     />
+                ) : location.pathname === "/wishlist" ? (
+                    <input
+                        ref={searchInputRef}
+                        type="text"
+                        className="focus:outline-2 shadow-shadow-tiny-inset bg-gray-100 rounded-lg py-1 px-4 w-full h-10 placeholder-gray-500"
+                        placeholder="Recherchez dans vos favoris"
+                        onChange={handleSearchInputChange}
+                        onKeyDown={handleSearchInputKeyDown}
+                    />
                 ) : (
                     <input
                         ref={searchInputRef}
                         type="text"
                         className="focus:outline-2 shadow-shadow-tiny-inset bg-gray-100 rounded-lg py-1 px-4 w-full h-10 placeholder-gray-500"
-                        placeholder="Trouvez votre bouteille"
+                        placeholder="Recherchez dans votre cellier"
                         onChange={handleSearchInputChange}
                         onKeyDown={handleSearchInputKeyDown}
                     />
                 )}
-            {hasOneCharacter && (
-                <button
-                    className="absolute right-0 top-0 text-gray-700 z-10 focus:outline-none h-10 pr-2"
-                    onClick={clearSearchValue}
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+
+                {/* Un X permettant d'effacer la recherche apparait lorsque du contenu est inséré */}
+                {hasOneCharacter && (
+                    <button
+                        className="absolute right-0 top-0 text-gray-700 z-10 focus:outline-none h-10 pr-2"
+                        onClick={clearSearchValue}
                     >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="1.5"
-                            d="M6 18L18 6M6 6l12 12"
-                        />
-                    </svg>
-                </button>
-            )}
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="1.5"
+                                d="M6 18L18 6M6 6l12 12"
+                            />
+                        </svg>
+                    </button>
+                )}
             </div>
         </nav>
     );
