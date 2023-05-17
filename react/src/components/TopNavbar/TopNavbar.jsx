@@ -17,7 +17,7 @@ const TopNavbar = () => {
     } = useStateContext();
     const navigate = useNavigate();
 
-    // Clear the search value
+    // Reinit la recherche
     const clearSearchValue = () => {
         setSearchValue("");
         setHasOneCharacter(false);
@@ -26,14 +26,13 @@ const TopNavbar = () => {
         }
     };
 
-    // La barre de recherche deviens active (ouvre le clavier sur mobile) dès l'ouverture de la page Catalogue
+    // La barre de recherche s'ouvre dès l'ouverture de la page Catalogue
     // afin d'aider les usagers à trouver la bouteille rapidement
+    // elle n'est pas active pour ne pas cacher la section barcode avec le claver
     useEffect(() => {
         if (location.pathname === "/catalog") {
             setSearchBarOpen(true);
-            if (searchInputRef.current) {
-                searchInputRef.current.focus();
-            }
+
             // réinitialisation du contenu de la barre de recherche sauf dans la page produit
             // afin de pouvoir revenir vers le retour de recherche intact
         } else if (!location.pathname.includes("/product/")) {
@@ -94,11 +93,10 @@ const TopNavbar = () => {
             } transition-all duration-200 ease-in-out fixed w-full bg-white px-2 z-20 shadow-shadow-tiny`}
         >
             <div className="flex items-center justify-between">
+
                 {/* Logo */}
-                {/* <Link to="/cellar"> */}
-                {/* Padding autour permet d'agrandir la zone de clique */}
+                {/* Le logo n'est plus un lien vers le cellier pour ne pas créer de confusion avec des boutons redondants */}
                 <img src={logoShort} alt="logo" className="h-16 p-4" />
-                {/* </Link> */}
 
                 {/* Profil */}
                 <div className="flex flex-grow justify-end items-center">
@@ -153,6 +151,8 @@ const TopNavbar = () => {
                     )}
                 </div>
             </div>
+
+            {/* Placeholder différent dans la barre de recherche selon la page */}
             <div
                 className={`${
                     searchBarOpen
@@ -188,6 +188,8 @@ const TopNavbar = () => {
                         onKeyDown={handleSearchInputKeyDown}
                     />
                 )}
+
+                {/* Un X permettant d'effacer la recherche apparait lorsque du contenu est inséré */}
                 {hasOneCharacter && (
                     <button
                         className="absolute right-0 top-0 text-gray-700 z-10 focus:outline-none h-10 pr-2"
