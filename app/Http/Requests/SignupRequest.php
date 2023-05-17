@@ -40,10 +40,11 @@ class SignupRequest extends FormRequest
         ];
     }
 
+    // message explicatif de l'ensemble des règles si le mot de passe est trop court
     public function messages()
     {
         return [
-            'password.min' => '8 caractères incluant au moins un chiffre et un symbole',
+            'password.min' => 'au moins 8 caractères incluant au moins un chiffre et un symbole',
         ];
     }
 }
