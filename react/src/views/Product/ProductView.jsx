@@ -16,25 +16,27 @@ export default function ProductView(props) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const [bottle, setBottle] = useState(location.state.bottle);
 
     // Récupère les informations de bottle passées depuis la page précédente
-    const bottle = location.state.bottle;
+    
 
     // fonction pour ajouter une bouteille au cellier
-    const addToCellar = (bottle, quantity, initialQty) => {
-        bottle.quantity = quantity;
+    const addToCellar = (bottleEdit, quantity, initialQty) => {
+        bottleEdit.quantity = quantity;
         axiosClient
             .post(
                 `${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles`,
-                bottle
+                bottleEdit
             )
             .then(({ data }) => {
-                bottle.initialQty = initialQty;
-                getBottles(bottle);
+                bottleEdit.initialQty = initialQty;
             })
             .catch((err) => {
                 console.log(err.response);
             });
+        bottleEdit.quantity = parseInt(quantity) + parseInt(initialQty);
+        setBottle(bottleEdit);
     };
     // -----------
 
@@ -93,6 +95,7 @@ export default function ProductView(props) {
 
             {/* Zone sous image */}
             <section className="w-full flex flex-col justify-start items-start gap-4 p-6 bg-white ">
+                <span class="text-red-900 font-bold">{bottle.quantity} dans le cellier</span>
                 <h1 className="font-bold">
                     {bottle.name.charAt(0).toUpperCase() + bottle.name.slice(1)}
                 </h1>
