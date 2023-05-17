@@ -54,7 +54,7 @@ export default function ProductCard({
     };
     // -----------
 
-    // fonction pour ajouter une bouteille à la wishlist
+    // fonction pour ajouter/supprimer une bouteille à la wishlist
     const toggleWishlist = (bottle) => {
         axiosClient
             .get(`${import.meta.env.VITE_API_BASE_URL}/api/wishlist`)
@@ -63,7 +63,7 @@ export default function ProductCard({
                     (item) => item.bottle.id === bottle.id
                 );
                 if (wishlistItem) {
-                    // If the bottle is in the wishlist, remove it
+                    // Suppression de la liste de souhait si déjà là
                     axiosClient
                         .delete(
                             `${
@@ -81,7 +81,7 @@ export default function ProductCard({
                             console.log(err);
                         });
                 } else {
-                    // If the bottle is not in the wishlist, add it
+                    // Ajout dans la liste de souhait si pas déjà là
                     axiosClient
                         .post(
                             `${import.meta.env.VITE_API_BASE_URL}/api/wishlist`,
