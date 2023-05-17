@@ -131,6 +131,7 @@ export default function Wishlist() {
     // suppression de la page de favoris
     const handleRemoveFromWishlist = (bottleId) => {
         getBottles(null, { bottle: { id: bottleId } });
+        setTotal(prevTotal => prevTotal - 1);
     };
 
     //executer la fonction
@@ -166,11 +167,12 @@ export default function Wishlist() {
                 setFilters={setFilters}
                 onClearFilters={handleClearFilters}
             />
-            {total && total != 1 && searchValue ? (
+            <p className="mt-23"></p>
+            {total && total != 1 ? (
                 <p className="ml-2 mb-1 mt-4">{total} résultats</p>
-            ) : total == 1 && searchValue ? (
+            ) : total == 1 ? (
                 <span className="ml-2 mb-1 mt-4">1 résultat</span>
-            ) : total == 0 && searchValue ? (
+            ) : total == 0 ? (
                 <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
                     <div className="mx-auto">
                         Aucun résultats, modifier vos filtres
@@ -183,9 +185,7 @@ export default function Wishlist() {
                 <p className="ml-2 mb-1 mt-4">Chargement...</p>
             ) : (
                 <ul
-                    className={`${
-                        searchBarOpen ? "mt-23" : "mt-23"
-                    } flex flex-col gap-2 transition-all duration-200 ease-in-out`}
+                    className="flex flex-col gap-2 transition-all duration-200 ease-in-out"
                 >
                     {/* <ul className="flex flex-col gap-2 mt-4"> */}
                     {bottles.map((bottle) => (
