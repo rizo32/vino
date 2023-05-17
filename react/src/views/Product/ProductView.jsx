@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useStateContext } from "../../contexts/ContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import StarRating from "../../components/StarRating/StarRating.jsx";
 import ImageOnImage from "../../components/ImageOnImage/ImageOnImage.jsx";
@@ -6,6 +7,7 @@ import EditQuantityModal from "../../components/EditQuantityModal/EditQuantityMo
 import axiosClient from "../../axios-client";
 
 export default function ProductView(props) {
+    const { searchBarOpen } = useStateContext();
     const location = useLocation();
     const navigate = useNavigate();
     const handleRetour = () => {
@@ -65,15 +67,20 @@ export default function ProductView(props) {
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-5 text-white block w-10 h-10 cursor-pointer" onClick={handleOpen}>
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"></path>
                 </svg>
+                
             </div>
 
             {open ? (
+                <div className={`${
+                    searchBarOpen ? "top-[135px]" : "top-[65px]"
+                } absolute h-[315px] w-full z-30 pt-20 text-white`}>
                 <EditQuantityModal
                 bottle={bottle}
                 quantity={bottle.quantity}
                 handleClose={handleClose}
                 addToCellar={addToCellar}
             />
+            </div>
             )
             : null}
 
