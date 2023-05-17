@@ -59,7 +59,7 @@ export default function Cellar() {
                 (bottle) => bottle.bottle.id != bottleRmv.bottle.id
             );
             setBottles(updatedBottles);
-            setTotal(prevTotal => prevTotal - 1);
+            setTotal((prevTotal) => prevTotal - 1);
             setLoading(false);
             //arreter la fonction
             return;
@@ -195,12 +195,15 @@ export default function Cellar() {
                 setFilters={setFilters}
                 onClearFilters={handleClearFilters}
             />
-            <p className="mt-23"></p>
-            {total && total != 1 ? (
+            <p className="mt-20"></p>
+            <div className="h-16 bg-red-900 flex justify-center items-center text-white">
+                <p className="text-xl">VOTRE CELLIER</p>
+            </div>
+            {total && total !== 1 && !loading ? (
                 <p className="ml-2 mb-1 mt-4">{total} résultats</p>
-            ) : total == 1 ? (
+            ) : total === 1 && !loading ? (
                 <span className="ml-2 mb-1 mt-4">1 résultat</span>
-            ) : total == 0 ? (
+            ) : total === 0 && searchValue && !loading ? (
                 <div className="flex flex-col h-[80vh] place-content-center text-center text-gray-500">
                     <div className="mx-auto">
                         Aucun résultats, modifier vos filtres
@@ -212,9 +215,7 @@ export default function Cellar() {
             {loading ? (
                 <p className="ml-2 mb-1 mt-4">Chargement...</p>
             ) : (
-                <ul
-                    className="flex flex-col gap-2 transition-all duration-200 ease-in-out"
-                >
+                <ul className="flex flex-col gap-2 transition-all duration-200 ease-in-out">
                     {bottles.map((bottle) => (
                         <li key={bottle.id}>
                             <ProductCard
@@ -236,7 +237,7 @@ export default function Cellar() {
                     </div>
 
                     {bottles.length == 0 && searchValue == "" ? (
-                        <div className="flex flex-col h-[70vh] place-content-center text-center text-gray-500">
+                        <div className="flex flex-col h-[60vh] place-content-center text-center text-gray-500">
                             <div className="mx-auto">
                                 Votre cellier semble vide...
                             </div>
