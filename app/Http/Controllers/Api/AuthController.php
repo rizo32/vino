@@ -41,17 +41,19 @@ class AuthController extends Controller
     {
         $credentials = $request->validated();
 
-        // gestion error authentification
+        // gestion erreur authentification
         if (!Auth::attempt($credentials)) {
             return response()->json([
                 'errors' => [
                     'password' => [
+                        // on garde le message vague pour éviter hack
                         "Le mot de passe ou adresse courriel est invalide"
                     ]
                 ]
             ], 422);
         }
 
+        // fetch info user
         $user = Auth::user();
 
         // création du token d'authentification
