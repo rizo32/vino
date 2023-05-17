@@ -11,3 +11,15 @@
     border-radius: 8px;
     margin-bottom: 5px;
 }
+
+#html5qr-code-full-region video {
+    height: 300px;
+}
+
+#html5-qrcode-anchor-scan-type-change {
+    display: none;
+}
+
+/* #qr-shaded-region {
+
+} */
