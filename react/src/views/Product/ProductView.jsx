@@ -1,12 +1,10 @@
-import { useStateContext } from "../../contexts/ContextProvider";
 import { useState } from "react";
 import axiosClient from "../../axios-client";
+import { useStateContext } from "../../contexts/ContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import StarRating from "../../components/StarRating/StarRating.jsx";
-import { useStateContext } from "../../contexts/ContextProvider";
 import ImageOnImage from "../../components/ImageOnImage/ImageOnImage.jsx";
 import EditQuantityModal from "../../components/EditQuantityModal/EditQuantityModal";
-import axiosClient from "../../axios-client";
 
 export default function ProductView(props) {
     const { searchBarOpen } = useStateContext();
@@ -19,9 +17,6 @@ export default function ProductView(props) {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [bottle, setBottle] = useState(location.state.bottle);
-
-    // Récupère les informations de bottle passées depuis la page précédente
-    
 
     // fonction pour ajouter une bouteille au cellier
     const addToCellar = (bottleEdit, quantity, initialQty) => {
@@ -41,6 +36,7 @@ export default function ProductView(props) {
         setBottle(bottleEdit);
     };
     // -----------
+
 
     // est-ce la bouteille fait partie de la liste de souhait
     const [inWishlist, setInWishlist] = useState(bottle.isInWishlist);
@@ -117,24 +113,7 @@ export default function ProductView(props) {
                         </svg>
                         {/* Retour */}
                     </button>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="mr-5 text-white block w-11 h-11 cursor-pointer"
-                        onClick={() => handleOpen()}
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 6v12m6-6H6"
-                        />
-                    </svg>
-
-                    Retour
-                </button>
+                    
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-5 text-white block w-10 h-10 cursor-pointer" onClick={handleOpen}>
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"></path>
                 </svg>
@@ -142,9 +121,7 @@ export default function ProductView(props) {
             </div>
 
             {open ? (
-                <div className={`${
-                    searchBarOpen ? "top-[135px]" : "top-[65px]"
-                } absolute h-[315px] w-full z-30 pt-20 text-white`}>
+                <div className="top-[-15px] absolute h-[315px] w-full z-30 text-white">
                 <EditQuantityModal
                 bottle={bottle}
                 quantity={bottle.quantity}
@@ -162,7 +139,7 @@ export default function ProductView(props) {
                     viewBox="0 0 24 24"
                     strokeWidth={1.25}
                     stroke="currentColor"
-                    className="ml-auto mr-5 mt-48 text-white block w-10 h-10 cursor-pointer"
+                    className="ml-auto right-5 top-10 mt-48 text-white block w-10 h-10 cursor-pointer absolute z-10"
                     onClick={() => toggleWishlist(bottle)}
                 >
                     <path
