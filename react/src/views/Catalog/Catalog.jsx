@@ -65,7 +65,7 @@ export default function Catalog() {
                     //augmenter la quantite si elle existe
                     return {
                         ...bottle,
-                        quantity: bottleUpdt.initialQty + bottleUpdt.quantity,
+                        quantity: parseInt(bottleUpdt.initialQty) + parseInt(bottleUpdt.quantity),
                     };
                 }
                 // garder meme bouteille et proprietes si rien change
@@ -184,7 +184,7 @@ export default function Catalog() {
         .then(({data}) => {
             if(data.data){
                 addScanToCellar(data.data);
-                data.data.quantity = data.data.quantity + 1;
+                data.data.quantity = parseInt(data.data.quantity) + parseInt(1);
             }
             setScannedBottle(data.data);
         })
@@ -217,7 +217,7 @@ export default function Catalog() {
     return (
         <div className="flex flex-col" ref={containerRef}>
             {searchValue || scanned ? null : (
-                <div className="flex flex-col h-[76vh] place-content-center text-center text-gray-500">
+                <div className="flex flex-col h-[76vh] place-content-center text-center text-gray-500 overflow-scroll">
                     <div className="mx-auto">
                         Utilisez la barre de recherche
                         <br />
