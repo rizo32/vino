@@ -14,6 +14,8 @@
 
 #html5qr-code-full-region video {
     height: 300px;
+    width: 100%;
+    object-fit: cover;
 }
 
 #html5-qrcode-anchor-scan-type-change {

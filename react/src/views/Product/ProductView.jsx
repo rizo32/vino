@@ -220,16 +220,6 @@ export default function ProductView(props) {
             ) : null}
           </p>
         </div>
-        <div className="flex gap-3">
-          <StarRating note={bottle.rating_saq} />
-          {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information */}
-          {bottle.num_comments ? (
-            <div className="flex gap-3">
-              <span className="font-light">|</span>
-              <p className="font-light">{bottle.num_comments} avis</p>
-            </div>
-          ) : null}
-        </div>
       </section>
       {/* Zone informations détaillées */}
       <section className="w-full border border-t-black-50 bg-white pb-10">
@@ -239,6 +229,19 @@ export default function ProductView(props) {
         <div className="flex flex-col gap-6 p-6">
           {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information 
                     Commentaire valable pour toutes les informations de cette DIV */}
+        <div>
+            <p>Avis du site de la SAQ</p>
+                    <div className="flex gap-3">
+          <StarRating note={bottle.rating_saq} />
+          {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information */}
+          {bottle.num_comments ? (
+            <div className="flex gap-3">
+              <span className="font-bold">|</span>
+              <p className="font-bold">{bottle.num_comments} avis</p>
+            </div>
+          ) : null}
+        </div>
+        </div>
           {bottle.type_name ? (
             <div>
               <p>Couleur</p>
