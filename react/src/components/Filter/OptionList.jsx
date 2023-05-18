@@ -1,7 +1,7 @@
 import React from "react";
 import Option from "./Option";
 
-const OptionsList = React.memo(({
+const OptionList = React.memo(({
     categories, // la liste des catégories de filtre
     selectedCategory, // la catégorie sélectionnée
     checkedItems, // la liste des éléments de filtre cochés
@@ -36,4 +36,4 @@ const OptionsList = React.memo(({
     );
 });
 
-export default React.memo(OptionsList);
+export default React.memo(OptionList);

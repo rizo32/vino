@@ -8,6 +8,7 @@ use App\Models\UserType;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -66,4 +67,12 @@ class UserController extends Controller
         ]);
         return response(compact('user'));
     }
+
+    public function deleteUser($id){
+        $user = User::findOrFail($id);
+        $user->delete();
+        return response()->json(compact('user'));
+      
+    }
 }
+

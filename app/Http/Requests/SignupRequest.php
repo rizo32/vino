@@ -31,10 +31,20 @@ class SignupRequest extends FormRequest
             'password' => [
                 'required',
                 'confirmed',
+                'min:8',
                 Password::min(8)
                     ->letters()
+                    ->numbers()
                     ->symbols()
             ]
+        ];
+    }
+
+    // message explicatif de l'ensemble des règles si le mot de passe est trop court
+    public function messages()
+    {
+        return [
+            'password.min' => 'au moins 8 caractères incluant au moins un chiffre et un symbole',
         ];
     }
 }

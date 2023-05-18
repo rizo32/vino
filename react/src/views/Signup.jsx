@@ -96,6 +96,11 @@ export default function Signup() {
                     />
                     <label htmlFor="password" className="mt-vh-2 ml-2">
                         Mot de passe
+                        {!message.password && (
+                            <span className="text-xs pl-2">
+                                au moins 8 caractères incluant au minimum un chiffre et un symbole
+                            </span>
+                        )}
                         {message.password && (
                             <span className="text-red-900 text-sm pl-2">
                                 {message.password[0]}

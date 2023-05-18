@@ -20,14 +20,11 @@ class WishlistController extends Controller
      */
     public function index(Request $request)
     {
+
         // Get the wishlisted bottles for the currently logged user
         $user = auth()->user();
-
         
         $query = Wishlist::where('user_id', $user->id)
-        ->with(['bottle', 'bottle.cellarHasBottle' => function ($query) use ($user) {
-            $query->where('cellar_id', '=', $user->cellar->id);
-        }])
         ->orderBy('created_at', 'desc');
 
         // Recherche dans le NOM
@@ -55,14 +52,7 @@ class WishlistController extends Controller
         }
 
         //retourne les bouteilles favorites/désirées de l'user connecté en format json
-
-        Log::info('hello', [
-            'raw' => WishlistResource::collection($query->paginate(10)),
-        ]);
-
         return WishlistResource::collection($query->paginate(10));
-
-        // return $query->paginate(10);
     }
 
     /**

@@ -70,37 +70,8 @@ class BottleController extends Controller
      */
     public function show(Bottle $bottle)
     {
-        dd($bottle);
         //json des infos de la bouteille
         return new BottleResource($bottle);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Bottle  $bottle
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Bottle $bottle)
-    {
-        //non utilise
-        $data = $request->validated();
-        $bottle->update($data);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Bottle  $bottle
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Bottle $bottle)
-    {
-        //non utilise
-        $bottle->delete();
-
-        return response("", 204);
     }
 
     public function scan(Request $request)

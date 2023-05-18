@@ -22,6 +22,7 @@ export default {
                 "vh-10": "10vh",
                 "vh-15": "15vh",
                 "vh-20": "20vh",
+                "18": "4.5rem",
                 "22": "5.5rem",
                 "23": "5.75rem",
                 "26": "6.5rem",
@@ -30,6 +31,7 @@ export default {
                 "18": "4.5rem",
                 "34": "8.5rem",
                 "38": "9.5rem",
+                "76": "19rem",
             },
             padding: {
                 "18": "4.5rem",
@@ -37,9 +39,11 @@ export default {
             },
             colors: {
                 // couleur action base (bg-red-900): hsl(0, 62.8, 30.6)
-                "red-hover": "hsl(0, 62.8%, 25%)",
+                "red-hover": "hsl(0, 62.8%, 35%)",
+                // "red-hover": "hsl(0, 62.8%, 25%)",
                 // couleur fond base (bg-red-50): hsl(0, 85.7, 97.3)
-                "rose-hover": "hsl(0, 85.7%, 95%)",
+                "rose-hover": "hsl(0, 100%, 100%)",
+                // "rose-hover": "hsl(0, 85.7%, 95%)",
             },
             blur: {
                 "xs": "3px"

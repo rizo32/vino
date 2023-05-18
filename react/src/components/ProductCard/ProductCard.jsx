@@ -38,23 +38,23 @@ export default function ProductCard({
 
     // update quantity
     const updateQty = (quantity, type) => {
-      if (quantity == 1 && type == 'rmv') {
-        removeFromCellar(cellarHasBottleId);
-      } else if( type === 'rmv') {
-        quantity = parseInt(quantity) - parseInt(1);
-        const data = {'quantity': quantity};
-        setCount(quantity);
-        updateBottleQty(cellarHasBottleId, data);
-      }else if( type === 'add') {
-        quantity = parseInt(quantity) + parseInt(1);
-        const data = {'quantity': quantity};
-        setCount(quantity);
-        updateBottleQty(cellarHasBottleId, data);
-      }
+        if (quantity == 1 && type == "rmv") {
+            removeFromCellar(cellarHasBottleId);
+        } else if (type === "rmv") {
+            quantity = parseInt(quantity) - parseInt(1);
+            const data = { quantity: quantity };
+            setCount(quantity);
+            updateBottleQty(cellarHasBottleId, data);
+        } else if (type === "add") {
+            quantity = parseInt(quantity) + parseInt(1);
+            const data = { quantity: quantity };
+            setCount(quantity);
+            updateBottleQty(cellarHasBottleId, data);
+        }
     };
     // -----------
 
-    // fonction pour ajouter une bouteille à la wishlist
+    // fonction pour ajouter/supprimer une bouteille à la wishlist
     const toggleWishlist = (bottle) => {
         axiosClient
             .get(`${import.meta.env.VITE_API_BASE_URL}/api/wishlist`)
@@ -63,7 +63,7 @@ export default function ProductCard({
                     (item) => item.bottle.id === bottle.id
                 );
                 if (wishlistItem) {
-                    // If the bottle is in the wishlist, remove it
+                    // Suppression de la liste de souhait si déjà là
                     axiosClient
                         .delete(
                             `${
@@ -71,7 +71,6 @@ export default function ProductCard({
                             }/api/wishlist/${wishlistItem.id}`
                         )
                         .then(({ data }) => {
-                            console.log("Bottle removed from wishlist.");
                             setInWishlist(false);
                             // Si on est dans la wishlist page, on enlève directement de la page
                             if (onRemoveFromWishlist) {
@@ -82,14 +81,13 @@ export default function ProductCard({
                             console.log(err);
                         });
                 } else {
-                    // If the bottle is not in the wishlist, add it
+                    // Ajout dans la liste de souhait si pas déjà là
                     axiosClient
                         .post(
                             `${import.meta.env.VITE_API_BASE_URL}/api/wishlist`,
                             { id: bottle.id }
                         )
                         .then(() => {
-                            console.log("Bottle added to wishlist.");
                             setInWishlist(true);
                         })
                         .catch((err) => {
@@ -207,13 +205,33 @@ export default function ProductCard({
             {/* Zone édition bouteille (svg style) */}
             {location.pathname === "/cellar" ? (
                 <section className="px-3 flex flex-col justify-start items-center">
-                  {/* add */}
+                    {/* add */}
                     <div
                         className="border-solid border-[1px] rounded-full border-black h-10 w-10 m-2 text-center cursor-pointer"
                         onClick={() => updateQty(count, "add")}
                     >
                         <span className="text-red-900">
-                            <svg viewBox="-4.8 -4.8 33.60 33.60" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fillRule="evenodd" clipRule="evenodd" d="M12 4C12.5523 4 13 4.44772 13 5V11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H13V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V13H5C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11H11V5C11 4.44772 11.4477 4 12 4Z" fill="#000000"></path> </g></svg>
+                            <svg
+                                viewBox="-4.8 -4.8 33.60 33.60"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                                <g
+                                    id="SVGRepo_tracerCarrier"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                ></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    {" "}
+                                    <path
+                                        fillRule="evenodd"
+                                        clipRule="evenodd"
+                                        d="M12 4C12.5523 4 13 4.44772 13 5V11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H13V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V13H5C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11H11V5C11 4.44772 11.4477 4 12 4Z"
+                                        fill="#000000"
+                                    ></path>{" "}
+                                </g>
+                            </svg>
                         </span>
                     </div>
                     {/* remove */}
@@ -222,7 +240,27 @@ export default function ProductCard({
                         onClick={() => updateQty(count, "rmv")}
                     >
                         <span className="text-red-900">
-                            <svg viewBox="-4.8 -4.8 33.60 33.60" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fillRule="evenodd" clipRule="evenodd" d="M4 12C4 11.4477 4.44772 11 5 11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H5C4.44772 13 4 12.5523 4 12Z" fill="#000000"></path> </g></svg>
+                            <svg
+                                viewBox="-4.8 -4.8 33.60 33.60"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                                <g
+                                    id="SVGRepo_tracerCarrier"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                ></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    {" "}
+                                    <path
+                                        fillRule="evenodd"
+                                        clipRule="evenodd"
+                                        d="M4 12C4 11.4477 4.44772 11 5 11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H5C4.44772 13 4 12.5523 4 12Z"
+                                        fill="#000000"
+                                    ></path>{" "}
+                                </g>
+                            </svg>
                         </span>
                     </div>
                     {/* add to wishlist */}
