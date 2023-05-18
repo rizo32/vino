@@ -11,6 +11,7 @@ use App\Models\Bottle;
 use App\Models\CellarHasBottle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CellarHasBottleController extends Controller
 {
@@ -71,7 +72,7 @@ class CellarHasBottleController extends Controller
     {
         // Utilisateur connecté
         $user = auth()->user();
-
+        
         $request->validate([
             'id' => 'required|integer',
         ]);
@@ -80,8 +81,9 @@ class CellarHasBottleController extends Controller
         $bottleInCellar = CellarHasBottle::query()->where('bottle_id', '=', $request->input('id'))->where('cellar_id', '=', $user->cellar->id)->first();
 
         // incrémentation du nombre de bouteilles dans cellier (pour la pastille colorée)
-        if ($bottleInCellar) {
-            $data = ['quantity' => $bottleInCellar->quantity + $request->input('quantity')];
+        if ($bottleInCellar) {            
+            $data = ['quantity' => $bottleInCellar->quantity = $request->input('quantity')];
+
             $bottleInCellar->update($data);
             return BottleResource::collection(
                 Bottle::with('cellarHasBottle')->orderBy('id', 'desc')->paginate(10)
