@@ -1,12 +1,10 @@
-import { useState }, { useState } from "react";
+import { useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import axiosClient from "../../axios-client";
 import { useLocation, useNavigate } from "react-router-dom";
 import StarRating from "../../components/StarRating/StarRating.jsx";
-import { useStateContext } from "../../contexts/ContextProvider";
 import ImageOnImage from "../../components/ImageOnImage/ImageOnImage.jsx";
 import EditQuantityModal from "../../components/EditQuantityModal/EditQuantityModal";
-import axiosClient from "../../axios-client";
 
 export default function ProductView(props) {
     const { searchBarOpen } = useStateContext();
@@ -19,9 +17,6 @@ export default function ProductView(props) {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [bottle, setBottle] = useState(location.state.bottle);
-
-    // Récupère les informations de bottle passées depuis la page précédente
-    const bottle = location.state.bottle;
 
     // est-ce la bouteille fait partie de la liste de souhait
     const [inWishlist, setInWishlist] = useState(bottle.isInWishlist);
