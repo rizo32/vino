@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 
+
+
 // affiche les données utilisateurs
 function UserDisplay({ user, onEdit, onLogout }) {
     return (
@@ -19,7 +21,7 @@ function UserDisplay({ user, onEdit, onLogout }) {
             >
                 Modifier les informations
             </button>
-            {user.user_type_id === 1 && (
+            {user.user_type_id == 1 && (
                 <Link
                     to="/admin"
                     className="btn btn-block mt-8 border-black border-2 rounded-md text-black h-8 text-lg shadow-shadow-tiny hover:shadow-none hover:bg-rose-hover text-center"
