@@ -18,6 +18,26 @@ export default function ProductView(props) {
     const handleClose = () => setOpen(false);
     const [bottle, setBottle] = useState(location.state.bottle);
 
+    // fonction pour ajouter une bouteille au cellier
+    const addToCellar = (bottleEdit, quantity, initialQty) => {
+        bottleEdit.quantity = quantity;
+        axiosClient
+            .post(
+                `${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles`,
+                bottleEdit
+            )
+            .then(({ data }) => {
+                bottleEdit.initialQty = initialQty;
+            })
+            .catch((err) => {
+                console.log(err.response);
+            });
+        bottleEdit.quantity = parseInt(quantity) + parseInt(initialQty);
+        setBottle(bottleEdit);
+    };
+    // -----------
+
+
     // est-ce la bouteille fait partie de la liste de souhait
     const [inWishlist, setInWishlist] = useState(bottle.isInWishlist);
 
@@ -101,9 +121,7 @@ export default function ProductView(props) {
             </div>
 
             {open ? (
-                <div className={`${
-                    searchBarOpen ? "top-[135px]" : "top-[65px]"
-                } absolute h-[315px] w-full z-30 pt-20 text-white`}>
+                <div className="top-[-15px] absolute h-[315px] w-full z-30 text-white">
                 <EditQuantityModal
                 bottle={bottle}
                 quantity={bottle.quantity}
@@ -121,7 +139,7 @@ export default function ProductView(props) {
                     viewBox="0 0 24 24"
                     strokeWidth={1.25}
                     stroke="currentColor"
-                    className="ml-auto right-5 top-10 mt-48 text-white block w-10 h-10 cursor-pointer absolute z-20"
+                    className="ml-auto right-5 top-10 mt-48 text-white block w-10 h-10 cursor-pointer absolute z-10"
                     onClick={() => toggleWishlist(bottle)}
                 >
                     <path
