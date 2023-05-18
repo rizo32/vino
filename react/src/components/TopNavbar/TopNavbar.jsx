@@ -155,7 +155,7 @@ const TopNavbar = () => {
           searchBarOpen ? "my-4 w-full ml-auto" : "w-0 ml-auto opacity-0"
         } transition-all duration-200 ease-in-out relative flex items-center`}
       >
-        {location.pathname === "/catalog" ? (
+        {location.pathname === "/catalog" || location.pathname.includes("/product/") ? (
           <input
             ref={searchInputRef}
             type="text"
