@@ -55,25 +55,25 @@ export default function Catalog() {
         // si on ajoute la bouteille au cellier, refleter la nouvelle quantite sans devoir fetch toutes les bouteilles a nouveau
         if (bottleUpdt) {
             const updatedBottles = bottles.map((bottle) => {
-                if (bottle.id === bottleUpdt.id && !bottleUpdt.initialQty) {
-                    // ajouter la propriete quantite sans recharger toutes les bouteilles
-                    return {
-                        ...bottle,
-                        quantity: bottleUpdt.quantity,
-                    };
-                } else if (bottle.id === bottleUpdt.id && bottleUpdt.initialQty) {
-                    //augmenter la quantite si elle existe
-                    return {
-                        ...bottle,
-                        quantity: parseInt(bottleUpdt.initialQty) + parseInt(bottleUpdt.quantity),
-                    };
-                }
-                // garder meme bouteille et proprietes si rien change
+                // if (bottle.id === bottleUpdt.id && !bottleUpdt.initialQty) {
+                //     // ajouter la propriete quantite sans recharger toutes les bouteilles
+                //     return {
+                //         ...bottle,
+                //         quantity: bottleUpdt.quantity,
+                //     };
+                // } else if (bottle.id === bottleUpdt.id && bottleUpdt.initialQty) {
+                //     //augmenter la quantite si elle existe
+                //     return {
+                //         ...bottle,
+                //         quantity: parseInt(bottleUpdt.quantity),
+                //     };
+                // }
+                // // garder meme bouteille et proprietes si rien change
                 return bottle;
             });
+            setShowMessage(true);
             setBottles(updatedBottles);
             setLoading(false);
-            setShowMessage(true);
             //arreter la fonction
             return;
         }

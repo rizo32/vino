@@ -53,7 +53,7 @@ export default function Wishlist() {
           // ajouter la propriete quantite sans recharger toutes les bouteilles
           return {
             ...bottle,
-            quantity: dataUpdt.quantity,
+            quantity: bottle.quantity,
           };
         }
         // garder meme bouteille et proprietes si rien change
