@@ -47,7 +47,7 @@ export default function ProductView(props) {
 
   // fonction pour ajouter une bouteille au cellier
   const addToCellar = (bottleEdit, quantity, initialQty) => {
-    const totalQuantity = quantity + initialQty;
+    const totalQuantity = parseInt(quantity) + parseInt(initialQty);
     bottleEdit.quantity = totalQuantity;
     axiosClient
       .post(
@@ -61,7 +61,6 @@ export default function ProductView(props) {
       .catch((err) => {
         console.log(err.response);
       });
-    // bottleEdit.quantity = parseInt(quantity) + parseInt(initialQty);
   };
   // -----------
 

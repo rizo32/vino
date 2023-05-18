@@ -20,11 +20,8 @@ export default function ProductCard({
 
   // fonction pour ajouter une bouteille au cellier
   const addToCellar = (bottle, quantity, initialQty) => {
-      console.log(quantity);
-      console.log(initialQty);
-      const totalQuantity = quantity + initialQty;
+      const totalQuantity = parseInt(quantity) + parseInt(initialQty);
       bottle.quantity = totalQuantity;
-      console.log(bottle);
     axiosClient
       .post(`${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles`, bottle)
       .then(({ data }) => {
