@@ -268,7 +268,7 @@ export default function Catalog() {
                 </div>
             )
             : null}
-            {/* Loading state n'est pas nécéssaire dans l'état actuel des choses mais pourrait le devenir */}
+            <p className="mt-2"></p>
             {loading ? (
                 <p className="ml-2 mb-1 mt-4">Chargement...</p>
             ) : searchValue ? (
