@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import EditQuantityModal from "../../components/EditQuantityModal/EditQuantityMo
 
 export default function ProductView(props) {
   const { searchBarOpen } = useStateContext();
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
   const handleRetour = () => {
@@ -18,9 +19,36 @@ export default function ProductView(props) {
   const handleClose = () => setOpen(false);
   const [bottle, setBottle] = useState(location.state.bottle);
 
+  // est-ce la bouteille fait partie de la liste de souhait
+  const [inWishlist, setInWishlist] = useState(bottle.isInWishlist);
+
+  useEffect(() => {
+    // Fetch the bottle data when the component mounts
+    getBottle();
+  }, []);
+
+  const getBottle = () => {
+    const bottleId = location.state.bottle.id;
+
+    // Make an API request to fetch the bottle data by ID
+    axiosClient
+      .get(`${import.meta.env.VITE_API_BASE_URL}/api/bottles/${bottleId}`)
+      .then(({ data }) => {
+        setBottle(data.data);
+        setInWishlist(data.data.isInWishlist);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  console.log(location.state.bottle);
+
   // fonction pour ajouter une bouteille au cellier
   const addToCellar = (bottleEdit, quantity, initialQty) => {
-    bottleEdit.quantity = quantity;
+    const totalQuantity = quantity + initialQty;
+    bottleEdit.quantity = totalQuantity;
     axiosClient
       .post(
         `${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles`,
@@ -28,17 +56,14 @@ export default function ProductView(props) {
       )
       .then(({ data }) => {
         bottleEdit.initialQty = initialQty;
+        setBottle(bottleEdit);
       })
       .catch((err) => {
         console.log(err.response);
       });
-    bottleEdit.quantity = parseInt(quantity) + parseInt(initialQty);
-    setBottle(bottleEdit);
+    // bottleEdit.quantity = parseInt(quantity) + parseInt(initialQty);
   };
   // -----------
-
-  // est-ce la bouteille fait partie de la liste de souhait
-  const [inWishlist, setInWishlist] = useState(bottle.isInWishlist);
 
   // fonction pour ajouter une bouteille à la wishlist
   const toggleWishlist = (bottle) => {
@@ -140,6 +165,7 @@ export default function ProductView(props) {
           </div>
         ) : null}
         {/* wishlist */}
+        {!loading && (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill={inWishlist ? "#b91c1c" : "none"}
@@ -155,6 +181,8 @@ export default function ProductView(props) {
             d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
           />
         </svg>
+                )}
+
       </div>
 
       {/* Zone image */}
@@ -166,9 +194,11 @@ export default function ProductView(props) {
 
       {/* Zone sous image */}
       <section className="w-full flex flex-col justify-start items-start gap-4 p-6 bg-white ">
-        <span className="text-red-900 font-bold">
-          {bottle.quantity} dans le cellier
-        </span>
+        {!loading && (
+          <span className="text-red-900 font-bold">
+            {bottle.quantity} dans le cellier
+          </span>
+        )}
         <h1 className="font-bold">
           {bottle.name.charAt(0).toUpperCase() + bottle.name.slice(1)}
         </h1>
