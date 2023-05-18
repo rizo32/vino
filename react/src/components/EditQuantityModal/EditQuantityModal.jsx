@@ -46,7 +46,7 @@ export default function ({ bottle, quantity, handleClose, addToCellar }) {
               <path
                 id="Vector"
                 d="M18 18L12 12M12 12L6 6M12 12L18 6M12 12L6 18"
-                stroke="white"
+                stroke={location.pathname.includes("/product") ? "white" : "black"}
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
