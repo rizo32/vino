@@ -43,8 +43,6 @@ export default function ProductView(props) {
       });
   };
 
-  console.log(location.state.bottle);
-
   // fonction pour ajouter une bouteille au cellier
   const addToCellar = (bottleEdit, quantity, initialQty) => {
     const totalQuantity = parseInt(quantity) + parseInt(initialQty);
@@ -66,6 +64,8 @@ export default function ProductView(props) {
 
   // fonction pour ajouter une bouteille à la wishlist
   const toggleWishlist = (bottle) => {
+    // Immediately update the inWishlist state
+    setInWishlist(!inWishlist);
     axiosClient
       .get(`${import.meta.env.VITE_API_BASE_URL}/api/wishlist`)
       .then(({ data }) => {
@@ -80,9 +80,6 @@ export default function ProductView(props) {
                 wishlistItem.id
               }`
             )
-            .then(({ data }) => {
-              setInWishlist(false);
-            })
             .catch((err) => {
               console.log(err);
             });
@@ -91,9 +88,6 @@ export default function ProductView(props) {
           axiosClient
             .post(`${import.meta.env.VITE_API_BASE_URL}/api/wishlist`, {
               id: bottle.id,
-            })
-            .then(() => {
-              setInWishlist(true);
             })
             .catch((err) => {
               console.log(err);
@@ -165,23 +159,22 @@ export default function ProductView(props) {
         ) : null}
         {/* wishlist */}
         {!loading && (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill={inWishlist ? "#b91c1c" : "none"}
-          viewBox="0 0 24 24"
-          strokeWidth={1.25}
-          stroke="currentColor"
-          className="ml-auto right-5 top-10 mt-48 text-white block w-10 h-10 cursor-pointer absolute z-10"
-          onClick={() => toggleWishlist(bottle)}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-          />
-        </svg>
-                )}
-
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill={inWishlist ? "#b91c1c" : "none"}
+            viewBox="0 0 24 24"
+            strokeWidth={1.25}
+            stroke="currentColor"
+            className="ml-auto right-5 top-10 mt-48 text-white block w-10 h-10 cursor-pointer absolute z-10"
+            onClick={() => toggleWishlist(bottle)}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+            />
+          </svg>
+        )}
       </div>
 
       {/* Zone image */}
@@ -229,19 +222,19 @@ export default function ProductView(props) {
         <div className="flex flex-col gap-6 p-6">
           {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information 
                     Commentaire valable pour toutes les informations de cette DIV */}
-        <div>
+          <div>
             <p>Avis du site de la SAQ</p>
-                    <div className="flex gap-3">
-          <StarRating note={bottle.rating_saq} />
-          {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information */}
-          {bottle.num_comments ? (
             <div className="flex gap-3">
-              <span className="font-bold">|</span>
-              <p className="font-bold">{bottle.num_comments} avis</p>
+              <StarRating note={bottle.rating_saq} />
+              {/* Si il n'y a pas la valeur dans l'objet, on n'affiche pas l'information */}
+              {bottle.num_comments ? (
+                <div className="flex gap-3">
+                  <span className="font-bold">|</span>
+                  <p className="font-bold">{bottle.num_comments} avis</p>
+                </div>
+              ) : null}
             </div>
-          ) : null}
-        </div>
-        </div>
+          </div>
           {bottle.type_name ? (
             <div>
               <p>Couleur</p>

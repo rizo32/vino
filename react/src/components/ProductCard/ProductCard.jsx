@@ -20,8 +20,8 @@ export default function ProductCard({
 
   // fonction pour ajouter une bouteille au cellier
   const addToCellar = (bottle, quantity, initialQty) => {
-      const totalQuantity = parseInt(quantity) + parseInt(initialQty);
-      bottle.quantity = totalQuantity;
+    const totalQuantity = parseInt(quantity) + parseInt(initialQty);
+    bottle.quantity = totalQuantity;
     axiosClient
       .post(`${import.meta.env.VITE_API_BASE_URL}/api/cellarHasBottles`, bottle)
       .then(({ data }) => {
@@ -56,6 +56,9 @@ export default function ProductCard({
 
   // fonction pour ajouter/supprimer une bouteille à la wishlist
   const toggleWishlist = (bottle) => {
+    // rétroaction front end rapide
+    setInWishlist(!inWishlist);
+
     axiosClient
       .get(`${import.meta.env.VITE_API_BASE_URL}/api/wishlist`)
       .then(({ data }) => {
@@ -71,7 +74,6 @@ export default function ProductCard({
               }`
             )
             .then(({ data }) => {
-              setInWishlist(false);
               // Si on est dans la wishlist page, on enlève directement de la page
               if (onRemoveFromWishlist) {
                 onRemoveFromWishlist(bottle.id);
@@ -85,9 +87,6 @@ export default function ProductCard({
           axiosClient
             .post(`${import.meta.env.VITE_API_BASE_URL}/api/wishlist`, {
               id: bottle.id,
-            })
-            .then(() => {
-              setInWishlist(true);
             })
             .catch((err) => {
               console.log(err);
