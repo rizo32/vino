@@ -38,7 +38,7 @@ class BottleResource extends JsonResource
             'region_name' => $this->region ? $this->region->name : null,
             'rating_saq' => $this->rating_saq,
             'num_comments' => $this->num_comments,
-            'isInWishlist' => $this->wishlist->count() > 0,
+            'isInWishlist' => $this->wishlist->where('user_id', auth()->id())->count() > 0,
         ];
 
         /* Si besoin d'informations en plus
@@ -49,9 +49,10 @@ class BottleResource extends JsonResource
             'price_saq' => $this->price_saq,
             'url_saq' => $this->url_saq,
         */
+        $user = auth()->user();
 
         if ($this->relationLoaded('cellarHasBottle')) {
-            $data['quantity'] = $this->cellarHasBottle->first()->quantity ?? 0;
+            $data['quantity'] = $this->cellarHasBottle->where('cellar_id', '=', $user->cellar->id)->first()->quantity ?? 0;
         }
     
         return $data;

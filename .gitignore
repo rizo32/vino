@@ -22,3 +22,10 @@ yarn-error.log
 server-vino-new.zip
 vino_2.sql
 .gitignore
+vino-server-brandnew.zip
+vino-server.zip
+vino-server_dw.zip
+vino.code-workspace
+.gitignore
+prettier.config.js
+package-lock.json

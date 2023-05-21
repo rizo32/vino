@@ -6,8 +6,9 @@ import { useStateContext } from "../contexts/ContextProvider.jsx";
 export default function Login() {
     const emailRef = useRef();
     const passwordRef = useRef();
-    const { setUser, setToken } = useStateContext();
+    const { setUser, setToken,setUserTypesId } = useStateContext(); /* ajout setUserTypesId YG */
     const [message, setMessage] = useState([]);
+
 
     const onSubmit = (ev) => {
         ev.preventDefault();
@@ -21,6 +22,8 @@ export default function Login() {
             .then(({ data }) => {
                 setUser(data.user);
                 setToken(data.token);
+                setUserTypesId(data.user.user_type_id); /* ajout pour user_types YG */
+                console.log("user_types_id set to:", data.user.user_type_id);
             })
             .catch((err) => {
                 const response = err;
@@ -52,7 +55,7 @@ export default function Login() {
                         placeholder="johndoe@cmaisonneuve.qc.ca"
                         className="rounded-lg bg-white h-12 pl-2 shadow-shadow-tiny-inset"
                     />
-                    {message.password && (
+                    {!message.email && message.password && (
                         <div className="text-red-900 mt-vh-15 absolute w-full text-center left-1/2 transform -translate-x-1/2">
                             <p>{message.password[0]}</p>
                         </div>

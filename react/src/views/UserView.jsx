@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosClient from "../axios-client";
 import UserDisplay from "../components/UserViewComponents/UserDisplay";
@@ -12,11 +12,13 @@ function UserView() {
     const [message, setMessage] = useState([]);
     const { setToken } = useStateContext();
     const navigate = useNavigate();
+    const originalUser = useRef(null);
 
     // Va chercher l'information et le met dans le state
     useEffect(() => {
         axiosClient.get(`/users/${id}`).then((response) => {
             setUser(response.data);
+            originalUser.current = response.data;
         });
     }, [id]);
 
@@ -56,6 +58,7 @@ function UserView() {
     // Toggle les composantes edit et show
     const toggleEdit = () => {
         setIsEditing(!isEditing);
+        setMessage([])
     };
 
     return (
@@ -67,6 +70,8 @@ function UserView() {
                 {isEditing ? (
                     <UserForm
                         user={user}
+                        setUser={setUser}
+                        originalUser={originalUser.current} // Pass the original user data as a prop
                         onChange={handleInputChange}
                         onSubmit={handleSubmit}
                         onReturn={toggleEdit}

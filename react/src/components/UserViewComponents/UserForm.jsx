@@ -1,5 +1,19 @@
 // formulaire pour changer les informations
-function UserForm({ user, onChange, onSubmit, onReturn, message, setMessage }) {
+function UserForm({
+    user,
+    onChange,
+    onSubmit,
+    setUser,
+    originalUser,
+    onReturn,
+    message,
+    setMessage,
+}) {
+    const handleReturn = () => {
+        setUser(originalUser); // Reset the user data to the original state
+        onReturn();
+    };
+
     return (
         <form
             className="flex flex-col w-10/12 ml-auto mr-auto"
@@ -55,6 +69,11 @@ function UserForm({ user, onChange, onSubmit, onReturn, message, setMessage }) {
             />
             <label htmlFor="password" className="mt-vh-2 ml-2">
                 Mot de passe
+                {!message.password && (
+                    <span className="text-xs pl-2">
+                        au moins 8 caractères incluant au minimum un chiffre et un symbole
+                    </span>
+                )}
                 {message.password && (
                     <span className="text-red-900 text-sm pl-2">
                         {message.password[0]}
@@ -90,7 +109,7 @@ function UserForm({ user, onChange, onSubmit, onReturn, message, setMessage }) {
                 Enregistrer
             </button>
             <div className="text-center mt-6 xs-h:mt-2">
-                <p className="cursor-pointer underline" onClick={onReturn}>
+                <p className="cursor-pointer underline" onClick={handleReturn}>
                     Retour
                 </p>
             </div>

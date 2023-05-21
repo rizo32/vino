@@ -10,6 +10,10 @@ use App\Http\Controllers\Api\SaqCatalogueController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TypeController;
 use App\Http\Controllers\Api\CountryController;
+use App\Http\Controllers\Api\QuickStatsController;
+use App\Http\Controllers\Api\PieGraphController;
+use App\Http\Controllers\Api\LineGraphController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,12 +56,29 @@ Route::middleware('auth:sanctum')->group(function () {
     // Gestion des bouteilles
     Route::apiResource('/bottles', BottleController::class);
 
+    //get bottle from barcode
+    Route::get('/bottleScan', [BottleController::class, 'scan']);
+    Route::post('/storeScanBottle', [CellarHasBottleController::class, 'storeScanBottle']);
+
+    // Va chercher les options pour les filtres
+    // Route::apiResource('/countries', CountryController::class);
+    // Route::apiResource('/types', TypeController::class);
+    Route::post('/countries/{source}', [CountryController::class, 'index']);
+    Route::post('/types/{source}', [TypeController::class, 'index']);
+
 });
 
 /* <YG */
-Route::apiResource('/admin', AdminController::class);
 Route::post('/saq/fetch', [SaqCatalogueController::class, 'fetchProduits'])->name('saq.fetch');
 Route::get('/saq/fetch', [SaqCatalogueController::class, 'fetchProduits'])->name('saq.fetch');
+Route::get('/admin', [UserController::class, 'userList'])->name('admin');
+Route::put('/admin/{id}', [UserController::class, 'userUpdate'])->name('user.update');
+Route::get('/stats', [QuickStatsController::class, 'getStats']);
+Route::get('/piestats', [PieGraphController::class, 'getWineStats']);
+Route::get('/topWineStats', [PieGraphController::class, 'topWineStats']);
+Route::get('/appStats', [LineGraphController::class, 'appStats']);
+Route::delete('/deleteUser/{id}', [UserController::class, 'deleteUser']);
+
 /* YG> */
 
 
@@ -66,7 +87,3 @@ Route::get('/saq/fetch', [SaqCatalogueController::class, 'fetchProduits'])->name
 
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
-
-// Va chercher les options pour les filtres
-Route::get('/countries', [CountryController::class, 'index']);
-Route::get('/types', [TypeController::class, 'index']);

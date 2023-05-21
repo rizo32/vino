@@ -1,256 +1,301 @@
-// Importation des modules nécessaires
+/* importation des modules */
 import { useEffect, useState } from "react";
 import axios from "axios";
+import LinePlotChart from "../components/Stats/LinePlotChart";
+import PieCharts from "../components/Stats/PieCharts";
+import QuickStats from "../components/Stats/QuickStats";
 
-// URL de base pour les requêtes à l'API
-const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/saq`;
+/* Creation des URLs */
+const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/admin`;
+const deleteURL = `${import.meta.env.VITE_API_BASE_URL}/api/deleteUser`;
 
+/* Creation de la fonction Admin */
 const Admin = () => {
-    // Déclaration des états
-    const [products, setProducts] = useState([]);
-    // const [nombre, setNombre] = useState(24);
-    // const [page, setPage] = useState(1);
-    const [progress, setProgress] = useState(0);
-    const [showProgressBar, setShowProgressBar] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-    const [showButton, setShowButton] = useState(true);
+  /* Creation des states */
+  const [users, setUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [activeTab, setActiveTab] = useState("stats"); /* par defaut le tab est sur stats */
+  const [successMessage, setSuccessMessage] = useState("");
 
-    // Initialisation des compteurs pour les produits insérés et les doublons
-    // let insert = 0;
-    // let double = 0;
 
-    // Fonction pour nettoyer les données des produits
-    const parseProductData = (data) => {
-        return data.map((product) => ({
-            ...product,
-            desc: {
-                ...product.desc,
-                // Nettoyage des formats
-                type: product.desc?.type?.trim() || "",
-                format: product.desc?.format?.trim() || "",
-                pays: product.desc?.pays?.trim() || "",
-            },
-        }));
-    };
+  useEffect(() => {
+    axios
+      .get(baseURL) /* Requete Get a baseURL */
+      .then((response) => {
+        setUsers(response.data.users);  /* Modifies l'etat avec les donnees recu */
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
-    // Fonction pour récupérer les produits depuis l'API
-    const fetchProducts = () => {
-        // Afficher la barre de progression
-        setShowProgressBar(true);
-        // Mesurer le temps d'exécution de la requête
-        const t0 = performance.now();
-        // Créer un flux d'événements pour suivre la progression
-        const eventSource = new EventSource(`${baseURL}/fetch`);
 
-        // Traitement des messages reçus depuis le flux d'événements
-        eventSource.onmessage = (event) => {
-            const data = JSON.parse(event.data);
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value); /* modifie l'etat avec l"entree de l'utilisateurs */
+  };
 
-            // Mettre à jour la progression si une valeur de pourcentage est disponible
-            if (data.progressPercentage) {
-                setProgress(data.progressPercentage);
-            }
-            // Si les données sont complètes, traiter et afficher les produits
-            else if (data.done) {
-                const parsedProducts = parseProductData(data.produits);
-                setProducts(parsedProducts);
+  const filteredUsers = users.filter((user) =>
+    user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) /* Filtre avec la valeur de l'etat */
+  );
 
-                // Calculer et afficher le temps d'exécution de la requête
-                const t1 = performance.now();
-                const timeDiff = t1 - t0;
-                console.log(
-                    `FetchProducts prend ${timeDiff} millisecondes (${(
-                        timeDiff / 1000
-                    ).toFixed(2)} secondes ou ${(timeDiff / 60000).toFixed(
-                        2
-                    )} minutes)`
-                );
+  /* Ouverture de la modal */
+  const openModal = (user) => {
+    setSelectedUser(user);
+    setShowModal(true);
+  };
+  /* Fermeture de la modal */
+   const closeModal = () => {
+    setShowModal(false);
+    setSelectedUser(null);
+  };
 
-                // Fermer le flux d'événements et masquer la barre de progression
-                eventSource.close();
-                setShowProgressBar(false);
-            }
-        };
-    };
+  /* Reset le barre de recherche - mis ajour de l'etat  '' */
+  const clearSearch = () => {
+    setSearchTerm("");
+  };
 
-    // Gestionnaire pour confirmer la récupération des produits
-    const handleConfirm = () => {
-        // Fermer la fenêtre modale et masquer le bouton
-        setShowModal(false);
-        setShowButton(false);
-        // Lancer la récupération des produits
-        fetchProducts();
-    };
 
-    // Gestionnaire pour annuler la récupération des produits
-    const handleCancel = () => {
-        // Fermer la fenêtre modale
-        setShowModal(false);
-    };
+  /* Suppression d'un utilisateur */
+  const deleteUser = () => {
+    if (selectedUser) {
+      const userId = selectedUser.id;
+      axios
+        .delete(`${deleteURL}/${userId}`)
+        .then((response) => {
+          /* utilisations de séquence des méthodes */
+          refreshUsers();
+          closeModal();
+          clearSearch();
+          setSuccessMessage("Utilisateurs supprimer");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
 
-    return (
-        /* retour de la section qui affichera les produis */
-        <div className="flex flex-col items-center bg-red-50">
-            {/* ajout et logique du Progress bar */}
-            {showProgressBar && (
-                <div className="w-full bg-gray-300 rounded relative h-6">
-                    <div
-                        className={`absolute top-0 left-0 w-full h-full bg-red-900 ${
-                            progress === 0 ? "opacity-0" : "opacity-100"
-                        }`}
-                        style={{ width: `${progress}%` }}
-                    >
-                        <span className="absolute top-0 left-1/2 w-full text-center h-full flex items-center justify-center text-white">
-                            {progress.toFixed(2)}%
-                        </span>
-                    </div>
+  /* Mise à jour de la liste utilisateur */
+  const refreshUsers = () => {
+    axios
+      .get(baseURL)
+      .then((response) => {
+        setUsers(response.data.users);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    refreshUsers();
+  }, []);
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        /* apres 3 seconde, change l'etat de Message(le ferme) */
+        setSuccessMessage("");
+      }, 3000); 
+  
+      return () => clearTimeout(timer); 
+    }
+  }, [successMessage]);
+
+  /* Mise à jour de l'utilisateur */
+  const updateUser = () => {
+    axios
+      .put(`${baseURL}/${selectedUser.id}`, {
+        user_type_id: document.getElementById("userTypes").value,
+      })
+      .then((response) => {
+        /* sequences des methodes */
+        closeModal();
+        refreshUsers();
+        clearSearch();
+        setSuccessMessage("Utilisateurs mis à jour");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+
+  return (
+    /* Creation de deux tabs pour le pannel Admin -> Stats et Users */
+    <div className="pt-4 container mx-auto">
+       {successMessage && (
+      <div className="success-message fixed top-10 left-1/2 transform -translate-x-1/2 bg-green-400 text-white px-6 py-3 rounded shadow-lg transition-all duration-500 z-50 flex items-center space-x-3">
+        <span className="mr-2">{successMessage}</span>
+        <button onClick={() => setSuccessMessage("")} className="hover:text-green-200">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-5 w-5">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    )}
+      <div className="flex justify-center mb-4">
+        <button
+          className={`mr-4 px-4 py-2 rounded-lg border ${
+            activeTab === "stats" ? "bg-red-900 text-white" : "border-gray-300"
+          }`}
+          onClick={() => setActiveTab("stats")}
+        >
+          Statistique
+        </button>
+        <button
+          className={`ml-4 px-4 py-2 rounded-lg border ${
+            activeTab === "users" ? "bg-red-900 text-white" : "border-gray-300"
+          }`}
+          onClick={() => setActiveTab("users")}
+        >
+          Utilisateurs
+        </button>
+      </div>
+      {/* < users */}
+      {activeTab === "users" && (
+        <div className="px-4">
+          <div className="flex justify-center mb-4">
+            <input
+              type="text"
+              placeholder="Rechercher par Prénom"
+              value={searchTerm}
+              onChange={handleSearch}
+              className="px-4 py-2 border border-gray-300 rounded-lg w-full sm:w-auto"
+            />
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {filteredUsers.length > 0 ? (
+              filteredUsers.map((user) => (
+                <div
+                  key={user.id}
+                  className="bg-white p-2 rounded-lg shadow-lg flex justify-between items-center"
+                >
+                  <div>
+                    <p className="text-lg font-bold mb-1">{user.first_name}</p>
+                    <p className="mb-1">{user.email}</p>
+                  </div>
+                  <button
+                    className="px-2 py-1 bg-red-900 text-white rounded-lg"
+                    onClick={() => openModal(user)}
+                  >
+                    Modifications
+                  </button>
                 </div>
+              ))
+            ) : (
+              <p>Aucun utilisateur correspondant</p>
             )}
-            {/* centrer et logique pour btn */}
-            {showButton && (
-                <div className="flex items-center justify-center h-full w-full absolute inset-0">
-                    <button
-                        onClick={() => setShowModal(true)}
-                        className="bg-red-900 border-2 border-red-900 text-white py-2 px-4 rounded-lg shadow-md hover:bg-transparent hover:border-2 hover:border-red-900 hover:text-black mb-4"
+          </div>
+          {/* < modal */}
+          {showModal && (
+            <div className="fixed inset-0 flex items-center justify-center z-50">
+              <div className="bg-white p-8 max-w-lg mx-auto rounded-lg shadow-2xl border-2 border-gray-300 relative">
+                <button
+                  className="absolute top-2 right-2 bg-red-900 text-white rounded-full p-1"
+                  onClick={closeModal}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="h-6 w-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+                <h2 className="text-xl font-bold mb-4">
+                  Modifications utilisateur
+                </h2>
+                {selectedUser && (
+                  <div>
+                    <p className="text-lg">User: {selectedUser.first_name}</p>
+                    <p>Email: {selectedUser.email}</p>
+                    <label htmlFor="userTypes">Type d'utilisateurs</label>
+                    <select
+                      name="userTypes"
+                      id="userTypes"
+                      className="px-4 py-2 border border-gray-300 rounded-lg"
                     >
-                        Fetch Products
-                    </button>
+                      <option
+                        value="1"
+                        selected={
+                          selectedUser ? selectedUser.user_type_id == 1 : false
+                        }
+                      >
+                        Admin
+                      </option>
+                      <option
+                        value="2"
+                        selected={
+                          selectedUser ? selectedUser.user_type_id == 2 : false
+                        }
+                      >
+                        Employées
+                      </option>
+                      <option
+                        value="3"
+                        selected={
+                          selectedUser ? selectedUser.user_type_id == 3 : false
+                        }
+                      >
+                        Utilisateurs
+                      </option>
+                      <option
+                        value="4"
+                        selected={
+                          selectedUser ? selectedUser.user_type_id == 4 : false
+                        }
+                      >
+                        Bannir
+                      </option>
+                    </select>
+                  </div>
+                )}
+                <div className="flex justify-between mt-4">
+                  <button
+                    className="px-4 py-2 bg-red-900 text-white rounded-lg"
+                    onClick={deleteUser}
+                  >
+                    Supprimer
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-red-900 text-white rounded-lg"
+                    onClick={updateUser}
+                  >
+                    Sauvegarder
+                  </button>
                 </div>
-            )}
-
-            {/* ajout et logique du mdodal */}
-            {showModal && (
-                <div className="fixed inset-0 flex items-center justify-center z-50">
-                    <div className="bg-white p-8 rounded-lg shadow-md">
-                        <h2 className="text-xl font-semibold mb-4">
-                            Confirmation
-                        </h2>
-                        <p>
-                            Le processus peut être long. Souhaitez-vous
-                            poursuivre ?
-                        </p>
-                        <div className="flex justify-end mt-6">
-                            <button
-                                onClick={handleCancel}
-                                className="bg-gray-300 text-black py-2 px-4 rounded-lg shadow-md hover:bg-gray-400 mr-2"
-                            >
-                                Annuler
-                            </button>
-                            <button
-                                onClick={handleConfirm}
-                                className="bg-red-900 text-white py-2 px-4 rounded-lg shadow-md hover:bg-red-700"
-                            >
-                                Je confirme
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-            <section></section>
-            <section className="flex flex-col gap-4 items-start justify-start">
-                {products.map((product, index) => (
-                    <article
-                        id="ProductCard"
-                        className="flex flex-row items-center justify-center py-6 mb-2 bg-white"
-                    >
-                        <img className="h-40" src={product.img} alt="" />
-
-                        <section className="flex-flex_column justify-start gap-3 bg-white">
-                            <div className="flex ">
-                                <h2 className="font-bold">{product.nom}</h2>
-                                <div className="px-6">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={2}
-                                        stroke="currentColor"
-                                        className="w-12 h-12"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M12 6v12m6-6H6"
-                                        />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div className="flex gap-4">
-                                <p>{product.desc.type}</p> <span>|</span>{" "}
-                                <p>{product.desc.format}</p>
-                            </div>
-                            <p>{product.desc.pays}</p>
-                            <div className="flex gap-4">
-                                <p className="flex">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        className="w-6 h-6 fill-black"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
-                                        />
-                                    </svg>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        className="w-6 h-6 fill-black"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
-                                        />
-                                    </svg>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        className="w-6 h-6 fill-black"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
-                                        />
-                                    </svg>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        className="w-6 h-6 fill-black"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
-                                        />
-                                    </svg>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        className="w-6 h-6 fill-gray-200"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
-                                        />
-                                    </svg>
-                                </p>
-                                <span>|</span> <p>? avis</p>
-                            </div>
-                        </section>
-                        <div>
-                            index: {index}
-                            <br />
-                            Result: {product.result.raison}
-                        </div>
-                    </article>
-                ))}
-            </section>
+              </div>
+            </div>
+          )}
+          {/* </ modal */}
         </div>
-    );
-};
+      )}
+      {/* </ users */}
 
+      {/* < stats */}
+      {activeTab === "stats" && (
+        <div>
+          <div className=" pb-5">
+            {" "}
+            <QuickStats />
+          </div>
+          <LinePlotChart />
+          <div className="pt-6 pb-6">
+            {" "}
+            <PieCharts />
+          </div>
+        </div>
+      )}
+      {/* </ stats */}
+    </div>
+  );
+};
 export default Admin;

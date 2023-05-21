@@ -24,9 +24,7 @@ class BottleController extends Controller
         $user = auth()->user();
 
         // fetch bouteilles et information du cellier de l'user connecté (pour afficher nombre de bouteilles déjà dans cellier)
-        $query = Bottle::with(['cellarHasBottle' => function ($query) use ($user) {
-            $query->where('cellar_id', '=', $user->cellar->id);
-        }])->orderBy('name', 'asc');
+        $query = Bottle::with('cellarHasBottle')->orderBy('name', 'asc');
 
         // Recherche dans le NOM
         if ($request->has('search')) {
@@ -76,31 +74,13 @@ class BottleController extends Controller
         return new BottleResource($bottle);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Bottle  $bottle
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Bottle $bottle)
+    public function scan(Request $request)
     {
-        //non utilise
-        $data = $request->validated();
-        $bottle->update($data);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Bottle  $bottle
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Bottle $bottle)
-    {
-        //non utilise
-        $bottle->delete();
-
-        return response("", 204);
+        $bottle = Bottle::query()->where('code_cup', 'LIKE', '%'.$request->code.'%')->first();
+        if($bottle){
+            return new BottleResource($bottle);
+        }else {
+            return false;
+        }
     }
 }

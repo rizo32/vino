@@ -1,0 +1,27 @@
+#html5qr-code-full-region__scan_region img {
+    margin: auto;
+}
+
+#html5-qrcode-button-camera-start, #html5-qrcode-button-camera-permission {
+    background-color: grey;
+    color: white;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+}
+
+#html5qr-code-full-region video {
+    height: 300px;
+    width: 100%;
+    object-fit: cover;
+}
+
+#html5-qrcode-anchor-scan-type-change {
+    display: none;
+}
+
+/* #qr-shaded-region {
+
+} */

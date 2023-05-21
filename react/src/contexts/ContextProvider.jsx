@@ -6,17 +6,19 @@ const StateContext = createContext({
     token: null,
     setUser: () => {},
     setToken: () => {},
+
     // Pour la recherche
     searchBarOpen: false,
     setSearchBarOpen: () => {},
-
-
     searchValue: "",
     setSearchValue: () => {},
-    // Pour l'affichage des catégories
 
-    // showCategories: false,
-    // setShowCategories: () => {},
+    /* ajout pour user_types YG */
+    user_types_id: null,
+    setUserTypesId: () => {},
+    
+
+
 });
 
 // Créer un composant fournisseur de contexte pour gérer et fournir l'authentification
@@ -27,6 +29,10 @@ export const ContextProvider = ({ children }) => {
     const [searchBarOpen, setSearchBarOpen] = useState(false);
     const [searchValue, setSearchValue] = useState("");
     // const [showCategories, setShowCategories] = useState(false);
+        /* ajout pour user_types YG */
+        const [user_types_id, _setUserTypesId] = useState(localStorage.getItem("USER_TYPES_ID"));
+
+
 
     const setToken = (token) => {
         _setToken(token);
@@ -37,6 +43,17 @@ export const ContextProvider = ({ children }) => {
             localStorage.removeItem("ACCESS_TOKEN");
         }
     };
+
+    const setUserTypesId = (id) => {
+        _setUserTypesId(id);
+        if (id) {
+            localStorage.setItem("USER_TYPES_ID", id);
+        } else {
+            localStorage.removeItem("USER_TYPES_ID");
+        }
+        console.log("user_types_id set to:", id);
+    }
+    
 
     return (
         <StateContext.Provider
@@ -49,8 +66,8 @@ export const ContextProvider = ({ children }) => {
                 setSearchBarOpen,
                 searchValue,
                 setSearchValue,
-                // showCategories,
-                // setShowCategories,
+                user_types_id,
+                setUserTypesId,
             }}
         >
             {children}

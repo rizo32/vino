@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Navigate } from "react-router-dom";
+import { useStateContext } from "./contexts/ContextProvider.jsx";
 import GuestLayout from "./components/GuestLayout.jsx";
 import DefaultLayout from "./components/DefaultLayout.jsx";
 import ErrorLayout from "./components/ErrorLayout.jsx";
@@ -13,6 +14,18 @@ import Catalog from "./views/Catalog/Catalog.jsx";
 import Wishlist from "./views/Wishlist.jsx";
 import UserView from "./views/UserView.jsx";
 import ErrorPage from "./views/ErrorPage.jsx";
+
+
+const RouteAdmin = ({ children }) => {
+    const { user_types_id } = useStateContext();
+    console.log("user_types_id in RouteAdmin:", user_types_id);
+
+    if (user_types_id == 1) {
+        return children;
+      } else {
+        return <ErrorPage errorStatus={666} />;
+      }
+    };
 
 const router = createBrowserRouter([
     {
@@ -44,6 +57,15 @@ const router = createBrowserRouter([
                 path: "/users/:id",
                 element: <UserView />,
             },
+            {
+                path: "/admin",
+                element: (
+                  <RouteAdmin>
+                    <Admin />
+                  </RouteAdmin>
+                ),
+              },
+              
         ],
     },
     {
