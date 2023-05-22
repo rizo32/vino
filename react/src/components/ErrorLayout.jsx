@@ -5,7 +5,7 @@ const ErrorLayout = () => {
     return (
         <div id="ErrorLayout">
             <Helmet>
-                <title>Le Cellier - Error</title>
+                <title>Cellar Smart - Erreur</title>
             </Helmet>
             <main className="pt-16 bg-red-50 min-h-screen">
                 

@@ -47,7 +47,7 @@ export default function DefaultLayout() {
     return (
         <div id="defaultLayout">
             <Helmet>
-                <title>Le Cellier - {viewName}</title>
+                <title>Cellar Smart - {viewName}</title>
             </Helmet>
             <header>
                 <TopNavbar />
