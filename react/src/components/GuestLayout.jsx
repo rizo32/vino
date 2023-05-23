@@ -33,7 +33,7 @@ export default function GuestLayout() {
     return (
         <div id="GuestLayout">
             <Helmet>
-                <title>Le Cellier - {viewName}</title>
+                <title>Cellar Smart - {viewName}</title>
             </Helmet>
             <main className="pt-16 bg-red-50 min-h-screen">
                 {/* Outlet va aller chercher la vue appropriée dans le router */}

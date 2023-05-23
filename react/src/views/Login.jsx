@@ -38,8 +38,9 @@ export default function Login() {
                     className="flex flex-col w-10/12 ml-auto mr-auto"
                     onSubmit={onSubmit}
                 >
-                    {/* Si quelqu'un a une meilleure traduction de 'welcome back', the floor is yours! */}
-                    <h1 className="text-4xl text-center mt-vh-5">Rebonjour!</h1>
+                    <span className="text-center mt-vh-5 flex items-center justify-center">
+                      <img src="/logoLong.webp" className="inline-block ml-2 h-10"></img>
+                    </span>
                     {message.email && (
                         <div className="text-red-900 mt-vh-15 absolute w-full text-center left-1/2 transform -translate-x-1/2">
                             <p>{message.email[0]}</p>

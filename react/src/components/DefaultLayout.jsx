@@ -16,10 +16,13 @@ export default function DefaultLayout() {
         const updateViewName = () => {
             switch (location.pathname) {
                 case "/catalog":
-                    setViewName("Catalogue");
+                    setViewName("Recherche");
                     break;
                 case "/cellar":
                     setViewName("Cellier");
+                    break;
+                case "/wishlist":
+                    setViewName("Favoris");
                     break;
                 case `/users/${user.id}`:
                     setViewName(`${user.first_name}`);
@@ -47,7 +50,7 @@ export default function DefaultLayout() {
     return (
         <div id="defaultLayout">
             <Helmet>
-                <title>Le Cellier - {viewName}</title>
+                <title>Cellar Smart - {viewName}</title>
             </Helmet>
             <header>
                 <TopNavbar />
