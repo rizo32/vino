@@ -47,7 +47,7 @@ export default function Login() {
                         </div>
                     )}
                     <label htmlFor="email" className="mt-vh-10 text-xl ml-2">
-                        Courriel
+                        Courriel <span className="text-sm text-blue-800">guest@guest.com</span>
                     </label>
                     <input
                         id="email"
@@ -62,7 +62,7 @@ export default function Login() {
                         </div>
                     )}
                     <label htmlFor="password" className="mt-5 text-xl ml-2">
-                        Mot de passe
+                        Mot de passe <span className="text-sm text-blue-800">guest123$</span>
                     </label>
                     <input
                         id="password"
